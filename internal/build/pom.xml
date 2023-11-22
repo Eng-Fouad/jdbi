@@ -103,7 +103,7 @@
         <dep.junit5.version>5.10.1</dep.junit5.version>
         <dep.kotlin.version>1.6.21</dep.kotlin.version>
         <dep.lombok.version>1.18.30</dep.lombok.version>
-        <dep.mockito.version>5.6.0</dep.mockito.version>
+        <dep.mockito.version>5.7.0</dep.mockito.version>
         <dep.moshi.version>1.15.0</dep.moshi.version>
         <dep.mysql.version>8.1.0</dep.mysql.version>
         <dep.otj-pg-embedded.version>1.0.2</dep.otj-pg-embedded.version>

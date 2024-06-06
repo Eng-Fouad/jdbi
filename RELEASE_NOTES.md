@@ -1,15 +1,71 @@
 # Unreleased
 
-- Add Spring Jdbi repositories with `@EnableJdbiRepositories`, thanks @xfredk (#2528)
+- Move oracle12 module back into main build (#2664, thanks @stoyants!)
+
+# 3.45.1
+
+- Work around JDK-8320575 losing record constructor generic type information
+- Improve record constructor detection of generic types to work around JDK-8320575 (#2648, thanks @elonazoulay !)
+- Attempt to improve ConstructorMapper performance by caching constructor MethodHandles (#2657, thanks @elonazoulay! )
+
+# 3.45.0
+
+- Testcontainer support for DB2 (#2625, thanks @stoyants)
+- create CycloneDX SBOM files for release versions
+- make builds reproducible
+- add `JdbiTestContainersExtension#setShutdownWaitTime(int)` to control waiting for extension shutdown if a database is very slow. Addresses #2629 (thanks @stoyants).
+- documentation updates
+
+# 3.44.1
+
+- New `@Definition` feature also supports super-interface definitions
+
+# 3.44.0
+
+- New Feature: annotate types, methods, or fields as `@Definition` to define computed constants
+- fix edge condition when calling `Connection#commit()` threw an Exception, we called commit() again. Now the
+  code explicitly calls `Connection#rollback()`. Fixes #2595
+- FieldMapper: skip static fields (#2607, reported by @mvysny)
+- fix StackOverflowError when encountering recursive types like `<T extends This<T>>` (#2582, reported by @johnarrr)
+
+# 3.43.0
+
+** POTENTIAL BREAKING CHANGE **
+
+With 3.43.0, we have improved the support for calling stored procedures via Call, and in particular
+returning result sets.
+Like any object that comes from a Statement, the expectation is that code will consume
+all results (whether it's "normal" result set or a stored procedure result) before closing the Statement.
+However, previously, Jdbi did not enforce this - OutParameters could be used after the statement closed.
+
+So, you might observe new exceptions while trying to use OutParameters after closing the Call they came from.
+See: https://github.com/jdbi/jdbi/issues/2592
+
+- Support nesting row types into Java `Optional` or vavr `Option` (reported by @martyn0ff, #2558)
+- finally give up on trying to guess SQL script parsing and add a switch to control whether to strip trailing semicolons or not. Another attempt to
+  fix SQL script parsing is (reported by @IrinaTerlizhenko, #2554).
+- add a new `integration-test` module for tests that require different parts of the code base. Should be used to write test cases for issue investigations.
+- support `null` as a value for binding bean, method, field and pojo objects (Suggested by @xak2000 in #2562)
+- Add testcontainers support for MS SQLServer
+- support returning a `ResultSet` from `Call` statements for databases that do not support cursor parameters. (suggested in #2557 by @metaforte and @0x1F528 in #2546)
+- support `int`, `long`, `short`, `double` and `float` return values from out parameters directly.
+
+# 3.42.0
+
+- Add Spring Jdbi repositories with `@EnableJdbiRepositories`, thanks @xfredk (#2528, #2544)
+- Support Kotlin coroutine scope. (#2524) - Suggested by @anderssv on the mailing list
 - Move from Kotlin 1.5 to 1.6 as 1.5 is deprecated and will be removed.
 - Add support for Function arguments, similar to Consumer arguments, to SQL objects (#2326)
 - Fix kotlin deprecation warnings (#2511) - Thanks @lwach-allegro for contributing a PR
 - lexer fixes (#2520), this should fix all problems with identifier names (fixes #2481, #2499 and #2510)
 - correctness fix for Handle creation (#2541)
-
+- Fix Vavr argument usage in SqlObjects (reported by @diversit, #2529)
+- Fix MySQL Script parsing (reported by @IrinaTerlizhenko, #2535)
+- Added a written [security policy](SECURITY.md).
 
 # 3.41.3
-- Fix regression introduced by #2481 where `-` at the end of named parameters get swallowed. (#2499, thanks @gokristian for reporting).
+
+  - Fix regression introduced by #2481 where `-` at the end of named parameters get swallowed. (#2499, thanks @gokristian for reporting).
   - un-deprecate the `otjPostgres` support in jdbi-testing as the project shipped 1.02 with JPMS module name support.
   - doc updates (#2496, thanks @hpoettker)
   - upgrade lombok version for testing with Java 21 (#2495)

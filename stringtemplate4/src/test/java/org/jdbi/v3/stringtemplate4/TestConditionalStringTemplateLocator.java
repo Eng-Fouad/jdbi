@@ -53,6 +53,18 @@ public class TestConditionalStringTemplateLocator {
     }
 
     @Test
+    public void testLocatedWithDifferentNameFindAndSortByName() {
+        List<Integer> ids = h2Extension.getSharedHandle().attach(Dao.class).findLocatedWithDifferentName(true, "name");
+        assertThat(ids).containsExactly(3, 2, 1);
+    }
+
+    @Test
+    public void testLocatedWithDifferentNameFindWithoutSorting() {
+        List<Integer> ids = h2Extension.getSharedHandle().attach(Dao.class).findLocatedWithDifferentName(false, "");
+        assertThat(ids).containsExactly(1, 2, 3);
+    }
+
+    @Test
     public void testInlineFindAndSortByName() {
         List<Integer> ids = h2Extension.getSharedHandle().attach(Dao.class).findInline(true, "name");
         assertThat(ids).containsExactly(3, 2, 1);
@@ -68,6 +80,10 @@ public class TestConditionalStringTemplateLocator {
         @SqlQuery
         @UseStringTemplateSqlLocator
         List<Integer> findLocated(@Define("sort") boolean sort, @Define("sortBy") String sortBy);
+
+        @SqlQuery("findLocated")
+        @UseStringTemplateSqlLocator
+        List<Integer> findLocatedWithDifferentName(@Define("sort") boolean sort, @Define("sortBy") String sortBy);
 
         @SqlQuery("select id from something order by <if(sort)> <sortBy>, <endif> id")
         @UseStringTemplateEngine

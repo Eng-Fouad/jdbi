@@ -22,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Tag("slow")
 @Testcontainers
-@EnabledOnOs(architectures = {"x86_64"})
+@EnabledOnOs(architectures = {"x86_64", "amd64"})
 class OracleXeJdbiTestContainersExtensionTest extends AbstractJdbiTestcontainersExtensionTest {
 
     @Container

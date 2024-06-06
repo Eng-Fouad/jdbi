@@ -16,6 +16,7 @@ package org.jdbi.v3.core.transaction;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.jdbi.v3.core.Handle;
@@ -28,6 +29,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.AdditionalAnswers;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -115,12 +118,10 @@ public class TestTransactions {
             h.commit();
         });
 
-        List<Integer> result = h.createQuery("SELECT count(1) from something")
+        int result = h.createQuery("SELECT count(1) from something")
             .mapTo(Integer.class)
-            .list();
-        assertThat(result)
-            .hasSize(1)
-            .containsExactly(1);
+            .one();
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -205,6 +206,27 @@ public class TestTransactions {
             .isOfAnyClassIn(Error.class)
             .hasMessage("boom");
         assertThat(h.isInTransaction()).isFalse();
+    }
+
+    @Test
+    public void commitThrowsDoesntCommit() throws SQLException {
+        h.execute("create table commitTable (id int primary key)");
+
+        var forwardAnswer = AdditionalAnswers.delegatesTo(h.getConnection());
+        var c = Mockito.mock(Connection.class, Mockito.withSettings()
+                .defaultAnswer(forwardAnswer));
+
+        var jdbi = Jdbi.create(c);
+
+        var expectedExn = new SQLException("woof");
+        Mockito.doThrow(expectedExn).when(c).commit();
+        assertThatThrownBy(() -> jdbi.useTransaction(txn -> txn.execute("insert into commitTable(id) values (1)")))
+            .hasCause(expectedExn);
+
+        assertThat(h.createQuery("select count(1) from commitTable")
+                .mapTo(int.class)
+                .one())
+            .isZero();
     }
 
     static class BoomEngine implements TemplateEngine {

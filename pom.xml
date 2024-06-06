@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.jdbi</groupId>
         <artifactId>jdbi3-build-parent</artifactId>
-        <version>3.42.0-SNAPSHOT</version>
+        <version>3.45.2-SNAPSHOT</version>
         <relativePath>internal/build</relativePath>
     </parent>
 
@@ -56,7 +56,7 @@
         <module>kotlin-sqlobject</module>
         <module>kotlin</module>
         <module>moshi</module>
-        <module>mysql</module>
+        <module>oracle12</module>
         <module>postgis</module>
         <module>postgres</module>
         <module>spring5</module>
@@ -67,13 +67,19 @@
         <module>testing</module>
         <module>vavr</module>
 
+        <!-- we have lots of bug reports that use different parts of the
+             Jdbi stack and it becomes difficult to write tests that fit into
+             very specific places. The e2e test module allows pulling in
+             every module listed above as needed.
+        -->
+        <module>e2e</module>
+
         <!-- support pieces, examples, benchmark, tests etc. -->
         <!-- none of those ship actual end-user code -->
         <module>benchmark</module>
         <module>docs</module>
         <module>examples</module>
         <module>noparameters</module>
-        <module>lombok</module>
     </modules>
 
     <scm>
@@ -94,16 +100,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <profiles>
-        <profile>
-            <id>java17</id>
-            <activation>
-                <jdk>[17,)</jdk>
-            </activation>
-            <modules>
-                <module>java17</module>
-            </modules>
-        </profile>
-    </profiles>
 </project>

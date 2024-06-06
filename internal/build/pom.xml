@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.jdbi.internal</groupId>
         <artifactId>jdbi3-root</artifactId>
-        <version>3.42.0-SNAPSHOT</version>
+        <version>3.45.2-SNAPSHOT</version>
         <relativePath>../root</relativePath>
     </parent>
 
@@ -69,24 +69,24 @@
         <basepom.test.fork-count>4</basepom.test.fork-count>
         <basepom.test.timeout>240</basepom.test.timeout>
         <dep.antlr.version>4.13.1</dep.antlr.version>
-        <dep.asciidoctorj-diagram.version>2.2.13</dep.asciidoctorj-diagram.version>
+        <dep.asciidoctorj-diagram.version>2.2.14</dep.asciidoctorj-diagram.version>
         <dep.asciidoctorj.version>2.5.10</dep.asciidoctorj.version>
-        <dep.assertj.version>3.24.2</dep.assertj.version>
+        <dep.assertj.version>3.25.1</dep.assertj.version>
         <dep.caffeine.version>3.1.8</dep.caffeine.version>
-        <dep.checkerframework.version>3.39.0</dep.checkerframework.version>
-        <dep.commons-compress.version>1.24.0</dep.commons-compress.version>
-        <dep.commons-lang.version>3.13.0</dep.commons-lang.version>
-        <dep.commons-text.version>1.10.0</dep.commons-text.version>
-        <!-- derby 10.16 is JDK 17 only, keep it on 10.15 for now -->
-        <dep.derby.version>10.15.2.0</dep.derby.version>
-        <dep.detekt.version>1.23.1</dep.detekt.version>
-        <dep.errorprone.version>2.23.0</dep.errorprone.version>
+        <dep.checkerframework.version>3.42.0</dep.checkerframework.version>
+        <dep.commons-compress.version>1.25.0</dep.commons-compress.version>
+        <dep.commons-lang.version>3.14.0</dep.commons-lang.version>
+        <dep.commons-text.version>1.11.0</dep.commons-text.version>
+        <!-- derby 10.17 is JDK 21 only, keep it on 10.16 for now -->
+        <dep.derby.version>10.16.1.1</dep.derby.version>
+        <dep.detekt.version>1.23.4</dep.detekt.version>
+        <dep.errorprone.version>2.24.0</dep.errorprone.version>
         <dep.flyway.version>9.22.3</dep.flyway.version>
         <dep.freebuilder.version>2.8.0</dep.freebuilder.version>
         <dep.freemarker.version>2.3.32</dep.freemarker.version>
         <dep.gson-java8-datatype.version>1.1.0</dep.gson-java8-datatype.version>
         <dep.gson.version>2.10.1</dep.gson.version>
-        <dep.guava.version>32.1.3-jre</dep.guava.version>
+        <dep.guava.version>33.0.0-jre</dep.guava.version>
         <dep.guice.version>5.1.0</dep.guice.version>
         <dep.h2.version>2.2.224</dep.h2.version>
         <dep.hikari-cp.version>5.1.0</dep.hikari-cp.version>
@@ -96,43 +96,54 @@
         <dep.jakarta-annotation-api.version>2.1.1</dep.jakarta-annotation-api.version>
         <dep.jakarta-inject-api.version>2.0.1.MR</dep.jakarta-inject-api.version>
         <dep.javax-inject.version>1</dep.javax-inject.version>
-        <dep.jdbi-policy.version>3.42.0-SNAPSHOT</dep.jdbi-policy.version>
-        <dep.jetbrainsAnnotations.version>24.0.1</dep.jetbrainsAnnotations.version>
+        <dep.jdbi-policy.version>3.45.2-SNAPSHOT</dep.jdbi-policy.version>
+        <dep.jetbrainsAnnotations.version>24.1.0</dep.jetbrainsAnnotations.version>
         <dep.joda-time.version>2.12.5</dep.joda-time.version>
         <dep.jts.version>1.19.0</dep.jts.version>
         <dep.junit5.version>5.10.1</dep.junit5.version>
         <dep.kotlin.version>1.6.21</dep.kotlin.version>
+        <dep.kotlinx-coroutines.version>1.6.4</dep.kotlinx-coroutines.version>
         <dep.lombok.version>1.18.30</dep.lombok.version>
-        <dep.mockito.version>5.7.0</dep.mockito.version>
+        <dep.mockito.version>5.8.0</dep.mockito.version>
         <dep.moshi.version>1.15.0</dep.moshi.version>
-        <dep.mysql.version>8.1.0</dep.mysql.version>
+        <dep.mssql.version>12.4.2.jre11</dep.mssql.version>
+        <dep.mysql.version>8.2.0</dep.mysql.version>
+        <dep.oracle-xe.version>23.3.0.23.09</dep.oracle-xe.version>
         <dep.otj-pg-embedded.version>1.0.2</dep.otj-pg-embedded.version>
         <dep.pg-embedded.version>5.1.0</dep.pg-embedded.version>
         <dep.plugin.asciidoctor.version>2.2.4</dep.plugin.asciidoctor.version>
-        <dep.plugin.detekt.version>1.23.1</dep.plugin.detekt.version>
+        <dep.plugin.cyclonedx.version>2.7.11</dep.plugin.cyclonedx.version>
+        <dep.plugin.detekt.version>1.23.4</dep.plugin.detekt.version>
         <dep.plugin.dokka.version>1.9.0</dep.plugin.dokka.version>
         <dep.plugin.flatten.version>1.5.0</dep.plugin.flatten.version>
-        <dep.plugin.inline.version>1.3.0</dep.plugin.inline.version>
-        <dep.plugin.javadoc.version>3.6.0</dep.plugin.javadoc.version>
-        <dep.plugin.kotlin.version>1.9.10</dep.plugin.kotlin.version>
+        <dep.plugin.inline.version>1.4.0</dep.plugin.inline.version>
+        <dep.plugin.japicmp.version>0.18.3</dep.plugin.japicmp.version>
+        <dep.plugin.kotlin.version>1.9.22</dep.plugin.kotlin.version>
         <dep.plugin.ktlint.version>2.0.0</dep.plugin.ktlint.version>
         <dep.plugin.native.version>0.9.28</dep.plugin.native.version>
         <dep.plugin.sortpom.version>3.3.0</dep.plugin.sortpom.version>
-        <dep.postgresql.version>42.6.0</dep.postgresql.version>
+        <dep.postgresql.version>42.7.2</dep.postgresql.version>
         <dep.slf4j.version>1.7.36</dep.slf4j.version>
-        <dep.spring.version>5.3.30</dep.spring.version>
-        <dep.sqlite.version>3.43.2.1</dep.sqlite.version>
+        <dep.spring.version>5.3.31</dep.spring.version>
+        <dep.sqlite.version>3.44.1.0</dep.sqlite.version>
         <dep.stringtemplate4.version>4.3.4</dep.stringtemplate4.version>
-        <dep.testcontainers.version>1.19.1</dep.testcontainers.version>
+        <dep.testcontainers.version>1.19.4</dep.testcontainers.version>
         <dep.vavr.version>0.9.3</dep.vavr.version>
         <jdbi.check.fail-detekt>${jdbi.check.fail-kotlin}</jdbi.check.fail-detekt>
+        <jdbi.check.fail-japicmp>${basepom.check.fail-extended}</jdbi.check.fail-japicmp>
         <jdbi.check.fail-kotlin>${basepom.check.fail-extended}</jdbi.check.fail-kotlin>
         <jdbi.check.fail-ktlint>${jdbi.check.fail-kotlin}</jdbi.check.fail-ktlint>
         <jdbi.check.skip-detekt>${jdbi.check.skip-kotlin}</jdbi.check.skip-detekt>
+        <jdbi.check.skip-japicmp>${basepom.check.skip-extended}</jdbi.check.skip-japicmp>
         <jdbi.check.skip-kotlin>${basepom.check.skip-extended}</jdbi.check.skip-kotlin>
         <jdbi.check.skip-ktlint>${jdbi.check.skip-kotlin}</jdbi.check.skip-ktlint>
+        <jdbi.check.skip-sbom>${jdbi.check.skip-extended}</jdbi.check.skip-sbom>
         <jdbi.check.skip-sortpom>${basepom.check.skip-basic}</jdbi.check.skip-sortpom>
+        <jdbi.test.language>en</jdbi.test.language>
+        <jdbi.test.mysql-version>mysql:latest</jdbi.test.mysql-version>
         <jdbi.test.pg-version>15</jdbi.test.pg-version>
+        <jdbi.test.region>US</jdbi.test.region>
+        <jdbi.test.timezone>UTC</jdbi.test.timezone>
         <kotlin.compiler.apiVersion>1.6</kotlin.compiler.apiVersion>
         <kotlin.compiler.jvmTarget>${project.build.targetJdk}</kotlin.compiler.jvmTarget>
         <kotlin.compiler.languageVersion>1.6</kotlin.compiler.languageVersion>
@@ -169,7 +180,7 @@
             <dependency>
                 <groupId>io.leangen.geantyref</groupId>
                 <artifactId>geantyref</artifactId>
-                <version>1.3.14</version>
+                <version>1.3.15</version>
             </dependency>
 
             <dependency>
@@ -305,6 +316,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.oracle.database.jdbc</groupId>
+                <artifactId>ojdbc8</artifactId>
+                <version>${dep.oracle-xe.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.derby</groupId>
                 <artifactId>derby</artifactId>
                 <version>${dep.derby.version}</version>
@@ -314,6 +331,12 @@
                 <groupId>com.mysql</groupId>
                 <artifactId>mysql-connector-j</artifactId>
                 <version>${dep.mysql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${dep.mssql.version}</version>
             </dependency>
 
             <dependency>
@@ -372,6 +395,12 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${dep.mockito.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.bytebuddy</groupId>
+                        <artifactId>byte-buddy-agent</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -390,13 +419,6 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-guava</artifactId>
                 <version>${dep.assertj.version}</version>
-                <exclusions>
-                    <!-- exclusion is needed, otherwise the version checks on CI fail -->
-                    <exclusion>
-                        <groupId>com.google.guava</groupId>
-                        <artifactId>guava</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -408,6 +430,12 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
+                <version>${dep.kotlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib-jdk8</artifactId>
                 <version>${dep.kotlin.version}</version>
             </dependency>
 
@@ -433,6 +461,12 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-test-junit5</artifactId>
                 <version>${dep.kotlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-coroutines-core-jvm</artifactId>
+                <version>${dep.kotlinx-coroutines.version}</version>
             </dependency>
 
             <dependency>
@@ -499,13 +533,6 @@
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
                 <version>${dep.hikari-cp.version}</version>
-                <exclusions>
-                    <!-- excluded because it asks for 2.0.0 -->
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -817,6 +844,56 @@
                         <hideClasses>true</hideClasses>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>com.github.siom79.japicmp</groupId>
+                    <artifactId>japicmp-maven-plugin</artifactId>
+                    <version>${dep.plugin.japicmp.version}</version>
+                    <configuration>
+                        <skip>${jdbi.check.skip-japicmp}</skip>
+                        <parameter>
+                            <onlyModified>true</onlyModified>
+                            <skipPomModules>true</skipPomModules>
+                            <ignoreNonResolvableArtifacts>true</ignoreNonResolvableArtifacts>
+                            <breakBuildBasedOnSemanticVersioning>${jdbi.check.fail-japicmp}</breakBuildBasedOnSemanticVersioning>
+
+                            <excludes>
+                                <exclude>*.internal.*</exclude>
+                                <exclude>@org.jdbi.v3.meta.Alpha</exclude>
+                                <exclude>@org.jdbi.v3.meta.Beta</exclude>
+                            </excludes>
+                        </parameter>
+
+                        <oldVersion>
+                            <dependency>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <version>${jdbi.build.previous-version}</version>
+                                <type>jar</type>
+                            </dependency>
+                        </oldVersion>
+                        <newVersion>
+                            <file>
+                                <path>${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}</path>
+                            </file>
+                        </newVersion>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.cyclonedx</groupId>
+                    <artifactId>cyclonedx-maven-plugin</artifactId>
+                    <version>${dep.plugin.cyclonedx.version}</version>
+                    <configuration>
+                        <skip>${jdbi.check.skip-sbom}</skip>
+                        <includeTestScope>false</includeTestScope>
+                        <includeLicenseText>false</includeLicenseText>
+                        <outputReactorProjects>true</outputReactorProjects>
+                        <outputFormat>all</outputFormat>
+                        <outputName>bom</outputName>
+                    </configuration>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -825,8 +902,12 @@
                         <groups />
                         <!-- junit 4 and 5 -->
                         <excludedGroups>slow,org.jdbi.v3.testing.SlowTests</excludedGroups>
-                        <systemPropertyVariables combine.children="append">
+                        <systemPropertyVariables combine.children="override">
                             <pg-embedded.postgres-version>${jdbi.test.pg-version}</pg-embedded.postgres-version>
+                            <jdbi.test.mysql-version>${jdbi.test.mysql-version}</jdbi.test.mysql-version>
+                            <user.timezone>${jdbi.test.timezone}</user.timezone>
+                            <user.language>${jdbi.test.language}</user.language>
+                            <user.region>${jdbi.test.region}</user.region>
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>
@@ -873,8 +954,50 @@
                                     </excludes>
                                     <searchTransitive>false</searchTransitive>
                                 </bannedDependencies>
+
+                                <!--  we now require java 17 for building -->
+                                <requireJavaVersion>
+                                    <version>[17,)</version>
+                                </requireJavaVersion>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>property-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>japicmp</id>
+                        <goals>
+                            <goal>get</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <strings>
+                                <string>
+                                    <id>jdbi.build.previous-version</id>
+                                    <export>true</export>
+                                    <values>
+                                        <value>@{git.closest.tag.name}</value>
+                                    </values>
+                                    <regexp>^v(.*)$</regexp>
+                                </string>
+                            </strings>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.siom79.japicmp</groupId>
+                <artifactId>japicmp-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>cmp</goal>
+                        </goals>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -887,11 +1010,6 @@
             <activation>
                 <jdk>[21,)</jdk>
             </activation>
-            <properties>
-                <!-- see https://github.com/mockito/mockito/issues/3037 -->
-                <basepom.it.arguments>-XX:+EnableDynamicAgentLoading</basepom.it.arguments>
-                <basepom.test.arguments>-XX:+EnableDynamicAgentLoading</basepom.test.arguments>
-            </properties>
             <build>
                 <pluginManagement>
                     <plugins>
@@ -1071,6 +1189,7 @@
                                 </goals>
                                 <phase>generate-sources</phase>
                                 <configuration>
+                                    <skipAddSourceIfMissing>true</skipAddSourceIfMissing>
                                     <sources>
                                         <source>${project.basedir}/src/main/kotlin</source>
                                     </sources>
@@ -1083,6 +1202,7 @@
                                 </goals>
                                 <phase>generate-test-sources</phase>
                                 <configuration>
+                                    <skipAddSourceIfMissing>true</skipAddSourceIfMissing>
                                     <sources>
                                         <source>${project.basedir}/src/test/kotlin</source>
                                     </sources>
@@ -1095,6 +1215,11 @@
                         <groupId>org.jetbrains.kotlin</groupId>
                         <artifactId>kotlin-maven-plugin</artifactId>
                         <extensions>true</extensions>
+                        <configuration>
+                            <args>
+                                <arg>-opt-in=kotlin.RequiresOptIn</arg>
+                            </args>
+                        </configuration>
                     </plugin>
 
                     <plugin>
@@ -1140,10 +1265,12 @@
                 </plugins>
             </build>
         </profile>
+
         <profile>
             <id>jdbi-release</id>
             <properties>
                 <basepom.check.skip-all>true</basepom.check.skip-all>
+                <basepom.check.skip-enforcer>false</basepom.check.skip-enforcer>
             </properties>
 
             <build>
@@ -1153,18 +1280,31 @@
                         <artifactId>maven-enforcer-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>enforce-java17</id>
+                                <id>enforce-java21</id>
                                 <goals>
                                     <goal>enforce</goal>
                                 </goals>
                                 <configuration>
                                     <rules>
-                                        <!-- releases must be built with Java 17 or better -->
+                                        <!-- releases must be built with Java 21 or better -->
                                         <requireJavaVersion>
-                                            <version>[17,)</version>
+                                            <version>[21,)</version>
                                         </requireJavaVersion>
                                     </rules>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.cyclonedx</groupId>
+                        <artifactId>cyclonedx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>cyclonedx</id>
+                                <goals>
+                                    <goal>makeBom</goal>
+                                </goals>
+                                <phase>package</phase>
                             </execution>
                         </executions>
                     </plugin>

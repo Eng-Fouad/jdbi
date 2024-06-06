@@ -16,12 +16,16 @@ package org.jdbi.v3.core.mapper.reflect;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import jakarta.annotation.Nullable;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toUnmodifiableList;
 
 abstract class InstanceFactory<T> {
     private final Executable executable;
@@ -40,6 +44,12 @@ abstract class InstanceFactory<T> {
 
     Parameter[] getParameters() {
         return executable.getParameters();
+    }
+
+    List<Type> getTypes() {
+        return Arrays.stream(getParameters())
+            .map(Parameter::getParameterizedType)
+            .collect(toUnmodifiableList());
     }
 
     @Nullable

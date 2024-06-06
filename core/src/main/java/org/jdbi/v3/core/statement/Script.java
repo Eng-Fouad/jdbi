@@ -13,19 +13,22 @@
  */
 package org.jdbi.v3.core.statement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.internal.SqlScriptParser;
+import org.jdbi.v3.core.internal.SqlScriptParser.ScriptTokenHandler;
 
 /**
  * Represents a number of SQL statements delimited by semicolon which will be executed in order in a batch statement.
  */
 public class Script extends SqlStatement<Script> {
+    private final boolean requireSemicolon;
+
     public Script(Handle handle, CharSequence sql) {
         super(handle, sql);
+        this.requireSemicolon = handle.getConfig(SqlStatements.class).isScriptStatementsNeedSemicolon();
     }
 
     /**
@@ -35,6 +38,7 @@ public class Script extends SqlStatement<Script> {
      */
     public Script(Handle handle, String sql) {
         super(handle, sql);
+        this.requireSemicolon = handle.getConfig(SqlStatements.class).isScriptStatementsNeedSemicolon();
     }
 
     /**
@@ -64,25 +68,15 @@ public class Script extends SqlStatement<Script> {
      * @return the split statements
      */
     public List<String> getStatements() {
-        return splitToStatements(getConfig(SqlStatements.class).getTemplateEngine().render(getSql(), getContext()));
+        var templateEngine = getConfig(SqlStatements.class).getTemplateEngine();
+        return splitToStatements(templateEngine.render(getSql(), getContext()));
     }
 
     private List<String> splitToStatements(String script) {
-        final List<String> statements = new ArrayList<>();
-        String lastStatement = new SqlScriptParser((t, sb) -> {
-            addStatement(sb.toString(), statements);
-            sb.setLength(0);
-        }).parse(CharStreams.fromString(script));
-        addStatement(lastStatement, statements);
+        ScriptTokenHandler scriptTokenHandler = new ScriptTokenHandler(this.requireSemicolon);
+        String lastStatement = new SqlScriptParser(scriptTokenHandler)
+            .parse(CharStreams.fromString(script));
 
-        return statements;
-    }
-
-    private void addStatement(String statement, List<String> statements) {
-        String trimmedStatement = statement.trim();
-        if (trimmedStatement.isEmpty()) {
-            return;
-        }
-        statements.add(trimmedStatement);
+        return scriptTokenHandler.addStatement(lastStatement);
     }
 }

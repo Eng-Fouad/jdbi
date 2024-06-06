@@ -15,7 +15,8 @@
 :docinfo: private
 
 :jdbidocs: ./apidocs/org/jdbi/v3
-:jdkdocs: https://docs.oracle.com/javase/8/docs/api
+:kotlindocs: ./apidocs-kotlin/jdbi3-kotlin/jdbi3-kotlin/org.jdbi.v3.
+:jdkdocs: https://docs.oracle.com/en/java/javase/11/docs/api
 :jakartadocs: https://jakarta.ee/specifications/platform/10/apidocs
 
 :projecthome: https://github.com/jdbi/jdbi
@@ -63,6 +64,12 @@ This is the documentation for the current development state of Jdbi. All informa
 
 === Release documentation
 
+* https://jdbi.org/releases/3.45.1[Release 3.45.1 - 2024-03-14^] - Mmmmm pie
+* https://jdbi.org/releases/3.45.0[Release 3.45.0 - 2024-02-17^]
+* https://jdbi.org/releases/3.44.1[Release 3.44.1 - 2024-02-08^]
+* https://jdbi.org/releases/3.44.0[Release 3.44.0 - 2024-01-31^]
+* https://jdbi.org/releases/3.43.0[Release 3.43.0 - 2024-01-02^]
+* https://jdbi.org/releases/3.42.0[Release 3.42.0 - 2023-11-29^]
 * https://jdbi.org/releases/3.41.3[Release 3.41.3 - 2023-10-02^]
 * https://jdbi.org/releases/3.41.2[Release 3.41.2 - 2023-09-21^]
 * https://jdbi.org/releases/3.41.1[Release 3.41.1 - 2023-09-08^]
@@ -122,14 +129,6 @@ endif::[]
 * https://groups.google.com/group/jdbi[Mailing list^]
 * https://stackoverflow.com/questions/tagged/jdbi[Stack Overflow^]
 
-
-=== Getting involved
-
-Jdbi uses https://github.com/jdbi/jdbi[GitHub^] as the central development hub. https://github.com/jdbi/jdbi/issues[Issues^], https://github.com/jdbi/jdbi/pulls[Pull Requests^] and https://github.com/jdbi/jdbi/discussions[Discussions^] all happen here.
-
-Please see our https://github.com/jdbi/jdbi/blob/master/CONTRIBUTING.md[Contribution guide^] for more information on how to contribute to Jdbi.
-
-
 === JDBI v2 (legacy version)
 
 [WARNING]
@@ -140,6 +139,17 @@ Please see our https://github.com/jdbi/jdbi/blob/master/CONTRIBUTING.md[Contribu
 [TIP]
 Already using Jdbi v2? See <<Upgrading from v2 to v3>>
 
+=== Getting involved
+
+Jdbi uses https://github.com/jdbi/jdbi[GitHub^] as the central development hub. https://github.com/jdbi/jdbi/issues[Issues^], https://github.com/jdbi/jdbi/pulls[Pull Requests^] and https://github.com/jdbi/jdbi/discussions[Discussions^] all happen here.
+
+Please see our https://github.com/jdbi/jdbi/blob/master/CONTRIBUTING.md[Contribution guide^] for more information on how to contribute to Jdbi.
+
+=== Acknowledgements and Funding
+
+* image:spotify_logo.svg[Spotify logo,30,30] https://engineering.atspotify.com/2023/10/announcing-the-recipients-of-the-2023-spotify-foss-fund/[Jdbi is a recipient of the Spotify FOSS 2023 Fund^]
+* image:tidelift_logo.png[Tidelift logo, 30, 30]https://tidelift.com/funding/github/maven/org.jdbi:jdbi3-core[Jdbi is supported by Tidelift^]
+
 
 == Using Jdbi in your projects
 
@@ -148,7 +158,7 @@ Already using Jdbi v2? See <<Upgrading from v2 to v3>>
 
 Jdbi is licensed under the commercial friendly https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0^] license.
 
-The core Jdbi module which offers programmatic access uses only https://slf4j.org/[slf4j^] and https://github.com/leangen/geantyref[geantryref^] as hard dependencies.
+The core Jdbi module which offers programmatic access uses only https://slf4j.org/[slf4j^] and https://github.com/leangen/geantyref[geantyref^] as hard dependencies.
 
 All Jdbi modules are available through https://search.maven.org[Maven Central^]. Jdbi also offers a BOM (Bill of materials) module for easy dependency management.
 
@@ -248,9 +258,6 @@ jdbi3-oracle12::
 jdbi3-postgis::
     Support for https://postgis.net/[PostGIS^] types.
 
-[NOTE]
-While Oracle support is considered part of Jdbi, the actual library is developed and shipped as a separate component for historic reasons.
-
 
 ===== SQL rendering
 
@@ -299,16 +306,6 @@ The following modules are maintained outside the main Jdbi tree:
 [%header, cols="<1, ^1, ^1, ^1, <3", stripe=none]
 |===
 | Module | Source | Javadoc | Site | Description
-| jdbi3-oracle12 | https://github.com/jdbi/jdbi3-oracle12/[Github^]
-ifndef::release[]
-| https://jdbi.org/modules/jdbi3-oracle12/apidocs/[Javadoc^]
-| https://jdbi.org/modules/jdbi3-oracle12/[Site^]
-endif::[]
-ifdef::release[]
-| https://jdbi.org/modules/jdbi3-oracle12/releases/{revnumber}/apidocs/[Javadoc^]
-| https://jdbi.org/modules/jdbi3-oracle12/releases/{revnumber}/[Site^]
-endif::[]
-| Support for Oracle 12 and beyond.
 | jdbi3-guava-cache | https://github.com/jdbi/jdbi3-guava-cache/[Github^]
 ifndef::release[]
 | https://jdbi.org/modules/jdbi3-guava-cache/apidocs/[Javadoc^]
@@ -477,7 +474,7 @@ See the <<SQL Objects, chapter on SQL objects>> for more details about the decla
 
 The link:{jdbidocs}/core/Jdbi.html[Jdbi^] class is the main entry point into the library.
 
-Each link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance maintains a set of configuration settings and wraps a JDBC link:{jdkdocs}/javax/sql/DataSource.html[DataSource^].
+Each link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance maintains a set of configuration settings and wraps a JDBC link:{jdkdocs}/java.sql/javax/sql/DataSource.html[DataSource^].
 
 link:{jdbidocs}/core/Jdbi.html[Jdbi^] instances are thread-safe and do not own any database resources.
 
@@ -502,7 +499,7 @@ Jdbi jdbi = Jdbi.create(ds);
 
 This allows for custom implementations of connection providers such as HA failover, proxy solutions etc.
 
-- from a single link:{jdkdocs}/java/sql/Connection.html[JDBC Connection^].
+- from a single link:{jdkdocs}/java.sql/java/sql/Connection.html[JDBC Connection^].
 
 Please note that there is no magic. Any Handle or operation will use this one connection provided. If the connection is thread-safe, then multiple threads accessing the database will work properly, if the connection object is not thread-safe, then Jdbi will not be able to do anything about it.
 
@@ -516,7 +513,7 @@ Jdbi does not provide connection pooling or other <<High Availability>> features
 
 === Handle
 
-A link:{jdbidocs}/core/Handle.html[Handle^] wraps an active link:{jdkdocs}/java/sql/Connection.html[database connection^].
+A link:{jdbidocs}/core/Handle.html[Handle^] wraps an active link:{jdkdocs}/java.sql/java/sql/Connection.html[database connection^].
 
 Handle instances are created by a link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance to provide a database connection e.g. for a single HTTP request or event callback). Handles are intended to be short-lived and must be closed to release the database connection and possible other resources.
 
@@ -546,8 +543,10 @@ Executing an operation using the link:{jdbidocs}/core/Jdbi.html#useHandle(org.jd
 include::{exampledir}/FiveMinuteTourTest.java[tags=useHandle]
 ----
 
-[TIP]
-You may notice the "consumer" vs "callback" naming pattern in a few  places in Jdbi. Callbacks return a value, and are coupled to `with-` methods. Consumers do not return a value, and are coupled to `use-` methods.
+You may notice the "consumer" vs "callback" naming pattern in a few  places in Jdbi. `with-` methods return a value and use objects named `-Callback`. `use-` methods do not return a value, and use objects named `-Consumer`. When referring to both type of objects, the term "callback" is used throughout the documentation.
+
+[NOTE]
+The <<Nesting Callbacks with managed Handles and Transactions>> chapter has more information about nesting callbacks with managed handle objects.
 
 
 ==== Managing the Handle lifecycle manually
@@ -560,7 +559,7 @@ The Java _try-with-resources_ construct can be used to manage the lifecycle of t
 include::{exampledir}/FiveMinuteTourTest.java[tags=openHandle]
 ----
 
-An unmanaged handle must be used when a stateful object should be passed to the calling code. Stateful objects are iterators and streams that do not collect data ahead of time in memory but provide a data stream from the database through the link:{jdkdocs}/java/sql/Connection.html[JDBC Connection^] to the calling code. Using a callback does not work here because the connection would be closed before the calling code can consume the data.
+An unmanaged handle must be used when a stateful object should be passed to the calling code. Stateful objects are iterators and streams that do not collect data ahead of time in memory but provide a data stream from the database through the link:{jdkdocs}/java.sql/java/sql/Connection.html[JDBC Connection^] to the calling code. Using a callback does not work here because the connection would be closed before the calling code can consume the data.
 
 [source,java,indent=0]
 ----
@@ -579,7 +578,8 @@ Any database operation within Jdbi uses a statement. Multiple types of statement
 * link:{jdbidocs}/core/statement/Update.html[Update^] - SQL statements that return no value such as `INSERT`, `UPDATE`, `DELETE` or a DDL operation. See link:{jdbidocs}/core/Handle.html#createUpdate(java.lang.CharSequence)[createUpdate^]
 * link:{jdbidocs}/core/statement/Batch.html[Batch^] - a set of operations that are executed as a batch. See link:{jdbidocs}/core/Handle.html#createBatch()[createBatch^]
 * link:{jdbidocs}/core/statement/Call.html[Call^] - execute a stored procedure. See link:{jdbidocs}/core/Handle.html#createCall(java.lang.CharSequence)[createCall^]
-* link:{jdbidocs}/core/statement/Script.html[Script^] - a SQL script containing multiple statements separated by `;` that is executed as a batch. See link:{jdbidocs}/core/Handle.html#createScript(java.lang.CharSequence)[createScript^]
+* link:{jdbidocs}/core/statement/Script.html[Script^] - a SQL script containing multiple statements separated by `;` that is executed as a batch. See also link:{jdbidocs}/core/Handle.html#createScript(java.lang.CharSequence)[createScript^]
+* link:{jdbidocs}/core/statement/Metadata.html[Metadata^] - SQL Metadata access.
 
 
 ==== Queries
@@ -607,7 +607,7 @@ String name = handle.select("SELECT name FROM users WHERE id = ?", 3)
 ----
 
 Use the link:{jdbidocs}/core/result/ResultIterable.html#findOne()[ResultIterable#findOne()^] method when you expect the result to contain zero or one row. Returns
-link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] if there are no rows, or one row that maps to `null` and throws  an exception if the result has multiple rows.
+link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] if there are no rows, or one row that maps to `null` and throws  an exception if the result has multiple rows.
 
 [source,java,indent=0]
 ----
@@ -627,7 +627,7 @@ String name = handle.select("SELECT name FROM users WHERE id = ?", 3)
 ----
 
 Use the link:{jdbidocs}/core/result/ResultIterable.html#findFirst()[ResultIterable#findFirst()^] method when the result may contain any number of rows. Returns
-link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] if there are no rows, or the first row maps to `null`.
+link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] if there are no rows, or the first row maps to `null`.
 
 [source,java,indent=0]
 ----
@@ -645,9 +645,9 @@ include::{exampledir}/TestCollections.java[tag=list]
 include::{exampledir}/TestCollections.java[tag=set]
 ----
 
-Use the link:{jdbidocs}/core/result/ResultIterable.html#list()[ResultIterable#list()^] and Use the link:{jdbidocs}/core/result/ResultIterable.html#set()[ResultIterable#set()^] methods use the default implementations from the collections framework.
+Use the link:{jdbidocs}/core/result/ResultIterable.html#list()[ResultIterable#list()^] and link:{jdbidocs}/core/result/ResultIterable.html#set()[ResultIterable#set()^] methods to use the default implementations from the collections framework.
 
-For more control over the set and list types, use the link:{jdbidocs}/core/result/ResultIterable.html#collectIntoList()[ResultIterable#collectIntoList()^] and link:{jdbidocs}/core/result/ResultIterable.html#collectIntoSet()[ResultIterable#collectIntoSet()^] methods which use the link:{jdbidocs}/core/collector/JdbiCollectors.html[JdbiCollectors^] configuration object to retrieve the collection types for link:{jdkdocs}/java/util/List.html[List^] and link:{jdkdocs}/java/util/Set.html[Set^]:
+For more control over the set and list types, use the link:{jdbidocs}/core/result/ResultIterable.html#collectIntoList()[ResultIterable#collectIntoList()^] and link:{jdbidocs}/core/result/ResultIterable.html#collectIntoSet()[ResultIterable#collectIntoSet()^] methods which use the link:{jdbidocs}/core/collector/JdbiCollectors.html[JdbiCollectors^] configuration object to retrieve the collection types for link:{jdkdocs}/java.base/java/util/List.html[List^] and link:{jdkdocs}/java.base/java/util/Set.html[Set^]:
 
 [source,java,indent=0]
 ----
@@ -672,7 +672,7 @@ include::{exampledir}/TestCollections.java[tag=collect-into-generic]
 
 
 For other collections, use link:{jdbidocs}/core/result/ResultIterable.html#collect(java.util.stream.Collector)[ResultIterable#collect()^] with a
-link:{jdkdocs}/java/util/stream/Collector.html[collector^] or link:{jdbidocs}/core/result/ResultIterable.html#toCollection(java.util.function.Supplier)[ResultIterable#toCollection()^] with a collection supplier:
+link:{jdkdocs}/java.base/java/util/stream/Collector.html[collector^] or link:{jdbidocs}/core/result/ResultIterable.html#toCollection(java.util.function.Supplier)[ResultIterable#toCollection()^] with a collection supplier:
 
 [source,java,indent=0]
 ----
@@ -681,7 +681,7 @@ include::{exampledir}/TestCollections.java[tag=collect]
 include::{exampledir}/TestCollections.java[tag=to-collection]
 ----
 
-The link:{jdbidocs}/core/result/ResultIterable.html#collectToMap(java.util.function.Function,java.util.function.Function)[ResultIterable#collectToMap()^] method allows collecting results directly into a link:{jdkdocs}/java/util/Map.html[Map^]:
+The link:{jdbidocs}/core/result/ResultIterable.html#collectToMap(java.util.function.Function,java.util.function.Function)[ResultIterable#collectToMap()^] method allows collecting results directly into a link:{jdkdocs}/java.base/java/util/Map.html[Map^]:
 
 [source,java,indent=0]
 ----
@@ -760,12 +760,12 @@ those counts are then returned in an `int[]` array.  In common cases all element
 
 Some database drivers might return special values in conditions where modification counts are not available.
 See the
-link:{jdkdocs}/java/sql/Statement.html#executeBatch--[executeBatch^] documentation for details.
+link:{jdkdocs}/java.sql/java/sql/Statement.html#executeBatch--[executeBatch^] documentation for details.
 
 
 ==== Prepared Batches
 
-A *PreparedBatch* sends one statement to the server with many argument sets.
+A link:{jdbidocs}/core/statement/PreparedBatch.html[PreparedBatch^] sends one statement to the server with many argument sets.
 The statement is executed repeatedly, once for each batch of arguments that is *add*-ed to it.
 
 The result is again a `int[]` of modified row count.
@@ -797,7 +797,7 @@ may be multiple failures to report, which could not be represented by the base
 Exception types of the day.
 
 So SQLException has a bespoke
-link:{jdkdocs}/java/sql/SQLException.html#getNextException--[getNextException^]
+link:{jdkdocs}/java.sql/java/sql/SQLException.html#getNextException--[getNextException^]
 chain to represent the causes of a batch failure. Unfortunately, by default
 most logging libraries do not print these exceptions out, pushing their
 handling into your code. It is very common to forget to handle this situation
@@ -818,9 +818,21 @@ Suppressed: org.postgresql.util.PSQLException: ERROR: duplicate key value violat
 
 ==== Stored Procedure Calls
 
-A *Call* invokes a database stored procedure.
+A *Call* invokes a database stored procedure. Stored procedures execute on the database and take input and output parameters.
 
-Let's assume an existing stored procedure as an example:
+Most databases solely support input and output parameters. Input parameters can be mapped using the standard Jdbi
+mechanisms for parameters, while output values are returned using link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] objects.
+
+Some databases do not support all SQL types as out parameters but use a mechanism similar to a query and
+return a link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] object.
+
+===== Using OutParameters to access database return values
+
+OutParameters hold the output parameters of a stored procedure Call.
+Since they can hold result sets and cursors, OutParameters must be consumed before
+closing the Call that it came from.
+
+This is an example for a PostgreSQL stored procedure. PostgreSQL (and most other databases) stored procedures use `IN` parameters to pass values into the procedure and `OUT` parameters to return values.
 
 [source,sql]
 ----
@@ -847,25 +859,70 @@ include::{exampledir}/CallTest.java[tags=invokeProcedure]
 
 Invoking the stored procedure returns an
 link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object, which
-contains the value(s) returned from the stored procedure call.
-
-Now we can extract the result(s) from link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^]:
+contains the value(s) returned from the stored procedure call and the results can
+be extracted from it:
 
 [source,java,indent=0]
 ----
 include::{exampledir}/CallTest.java[tags=getOutParameters]
 ----
 
-It is possible to return open cursors as a result-like object by declaring it
-as `Types.REF_CURSOR` and then inspecting it via `OutParameters.getRowSet()`.
-Usually this must be done in a transaction, and the results must be consumed
-before closing the statement by processing it using the `Call.invoke(Consumer)`
-or `Call.invoke(Function)` callback style.
+It is possible to access open cursors as a result set objects by declaring them
+as link:{jdkdocs}/java.sql/java/sql/Types.html#REF_CURSOR[Types.REF_CURSOR^] and then using link:{jdbidocs}/core/statement/OutParameters.html#getRowSet(int)[OutParameters#getRowSet()^] to access them as link:{jdbidocs}/core/result/ResultBearing.html[ResultBearing^] objects. This requires  support from the JDBC driver for the database and is not supported by all databases. Please consult the documentation for the database driver first before filing a bug.
+
+Results must be consumed before closing the statement because closing it will also close all resources and result sets associated with it.
+
+The link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object can either be returned from the Call using link:{jdbidocs}/core/statement/Call.html#invoke()[Call#invoke()^] or it can be processed as
+a consumer argument with link:{jdbidocs}/core/statement/Call.html#invoke(java.util.function.Consumer)[Call#invoke(Consumer)^] or a function argument with
+link:{jdbidocs}/core/statement/Call.html#invoke(java.util.function.Function)[Call#invoke(Function)^].
 
 [WARNING]
 Due to design constraints within JDBC, the parameter data types available
-through link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] is limited to those types supported directly by JDBC.
-This cannot be expanded through e.g. mapper registration.
+through link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] are limited to those types supported directly by JDBC. This cannot be expanded through e.g. mapper registration.
+
+
+===== Using a ResultSet for procedure output values
+
+Some database drivers might return a link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] containing the results of a stored procedure. This result set is available as a link:{jdbidocs}/core/result/ResultBearing.html[ResultBearing^] object by calling link:{jdbidocs}/core/statement/OutParameters.html#getResultSet()[OutParameters#getResultSet()^].
+
+[NOTE]
+While returning a result set from a procedure call is supported in the JDBC standard, it is pretty uncommon and only very few databases support it. The most prominent one is the JDBC driver for MS SQLServer. Most databases will either return null or an empty result set; in this case the link:{jdbidocs}/core/statement/OutParameters.html#getResultSet()[OutParameters#getResultSet()^] will return an empty link:{jdbidocs}/core/result/ResultBearing.html[ResultBearing^] object.
+
+This is the equivalent procedure from above for MS SQLServer using a result set:
+
+[source,sql]
+----
+CREATE PROCEDURE mssql_add
+    @a INT,
+    @b INT
+AS
+BEGIN
+  SELECT @a + @b;
+END
+----
+
+To access data from this procedure, it retrieves the result set using link:{jdbidocs}/core/statement/OutParameters.html#getResultSet()[OutParameters#getResultSet()^]:
+
+[source, java]
+----
+try (Call call = h.createCall("{call mssql_add(:a, :b)}")) {
+    call.bind("a", 13)
+        .bind("b", 9);
+    OutParameters output = call.invoke();
+
+    int sum = output.getResultSet() // <1>
+        .mapTo(Integer.class) // <2>
+        .one();
+
+    assertThat(sum).isEqualTo(22);
+}
+----
+<1> Retrieve the output from the procedure using a result set.
+<2> Map the first column in the result set to an integer value.
+
+It may not be necessary to use a result set if the JDBC driver also supports OUT parameters. However, e.g. MS SQL Server does not allow link:{jdkdocs}/java.sql/java/sql/Types.html#REF_CURSOR[Types.REF_CURSOR^] as OUT parameters and requires the use of a result set.
+
+It is possible to mix OUT parameters and a result set. In this case, the result set should be consumed before accessing any out parameters as the database driver might invalidate the result set when accessing out parameters.
 
 
 ==== Scripts
@@ -876,6 +933,22 @@ can be executed in a single *Batch* or individually.
 [source,java,indent=0]
 ----
 include::{exampledir}/StatementsTest.java[tags=script]
+----
+
+[NOTE]
+Script parsing uses a generic SQL parser and creates separate statements. Depending on the database and its driver, there are small differences in how the script needs to be parsed. The most notorious issue is whether the parsed statements need to retain a trailing semicolon or not. Some databases (e.g. Oracle) require the trailing semicolon while others (e.g. MySQL) actually report a syntax error if it is present. As we can not please everyone equally, there is the link:{jdbidocs}/core/statement/SqlStatements.html#setScriptStatementsNeedSemicolon(boolean)[setScriptStatementsNeedSemicolon()^] switch, which controls this behavior. By default, Jdbi *retains the semicolon if present*.
+
+
+Turning off the trailing semicolons for databases that have problems with it:
+[source,java,indent=0]
+----
+jdbi.withHandle(h -> {
+    // turn off trailing semicolons for script statements
+    h.getConfig(SqlStatements.class).setScriptStatementsNeedSemicolon(false);
+    return h.createScript(ClasspathSqlLocator.removingComments()
+            .getResource("scripts/mysql-script.sql"))
+        .execute();
+    });
 ----
 
 
@@ -891,7 +964,7 @@ String url = h.queryMetadata(DatabaseMetaData::getURL);
 boolean supportsTransactions = h.queryMetadata(DatabaseMetaData::supportsTransactions);
 ----
 
-Many methods on the link:{jdkdocs}/java/sql/DatabaseMetaData.html[DatabaseMetaData^] return a link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^]. These can be used with the `queryMetadata` method that returns a <<ResultBearing>>.
+Many methods on the link:{jdkdocs}/java.sql/java/sql/DatabaseMetaData.html[DatabaseMetaData^] return a link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^]. These can be used with the `queryMetadata` method that returns a <<ResultBearing>>.
 
 All Jdbi <<Row Mappers>> and <<Column Mappers>> are available to map these results:
 
@@ -909,8 +982,8 @@ List<String> catalogNames = h.queryMetadata(DatabaseMetaData::getCatalogs)
 
 Calling Jdbc and by extension Jdbi is inherently a blocking operation.
 In asynchronous applications
-(where results are returned as a link:{jdkdocs}/java/util/concurrent/CompletionStage.html[CompletionStage^]
-or a link:{jdkdocs}/java/util/concurrent/CompletableFuture.html[CompletableFuture^])
+(where results are returned as a link:{jdkdocs}/java.base/java/util/concurrent/CompletionStage.html[CompletionStage^]
+or a link:{jdkdocs}/java.base/java/util/concurrent/CompletableFuture.html[CompletableFuture^])
 it is very important never to block on threads that the caller doesn't control. For this, there is the
 link:{jdbidocs}/core/async/JdbiExecutor.html[JdbiExcecutor^] class that wraps around a link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance
 and makes sure calls are made on a specific thread pool.
@@ -959,7 +1032,7 @@ include::{exampledir}/AsyncTest.java[tags=failReturningIterator]
 
 == Resource Management
 
-JDBC operations involve stateful objects: link:{jdkdocs}/java/sql/Connection.html[Connection^], link:{jdkdocs}/java/sql/PreparedStatement.html[PreparedStatement^] and link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] are the most common ones. Jdbi understands the lifecycle of these objects and can often fully manage them.
+JDBC operations involve stateful objects: link:{jdkdocs}/java.sql/java/sql/Connection.html[Connection^], link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] and link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] are the most common ones. Jdbi understands the lifecycle of these objects and can often fully manage them.
 
 Within Jdbi, two types of stateful objects exist that need to be managed: <<Handle>> objects and all <<Statement types, Statement objects>>.
 
@@ -1057,7 +1130,7 @@ All statement types may use resources that need to be released. There are multip
 
 ==== Explicit statement resource management
 
-All <<Statement types, SQL statement types>> implement the link:{jdkdocs}/java/lang/AutoCloseable.html[AutoCloseable^] interface and can be used in a _try-with-resources_ block. This is the recommended way to manually manage statements, and it ensures that all resources are properly released when they are no longer needed. The _try-with-resources_ pattern ensures that the link:{jdkdocs}/java/lang/AutoCloseable.html#close--[close()^] method on the SQL statement is called which releases the resources.
+All <<Statement types, SQL statement types>> implement the link:{jdkdocs}/java.base/java/lang/AutoCloseable.html[AutoCloseable^] interface and can be used in a _try-with-resources_ block. This is the recommended way to manually manage statements, and it ensures that all resources are properly released when they are no longer needed. The _try-with-resources_ pattern ensures that the link:{jdkdocs}/java.base/java/lang/AutoCloseable.html#close--[close()^] method on the SQL statement is called which releases the resources.
 
 Create, execute and release 100,000 update statements:
 
@@ -1121,7 +1194,7 @@ try (Handle handle = jdbi.open()) {
 As long as no exception is thrown, this example above will release all resources allocated by the link:{jdbidocs}/core/statement/Query.html[Query^] object, even though it is not managed.
 
 [WARNING]
-This code that works well as long as nothing goes awry! If an unmanaged SQL statement operation fails halfway through (e.g. with a connection timeout or a database problem), then *resources will not be cleanup up by Jdbi*. This may lead to resource leaks that are difficult to find or reproduce. Some JDBC drivers will also clean up resources that they hand out (such as link:{jdkdocs}/java/sql/PreparedStatement.html[JDBC statements ^] or link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] objects) when a connection is closed. In these situations, resources may be released eventually when the handle is closed (which also closes the JDBC connection). This is highly driver dependent and should not be relied upon.
+This code that works well as long as nothing goes awry! If an unmanaged SQL statement operation fails halfway through (e.g. with a connection timeout or a database problem), then *resources will not be cleanup up by Jdbi*. This may lead to resource leaks that are difficult to find or reproduce. Some JDBC drivers will also clean up resources that they hand out (such as link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[JDBC statements ^] or link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] objects) when a connection is closed. In these situations, resources may be released eventually when the handle is closed (which also closes the JDBC connection). This is highly driver dependent and should not be relied upon.
 
 
 [#resources-with-streams-iterators]
@@ -1134,9 +1207,9 @@ Just using an iterator or stream may not be enough to actually stream data witho
 
 For these use cases, Jdbi offers the link:{jdbidocs}/core/result/ResultIterable.html#stream()[stream()^] and link:{jdbidocs}/core/result/ResultIterable.html#iterator()[iterator()^] methods, which return lazy-loading objects that return data from the database row by row. These objects are stateful and must be managed.
 
-The link:{jdkdocs}/java/util/stream/Stream.html[stream^] and link:{jdkdocs}/java/util/Iterator.html[iterator^] objects provided by Jdbi will release all their resources when the data stream from the database is exhausted or when an instance is explicitly closed. Standard Java link:{jdkdocs}/java/util/stream/Stream.html[Streams^] support the _try-with-resources_ pattern directly; the link:{jdbidocs}/core/result/ResultIterable.html#iterator()[iterator()^] method returns a link:{jdbidocs}/core/result/ResultIterator.html[ResultIterator^] object which extends link:{jdkdocs}/java/lang/AutoCloseable.html[AutoCloseable^].
+The link:{jdkdocs}/java.base/java/util/stream/Stream.html[stream^] and link:{jdkdocs}/java.base/java/util/Iterator.html[iterator^] objects provided by Jdbi will release all their resources when the data stream from the database is exhausted or when an instance is explicitly closed. Standard Java link:{jdkdocs}/java.base/java/util/stream/Stream.html[Streams^] support the _try-with-resources_ pattern directly; the link:{jdbidocs}/core/result/ResultIterable.html#iterator()[iterator()^] method returns a link:{jdbidocs}/core/result/ResultIterator.html[ResultIterator^] object which extends link:{jdkdocs}/java.base/java/lang/AutoCloseable.html[AutoCloseable^].
 
-When using a stream or iterator, *either* the statement *or* the result object *must* be managed. Calling link:{jdkdocs}/java/lang/AutoCloseable.html#close--[close()^] on either the statement or the stream/iterator will terminate the operation and release all resources.
+When using a stream or iterator, *either* the statement *or* the result object *must* be managed. Calling link:{jdkdocs}/java.base/java/lang/AutoCloseable.html#close--[close()^] on either the statement or the stream/iterator will terminate the operation and release all resources.
 
 [source,java,indent=0]
 ----
@@ -1207,6 +1280,70 @@ jdbi.useHandle(handle -> {
             // consume the iterator contents
         });
     });
+----
+
+
+==== OutParameters return values for stored procedures
+
+Interacting with stored procedures generally involves passing values back and forth from database. Jdbi uses link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] objects which are returned from the various invoke methods of the link:{jdbidocs}/core/statement/Call.html[Call^] object.
+
+When using link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] with stored procedures, the link:{jdbidocs}/core/statement/Call.html[Call^] statement *must* be managed. Calling link:{jdkdocs}/java.base/java/lang/AutoCloseable.html#close--[close()^] on the statement terminates the operation and release all resources.
+
+Closing the stream or iterator associated with an object returned by link:{jdbidocs}/core/statement/OutParameters.html#getResultSet()[OutParameters#getResultSet()^] or link:{jdbidocs}/core/statement/OutParameters.html#getRowSet(int)[OutParameters#getRowSet()^] is *not* sufficient as the link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object may hold multiple result sets.
+
+[source, java]
+----
+try (Call call = h.createCall("{call some_procedure()}")) {
+    OutParameters output = call.invoke();
+
+    output.getRowSet("result") // <1>
+        .mapTo(SomeType.class) // <2>
+        .useStream(stream -> { ... consume stream ... }); <3>
+}
+----
+<1> Retrieve the cursor for the `result` parameter
+<2> Map the results onto a data type using a row mapper
+<3> Consume the stream of objects with a consumer argument.
+
+When the stream terminates, the link:{jdbidocs}/core/statement/Call.html[Call^] statement is *not* closed as it may have returned multiple cursor parameters. It must be managed using try-with-resources as shown above.
+
+link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] objects are cursor-type "live" objects. They require an active statment and any operation that closes and releases the statement will cause future operations on a related link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object to fail.
+
+The following code *does not work*:
+
+[source,java,indent=0]
+----
+// DOES NOT WORK!
+OutParameters out  = jdbi.withHandle(handle -> {
+    Call call = handle.createCall("{call some_procedure()}");
+    return call.invoke(); // <1>
+}); // <2>
+String result = out.getString("result"); // <3>
+----
+<1> Creates an OutParameter object and returns it from withHandle.
+<2> Leaving the callback closes the handle and releases all resources including the statement.
+<3> throws an exception because closing the handle and the statement invalidates the link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object.
+
+This can be avoided by either processing the link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object within the handle callback or by using either the link:{jdbidocs}/core/statement/Call.html#invoke(java.util.function.Consumer)[Call#invoke(Consumer)^] or
+link:{jdbidocs}/core/statement/Call.html#invoke(java.util.function.Function)[Call#invoke(Function)^] callback methods:
+
+[source,java,indent=0]
+----
+// process the OutParameters within the handle callback
+String result  = jdbi.withHandle(handle -> {
+    Call call = handle.createCall("{call some_procedure()}");
+    OutParameters out = call.invoke();
+    return out.getString("result");
+});
+----
+
+[source,java,indent=0]
+----
+// use a callback method from the Call statement
+String result  = jdbi.withHandle(handle -> {
+    Call call = handle.createCall("{call some_procedure()}");
+    return call.invoke(out -> out.getString("result"));
+});
 ----
 
 
@@ -1362,7 +1499,7 @@ Out of the box, Jdbi supports the following types as SQL statement arguments:
 * java.sql: `Blob`, `Clob`, `Date`, `Time`, and `Timestamp`
 * java.time: `Instant`, `LocalDate`, `LocalDateTime`, `LocalTime`,
   `OffsetDateTime`, `ZonedDateTime`, and `ZoneId`
-* java.util: `Date`, link:{jdkdocs}/java/util/Optional.html[Optional^] (around any other supported type), and `UUID`
+* java.util: `Date`, link:{jdkdocs}/java.base/java/util/Optional.html[Optional^] (around any other supported type), and `UUID`
 * `java.util.Collection` and Java arrays (stored as SQL arrays).
 Some additional setup may be required depending on the type of array element.
 
@@ -1390,7 +1527,7 @@ handle.createUpdate("INSERT INTO contacts (id, name) VALUES (:id, :name)")
     .execute();
 ----
 
-You can bind multiple arguments at once from the entries of a link:{jdkdocs}/java/util/Map.html[Map^]:
+You can bind multiple arguments at once from the entries of a link:{jdkdocs}/java.base/java/util/Map.html[Map^]:
 
 [source,java,indent=0]
 ----
@@ -1403,7 +1540,7 @@ handle.createUpdate("INSERT INTO contacts (id, name) VALUES (:id, :name)")
     .execute();
 ----
 
-You can bind multiple values at once, from either a link:{jdkdocs}/java/util/List.html[List<T>^] or a vararg:
+You can bind multiple values at once, from either a link:{jdkdocs}/java.base/java/util/List.html[List<T>^] or a vararg:
 
 [source,java,indent=0]
 ----
@@ -1557,16 +1694,16 @@ the link:{jdbidocs}/core/argument/ArgumentFactory.html[ArgumentFactory^] contrac
 include::{exampledir}/ArgumentsTest.java[tags=uuidArgumentFactory]
 ----
 
-<1> The JDBC link:{jdkdocs}/java/sql/Types.html[SQL type constant^] to use when
+<1> The JDBC link:{jdkdocs}/java.sql/java/sql/Types.html[SQL type constant^] to use when
     binding UUIDs. Jdbi needs this in order to bind UUID values of `null`. See
-   link:{jdkdocs}/java/sql/PreparedStatement.html#setNull-int-int-[PreparedStatement.setNull(int,int)^]
+   link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html#setNull-int-int-[PreparedStatement.setNull(int,int)^]
 <2> Since `Argument` is a functional interface, it can be implemented as a lambda expression.
 
 
 ==== Using Prepared Arguments for batches
 
 Traditional argument factories decide to bind based on both the type and actual value of the binding.
-This is very flexible but when binding a large `PreparedBatch` it incurs a serious performance penalty
+This is very flexible but when binding a large link:{jdbidocs}/core/statement/PreparedBatch.html[PreparedBatch^] it incurs a serious performance penalty
 as the entire chain of argument factories must be consulted for each batch of arguments added.
 To address this issue, implement `ArgumentFactory.Preparable` which promises to handle all values
 of a given `Type`.  Most built in argument factories now implement the Preparable interface.
@@ -1588,7 +1725,7 @@ to convert a bound object into an `Argument`.
 
 Later, when the statement is executed, each `Argument` located during binding
 is applied to the JDBC
-link:{jdkdocs}/java/sql/PreparedStatement.html[PreparedStatement^].
+link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^].
 
 [NOTE]
 Occasionally, two or more argument factories will support arguments of the same
@@ -1611,7 +1748,7 @@ two types of mappers:
 
 link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] is a functional
 interface, which maps the current row of a JDBC
-link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] to a mapped type. Row
+link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] to a mapped type. Row
 mappers are invoked once for each row in the result set.
 
 Since link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] is a functional interface, they can be provided inline to a
@@ -1624,10 +1761,10 @@ include::{exampledir}/ResultsTest.java[tags=inlineRowMapper]
 
 [TIP]
 There are three different types being used in the above example. link:{jdbidocs}/core/statement/Query.html[Query^],
-returned by `Handle.createQuery()`, implements the `ResultBearing` interface.
+returned by `Handle.createQuery()`, implements the link:{jdbidocs}/core/result/ResultBearing.html[ResultBearing^] interface.
 The `ResultBearing.map()` method takes a link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper<T>^] and returns a
 `ResultIterable<T>`. Finally, `ResultBearing.list()` collects each row in the
-result set into a link:{jdkdocs}/java/util/List.html[List<T>^].
+result set into a link:{jdkdocs}/java.base/java/util/List.html[List<T>^].
 
 Row mappers may be defined as classes, which allows for re-use:
 
@@ -1731,7 +1868,7 @@ public class PairMapperFactory implements RowMapperFactory {
 
 The `build` method accepts a mapped type, and a config registry. It may return
 `Optional.of(someMapper)` if it knows how to map that type, or
-link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] otherwise.
+link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] otherwise.
 
 First we check whether the mapped type is a `Pair`:
 
@@ -1784,9 +1921,9 @@ Next we call `ColumnMappers.findFor()` to get the column mappers for the left
 and right types.
 
 [TIP]
-You may have noticed that although this method can return link:{jdkdocs}/java/util/Optional.html[Optional^], we are
+You may have noticed that although this method can return link:{jdkdocs}/java.base/java/util/Optional.html[Optional^], we are
 throwing an exception if we can't find the left- or right-hand mappers. We have
-found this to be a best practice: return link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] if the factory
+found this to be a best practice: return link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] if the factory
 knows nothing about the mapped type (`Pair`, in this case). If it knows the
 mapped type but is missing some configuration to make it work (e.g. mappers not
 registered for `L` or `R` parameter) it is more helpful to throw an exception
@@ -1856,7 +1993,7 @@ The `GenericType` utility class is discussed in <<Working with Generic Types>>.
 
 link:{jdbidocs}/core/mapper/ColumnMapper.html[ColumnMapper^] is a functional
 interface, which maps a column from the current row of a JDBC
-link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] to a mapped type.
+link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] to a mapped type.
 
 Since link:{jdbidocs}/core/mapper/ColumnMapper.html[ColumnMapper^] is a functional interface, they can be provided inline to a query using a lambda expression:
 
@@ -1982,9 +2119,9 @@ public class OptionalColumnMapperFactory implements ColumnMapperFactory {
 
 The `build` method accepts a mapped type, and a config registry. It may return
 `Optional.of(someMapper)` if it knows how to map that type, or
-link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] otherwise.
+link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] otherwise.
 
-First, we check whether the mapped type is an link:{jdkdocs}/java/util/Optional.html[Optional^]:
+First, we check whether the mapped type is an link:{jdkdocs}/java.base/java/util/Optional.html[Optional^]:
 
 [source,java,indent=0]
 ----
@@ -2028,10 +2165,10 @@ Next we call `ColumnMappers.findFor()` to get the column mapper for the embedded
 type.
 
 [TIP]
-You may have noticed that although this method can return link:{jdkdocs}/java/util/Optional.html[Optional^], we're
+You may have noticed that although this method can return link:{jdkdocs}/java.base/java/util/Optional.html[Optional^], we're
 throwing an exception if we can't find a mapper for the embedded type. We've
-found this to be a best practice: return link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] if the factory knows
-nothing about the mapped type (link:{jdkdocs}/java/util/Optional.html[Optional^], in this case). If it knows the mapped
+found this to be a best practice: return link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] if the factory knows
+nothing about the mapped type (link:{jdkdocs}/java.base/java/util/Optional.html[Optional^], in this case). If it knows the mapped
 type but is missing some configuration to make it work (e.g. no mapper
 registered for tye `T` parameter) it is more helpful to throw an exception with
 an informative message, so users can diagnose _why_ the mapper is not working as
@@ -2163,7 +2300,7 @@ These are popular choices:
 - `org.springframework.lang.Nullable` -- https://search.maven.org/artifact/org.springframework/spring-core[Spring Framework^]
 
 [WARNING]
-To allow Jdbi to discover the `@Nullable` annotation at runtime, it must use link:{jdkdocs}/java/lang/annotation/RetentionPolicy.html#RUNTIME[RetentionPolicy.RUNTIME^].
+To allow Jdbi to discover the `@Nullable` annotation at runtime, it must use link:{jdkdocs}/java.base/java/lang/annotation/RetentionPolicy.html#RUNTIME[RetentionPolicy.RUNTIME^].
 When in doubt, prefer the link:{jakartadocs}/jakarta/annotation/nullable[Jakarta variant^]!.
 
 ==== ConstructorMapper
@@ -2618,7 +2755,7 @@ values per key.
 First, follow the instructions in the <<google-guava,Google Guava>> section to install the
 link:{jdbidocs}/guava/GuavaPlugin.html[GuavaPlugin^] into Jdbi.
 
-Then, simply ask for a `Multimap` instead of a link:{jdkdocs}/java/util/Map.html[Map^]:
+Then, simply ask for a `Multimap` instead of a link:{jdkdocs}/java.base/java/util/Map.html[Map^]:
 
 [source,java,indent=0]
 ----
@@ -2635,7 +2772,7 @@ happen behind the scenes:
   container type signature. In the above example, the element type of
   `Multimap<User,Phone>` is `Map.Entry<User,Phone>`.
 * Obtain a mapper for that element type from the mapping registry.
-* Obtain a link:{jdkdocs}/java/util/stream/Collector.html[Collector^] for the
+* Obtain a link:{jdkdocs}/java.base/java/util/stream/Collector.html[Collector^] for the
   container type from the `CollectorFactory`.
 * Finally, return `map(elementMapper).collect(collector)`.
 
@@ -2709,18 +2846,18 @@ include::{exampledir}/TestInheritedValueH2.java[tags=dao;type;codec;value;bean]
 
 == Results
 
-A number of operations return data from the database through a JDBC link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^]:
+A number of operations return data from the database through a JDBC link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^]:
 
 * <<Queries, Query>> operations
 * The link:{jdbidocs}/core/statement/Update.html#executeAndReturnGeneratedKeys(java.lang.String\...)[Update#executeAndReturnGeneratedKeys^] and link:{jdbidocs}/core/statement/PreparedBatch.html#executePreparedBatch(java.lang.String\...)[PreparedBatch#executeAndReturnGeneratedKeys^] methods
 * <<Metadata>> operations
 
-The JDBC link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] class can do simple mapping to Java primitives
+The JDBC link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] class can do simple mapping to Java primitives
 and built in classes, but the API is often cumbersome to use.
 
 Jdbi offers many ways to process and map these responses onto other objects using configurable mapping, including the ability to register custom mappers for rows  and columns.
 
-A link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] converts a row of a link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] into a result object.
+A link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] converts a row of a link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] into a result object.
 
 A link:{jdbidocs}/core/mapper/ColumnMapper.html[ColumnMapper^] converts a single column's value into a Java object. It can be
 used as a link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] if there is only one column present, or it can be used to
@@ -2728,15 +2865,15 @@ build more complex link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] types.
 
 The mapper is selected based on the declared result type of your query.
 
-Jdbi iterates over the rows in the link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] and presents the mapped results
-to you in a container such as a link:{jdkdocs}/java/util/List.html[List^], link:{jdkdocs}/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java/util/Optional.html[Optional^], or link:{jdkdocs}/java/util/Iterator.html[Iterator^].
+Jdbi iterates over the rows in the link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] and presents the mapped results
+to you in a container such as a link:{jdkdocs}/java.base/java/util/List.html[List^], link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java.base/java/util/Optional.html[Optional^], or link:{jdkdocs}/java.base/java/util/Iterator.html[Iterator^].
 
 [source,java,indent=0]
 ----
 include::{exampledir}/ResultsTest.java[tags=headlineExample]
 ----
 
-Jdbi operations that involve a link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] are defined and executed in multiple steps:
+Jdbi operations that involve a link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] are defined and executed in multiple steps:
 
 [source,java,indent=0]
 ----
@@ -2768,8 +2905,8 @@ link:{jdbidocs}/core/result/ResultBearing.html[ResultBearing^] contains two majo
 These operations create a map from the data returned by the database onto java objects. This mapping is described in multiple ways:
 
 * `map()` operations using a RowMapper, ColumnMapper or RowViewMapper instance.
-* `mapTo()` operations using a type definition. The matching mapper is retrieved from the RowMappers registry. Supports link:{jdkdocs}/java/lang/reflect/Type.html[regular Java Types^], <<GenericType, Generic Types>> and <<Qualified Types>>.
-* `mapToMap()` operations where the key is the (lower-cased) column name and the value is the column value. Supports link:{jdkdocs}/java/lang/reflect/Type.html[regular Java Types^], <<GenericType, Generic Types>> and <<Qualified Types>> for the values. The value mapper is retrieved from the RowMappers registry.
+* `mapTo()` operations using a type definition. The matching mapper is retrieved from the RowMappers registry. Supports link:{jdkdocs}/java.base/java/lang/reflect/Type.html[regular Java Types^], <<GenericType, Generic Types>> and <<Qualified Types>>.
+* `mapToMap()` operations where the key is the (lower-cased) column name and the value is the column value. Supports link:{jdkdocs}/java.base/java/lang/reflect/Type.html[regular Java Types^], <<GenericType, Generic Types>> and <<Qualified Types>> for the values. The value mapper is retrieved from the RowMappers registry.
 * `mapToBean()` maps to a mutable bean instance with that provides setters to set values. For each column name, the corresponding setter is called.
 
 This is the most common use case when using the link:{jdbidocs}/core/result/ResultBearing.html[ResultBearing^] interface:
@@ -2799,7 +2936,7 @@ TODO:
 
 A link:{jdbidocs}/core/result/ResultIterable.html[ResultIterable^] represents a result set which has been mapped to a specific type, e.g. a `ResultIterable<User>`.
 
-Almost all operations on the link:{jdbidocs}/core/result/ResultIterable.html[ResultIterable^] interface are _terminal_ operations. When they finish, they close and release all resources, especially the link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] and link:{jdkdocs}/java/sql/PreparedStatement.html[PreparedStatement^] objects.
+Almost all operations on the link:{jdbidocs}/core/result/ResultIterable.html[ResultIterable^] interface are _terminal_ operations. When they finish, they close and release all resources, especially the link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] and link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] objects.
 
 See <<Statement resource management>> for more details on how resources are released and should be managed.
 
@@ -2822,7 +2959,7 @@ TODO:
 multiple rows are encountered, it will throw `IllegalStateException`.
 
 `ResultIterable.findOne()` returns an `Optional<T>` of the only row in the
-result set, or link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] if no rows are returned.
+result set, or link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] if no rows are returned.
 
 `ResultIterable.first()` returns the first row in the result set. If zero
 rows are encountered, `IllegalStateException` is thrown.
@@ -2833,9 +2970,9 @@ any.
 
 ==== Stream
 
-*Stream* integration allows you to use a link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] to adapt a link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] into  the Java Streams framework. The stream will lazily fetch rows from the database as necessary.
+*Stream* integration allows you to use a link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^] to adapt a link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] into  the Java Streams framework. The stream will lazily fetch rows from the database as necessary.
 
-The link:{jdbidocs}/core/result/ResultIterable.html#stream()[stream()^] method returns a link:{jdkdocs}/java/util/stream/Stream.html[Stream<T>^]. This is not a terminal operation and the stream must be closed to release any database resources held. See <<Resources with Streams and Iterators>> for more details.
+The link:{jdbidocs}/core/result/ResultIterable.html#stream()[stream()^] method returns a link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream<T>^]. This is not a terminal operation and the stream must be closed to release any database resources held. See <<Resources with Streams and Iterators>> for more details.
 
 The link:{jdbidocs}/core/result/ResultIterable.html#withStream(org.jdbi.v3.core.result.StreamCallback)[withStream()^] and link:{jdbidocs}/core/result/ResultIterable.htmll#useStream(org.jdbi.v3.core.result.StreamConsumer)[useStream()^] methods pass the Stream into a callback.
 
@@ -2902,11 +3039,11 @@ single remains, and then return that.
 
 ==== ResultSetScanner
 
-The *ResultSetScanner* interface accepts a lazily-provided link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^]
+The *ResultSetScanner* interface accepts a lazily-provided link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^]
 and produces the result Jdbi returns from statement execution.
 
 Most of the above operations are implemented in terms of *ResultSetScanner*.
-The Scanner has ownership of the link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] and may advance or seek it.
+The Scanner has ownership of the link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] and may advance or seek it.
 
 The return value ends up being the final result of statement execution.
 
@@ -3003,7 +3140,7 @@ List<Contact> contacts = handle.createQuery(SELECT_ALL)
     prefixes, the `Contact` mapper will only map the `c_id` and `c_name`
     columns, whereas the `Phone` mapper will only map `p_id`, `p_type`, and
     `p_phone`.
-<2> Use an empty link:{jdkdocs}/java/util/LinkedHashMap.html[LinkedHashMap^]
+<2> Use an empty link:{jdkdocs}/java.base/java/util/LinkedHashMap.html[LinkedHashMap^]
     as the accumulator seed, mapped by contact ID. `LinkedHashMap` is a good
     accumulator when selecting multiple master records, since it has fast
     storage and lookup while preserving insertion order (which helps honor
@@ -3017,7 +3154,7 @@ List<Contact> contacts = handle.createQuery(SELECT_ALL)
     the accumulator for the next row.
 <6> At this point, all rows have been read into memory, and we don't need the
     contact ID keys. So we call `Map.values()` to get a `Collection<Contact>`.
-<7> Collect the contacts into a link:{jdkdocs}/java/util/List.html[List<Contact>^].
+<7> Collect the contacts into a link:{jdkdocs}/java.base/java/util/List.html[List<Contact>^].
 
 Alternatively, the
 link:{jdbidocs}/core/result/ResultBearing.html#reduceRows-org.jdbi.v3.core.result.RowReducer-[ResultBearing.reduceRows(RowReducer)^]
@@ -3054,7 +3191,7 @@ List<Contact> contacts = handle.createQuery(SELECT_ALL)
 <2> No `return` statement needed. The same `map` is reused on every row.
 <3> This `reduceRows()` invocation produces a `Stream<Contact>` (i.e. from
     `map.values().stream()`. In this example, we collect the elements into a
-    list, but we could call any link:{jdkdocs}/java/util/stream/Stream.html[Stream^] method here.
+    list, but we could call any link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream^] method here.
 
 You may be wondering about the `getRow()` and `getColumn()` calls to `rowView`.
 When you call `rowView.getRow(SomeType.class)`, `RowView` looks up the
@@ -3088,7 +3225,7 @@ Optional<Contact> contact = handle.createQuery(SELECT_ONE)
 
 link:{jdbidocs}/core/result/ResultBearing.html#reduceResultSet-U-org.jdbi.v3.core.result.ResultSetAccumulator-[ResultBearing.reduceResultSet()^]
 is a low-level API similar to `reduceRows()`, except it provides direct access
-to the JDBC link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] instead of a `RowView` for each row.
+to the JDBC link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] instead of a `RowView` for each row.
 
 This method can provide superior performance compared to `reduceRows()`, at the
 expense of verbosity:
@@ -3191,6 +3328,9 @@ Executing a SQL operation in a transaction:
 ----
 include::{exampledir}/TransactionTest.java[tags=simpleTransaction]
 ----
+
+[NOTE]
+The <<Nesting Callbacks with managed Handles and Transactions>> chapter has more information about nesting callbacks with managed handle objects.
 
 
 === Unmanaged Transactions
@@ -3299,7 +3439,7 @@ See <<JdbiConfig>> for more advanced implementation details.
     <| PreparedArguments speed up argument processing but have some backwards compatibility risk with old (pre-3.24.0) releases.
 
 <| untypedNullArgument
-   ^| link:{jdbidocs}/core/argument/Argument.html[Argument^] ^| link:{jdbidocs}/core/argument/NullArgument.html[NullArgument^] using link:{jdkdocs}/java/sql/Types.html#OTHER[Types.OTHER^].
+   ^| link:{jdbidocs}/core/argument/Argument.html[Argument^] ^| link:{jdbidocs}/core/argument/NullArgument.html[NullArgument^] using link:{jdkdocs}/java.sql/java/sql/Types.html#OTHER[Types.OTHER^].
     <| This argument instance is invoked when a `null` value is assigned to an argument whose type is unknown (this can happen in some corner cases).
 
 | link:{jdbidocs}/core/mapper/ColumnMappers.html[ColumnMappers^] | coalesceNullPrimitivesToDefaults
@@ -3318,7 +3458,7 @@ See <<JdbiConfig>> for more advanced implementation details.
 
 .2+| link:{jdbidocs}/core/extension/Extensions.html[Extensions^] | allowProxy
     | boolean  | `true`
-    | Whether Jdbi is allowed to create link:{jdkdocs}/java/lang/reflect/Proxy.html[proxy ^] instances for classes (as extension and on-demand reference). This is useful for debugging when using the generator to create java classes for sql objects.
+    | Whether Jdbi is allowed to create link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[proxy ^] instances for classes (as extension and on-demand reference). This is useful for debugging when using the generator to create java classes for sql objects.
 
 | failFast
 ^| boolean  ^| `false`
@@ -3331,7 +3471,7 @@ transaction is rolled back and an exception is thrown when the Handle is closed.
 
 
 | link:{jdbidocs}/core/mapper/MapMappers.html[MapMappers^] | caseChange
-    | link:{jdkdocs}/java/util/function/UnaryOperator.html[UnaryOperator<String>^] | link:{jdbidocs}/core/mapper/CaseStrategy.html#LOCALE_LOWER[LOCALE_LOWER^]
+    | link:{jdkdocs}/java.base/java/util/function/UnaryOperator.html[UnaryOperator<String>^] | link:{jdbidocs}/core/mapper/CaseStrategy.html#LOCALE_LOWER[LOCALE_LOWER^]
     | Defines the strategy for mapping the database column names to key names. Available strategies are:
 
 [cols="1,3"]
@@ -3343,11 +3483,11 @@ transaction is rolled back and an exception is thrown when the Handle is closed.
 ! link:{jdbidocs}/core/mapper/CaseStrategy.html#LOCALE_UPPER[LOCALE_UPPER^] ! uppercase column names using the current locale
 !===
 
-Custom strategies can be set by implementing link:{jdkdocs}/java/util/function/UnaryOperator.html[UnaryOperator<String>^] with custom code.
+Custom strategies can be set by implementing link:{jdkdocs}/java.base/java/util/function/UnaryOperator.html[UnaryOperator<String>^] with custom code.
 
 
 .2+| link:{jdbidocs}/core/mapper/reflect/ReflectionMappers.html[ReflectionMappers^] | caseChange
-    | link:{jdkdocs}/java/util/function/UnaryOperator.html[UnaryOperator<String>^] | link:{jdbidocs}/core/mapper/CaseStrategy.html#LOCALE_LOWER[LOCALE_LOWER^]
+    | link:{jdkdocs}/java.base/java/util/function/UnaryOperator.html[UnaryOperator<String>^] | link:{jdbidocs}/core/mapper/CaseStrategy.html#LOCALE_LOWER[LOCALE_LOWER^]
     | Defines the strategy for mapping the database column names to key names. Available strategies are:
 
 [cols="1,3"]
@@ -3359,7 +3499,7 @@ Custom strategies can be set by implementing link:{jdkdocs}/java/util/function/U
 ! link:{jdbidocs}/core/mapper/CaseStrategy.html#LOCALE_UPPER[LOCALE_UPPER^] ! uppercase column names using the current locale
 !===
 
-Custom strategies can be set by implementing link:{jdkdocs}/java/util/function/UnaryOperator.html[UnaryOperator<String>^] with custom code.
+Custom strategies can be set by implementing link:{jdkdocs}/java.base/java/util/function/UnaryOperator.html[UnaryOperator<String>^] with custom code.
 
 | strictMatching
     ^| boolean ^| `false`
@@ -3374,11 +3514,11 @@ Custom strategies can be set by implementing link:{jdkdocs}/java/util/function/U
     | number of times a transaction is retried if the database reports a serialization error.
 
 | onFailure
-    ^| link:{jdkdocs}/java/util/function/Consumer.html[Consumer<List<Exception>>^] ^| <unset>
+    ^| link:{jdkdocs}/java.base/java/util/function/Consumer.html[Consumer<List<Exception>>^] ^| <unset>
     <| Is called whenever a serialization failure occurs. Can be used e.g. for logging.
 
 | onSuccess
-    ^| link:{jdkdocs}/java/util/function/Consumer.html[Consumer<List<Exception>>^] ^| <unset>
+    ^| link:{jdkdocs}/java.base/java/util/function/Consumer.html[Consumer<List<Exception>>^] ^| <unset>
     <| Is called once a transaction successfully finishes with any exception that has happened during the transaction execution.
 
 | serializationFailureSqlState
@@ -3391,11 +3531,11 @@ Custom strategies can be set by implementing link:{jdkdocs}/java/util/function/U
 
 [cols="1,3"]
 !===
-! link:{jdbidocs}/core/array/SqlArrayArgumentStrategy.html#SQL_ARRAY[SQL_ARRAY^]       ! create a SQL array using link:{jdkdocs}/java/sql/Connection.html#createArrayOf-java.lang.String-java.lang.Object:A-[Connection#createArrayOf^] and call link:{jdkdocs}/java/sql/PreparedStatement.html#setArray-int-java.sql.Array-[PreparedStatement#setArray^]. This is the default and any modern JDBC driver should support it.
-! link:{jdbidocs}/core/array/SqlArrayArgumentStrategy.html#OBJECT_ARRAY[OBJECT_ARRAY^] ! call link:{jdkdocs}/java/sql/PreparedStatement.html#setObject-int-java.lang.Object-[PreparedStatement#setObject^] and assume that the driver can handle this.
+! link:{jdbidocs}/core/array/SqlArrayArgumentStrategy.html#SQL_ARRAY[SQL_ARRAY^]       ! create a SQL array using link:{jdkdocs}/java.sql/java/sql/Connection.html#createArrayOf-java.lang.String-java.lang.Object:A-[Connection#createArrayOf^] and call link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html#setArray-int-java.sql.Array-[PreparedStatement#setArray^]. This is the default and any modern JDBC driver should support it.
+! link:{jdbidocs}/core/array/SqlArrayArgumentStrategy.html#OBJECT_ARRAY[OBJECT_ARRAY^] ! call link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html#setObject-int-java.lang.Object-[PreparedStatement#setObject^] and assume that the driver can handle this.
 !===
 
-.7+| link:{jdbidocs}/core/statement/SqlStatements.html[SqlStatements^]     | attachAllStatementsForCleanup
+.8+| link:{jdbidocs}/core/statement/SqlStatements.html[SqlStatements^]     | attachAllStatementsForCleanup
     | boolean | `false`
     | Jdbi supports automatic resource management by attaching statements to their handle so that closing the handle will free up all its resources.
 If this setting is `true`, then statements are attached by default.
@@ -3407,7 +3547,12 @@ If this setting is `true`, then statements are attached by default.
 
 | queryTimeout
 ^| Integer ^| <unset>
-<| Sets the query timeout value in seconds. This value is used to call link:{jdkdocs}/java/sql/Statement.html#setQueryTimeout-int-[Statement#setQueryTimeout^]. Enforcement of the timeout depends on the JDBC driver.
+<| Sets the query timeout value in seconds. This value is used to call link:{jdkdocs}/java.sql/java/sql/Statement.html#setQueryTimeout-int-[Statement#setQueryTimeout^]. Enforcement of the timeout depends on the JDBC driver.
+
+
+| scriptStatementsNeedSemicolon
+^| boolean ^| `true`
+<| Controls whether the statements parsed in a link:{jdbidocs}/core/statements/Script.html[Script^] object have trailing semicolons or not. This fixes some issues with specific JDBC drivers (e.g. MySQL when using `rewriteBatchedStatements=true`).
 
 
 <| sqlParser
@@ -3495,7 +3640,7 @@ link:{jdbidocs}/sqlobject/statement/SqlScript.html[@SqlScript^]) to locate SQL s
 !===
 
 | link:{jdbidocs}/sqlobject/customizer/TimestampedConfig.html[TimestampedConfig^] | timezone
-     | link:{jdkdocs}/java/time/ZoneId.html[ZoneId^] | system zone id
+     | link:{jdkdocs}/java.base/java/time/ZoneId.html[ZoneId^] | system zone id
      | Sets the timezone for the link:{jdbidocs}/sqlobject/customizer/Timestamped.html[@Timestamped^] annotation.
 
 |===
@@ -3521,13 +3666,13 @@ If none of these modules is loaded, it defaults to an implementation that throws
      | https://javadoc.io/static/com.fasterxml.jackson.core/jackson-databind/2.10.5.1/com/fasterxml/jackson/databind/ObjectMapper.html[ObjectMapper^] | An `ObjectMapper` instance created with the default constructor.
      | Sets the object mapper instance used to parse and render json text.
 | deserializationView
-     ^| link:{jdkdocs}/java/lang/Class.html[Class<?>^] ^| <unset>
+     ^| link:{jdkdocs}/java.base/java/lang/Class.html[Class<?>^] ^| <unset>
      <a| Sets a view (see https://javadoc.io/static/com.fasterxml.jackson.core/jackson-annotations/2.10.5/com/fasterxml/jackson/annotation/JsonView.html[@JsonView^]) for deserialization. Can be used to limit the values read when mapping a json column.
 | serializationView
-     ^| link:{jdkdocs}/java/lang/Class.html[Class<?>^] ^| <unset>
+     ^| link:{jdkdocs}/java.base/java/lang/Class.html[Class<?>^] ^| <unset>
      <a| Sets a view (see https://javadoc.io/static/com.fasterxml.jackson.core/jackson-annotations/2.10.5/com/fasterxml/jackson/annotation/JsonView.html[@JsonView^]) for serialization. Can be used to limit the values written when using a json argument.
 | view
-     ^| link:{jdkdocs}/java/lang/Class.html[Class<?>^] ^| <unset>
+     ^| link:{jdkdocs}/java.base/java/lang/Class.html[Class<?>^] ^| <unset>
      <a| Sets a view (see https://javadoc.io/static/com.fasterxml.jackson.core/jackson-annotations/2.10.5/com/fasterxml/jackson/annotation/JsonView.html[@JsonView^]) for serialization and deserialization. Can be used to limit the values read and written by json arguments and mappers.
 
 | link:{jdbidocs}/moshi/MoshiConfig.html[MoshiConfig^] | moshi
@@ -3778,7 +3923,7 @@ The SQL Object plugin uses the same configuration as the Jdbi core framework. Ro
 
 Use the link:{jdbidocs}/sqlobject/statement/SqlUpdate.html[@SqlUpdate^] annotation for operations that modify data (i.e. inserts, updates, deletes).
 
-This is an example that uses link:{jdkdocs}/java/sql/PreparedStatement.html[PreparedStatement^] placeholders (`?`) for arguments:
+This is an example that uses link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] placeholders (`?`) for arguments:
 
 [source,java,indent=0]
 ----
@@ -3888,25 +4033,43 @@ link:{jdbidocs}/sqlobject/statement/SqlCall.html[@SqlCall^] methods can return `
 link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] if the stored procedure has any output parameters. Each output parameter must be registered
 with the link:{jdbidocs}/sqlobject/customizer/OutParameter.html[@OutParameter^] annotation.
 
+Returning an link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object from an extension method is *incompatible* with <<on-demand-extension, on-demand objects>>. Any <<using-jdbi-extensions, other extension method>> can be used to create extension objects that can provide output parameters. Alternatively, it is possible to use <<sql-call-consumer-arguments, consumer or function arguments>> with on-demand extensions.
+
+
 [source,java,indent=0]
 ----
 public interface OrderDao {
+    // only works with Handle#attach() or Jdbi#withExtension() / Jdbi#useExtension()
     @SqlCall("{call prepare_order_from_cart(:cartId, :orderId, :orderTotal)}")
     @OutParameter(name = "orderId",    sqlType = java.sql.Types.BIGINT)
     @OutParameter(name = "orderTotal", sqlType = java.sql.Types.DECIMAL)
     OutParameters prepareOrderFromCart(@Bind("cartId") long cartId);
+
+    // using a consumer argument works with any extension method
+    @SqlCall("{call prepare_order_from_cart(:cartId, :orderId, :orderTotal)}")
+    @OutParameter(name = "orderId",    sqlType = java.sql.Types.BIGINT)
+    @OutParameter(name = "orderTotal", sqlType = java.sql.Types.DECIMAL)
+    void prepareOrderFromCart(@Bind("cartId") long cartId, Consumer<OutParameters> consumer);
+
+    // using a function argument also works with any extension method
+    @SqlCall("{call prepare_order_from_cart(:cartId, :orderId, :orderTotal)}")
+    @OutParameter(name = "orderId",    sqlType = java.sql.Types.BIGINT)
+    @OutParameter(name = "orderTotal", sqlType = java.sql.Types.DECIMAL)
+    SomeResult prepareOrderFromCart(@Bind("cartId") long cartId, Function<OutParameters, SomeResult> function);
 }
 ----
 
 Individual output parameters can be extracted from the
-link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] returned from
-the method:
+link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] object:
 
 [source,java,indent=0]
 ----
-OutParameters outParams = orderDao.prepareOrderFromCart(cartId);
-long orderId = outParams.getLong("orderId");
-double orderTotal = outParams.getDouble("orderTotal");
+db.useExtension(OrderDao.class, orderDao -> {
+    OutParameters outParams = orderDao.prepareOrderFromCart(cartId);
+    long orderId = outParams.getLong("orderId");
+    double orderTotal = outParams.getDouble("orderTotal");
+    ...
+});
 ----
 
 link:{jdbidocs}/sqlobject/statement/SqlCall.html[@SqlCall^] supports <<sql-call-consumer-arguments, special arguments>> for link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] processing.
@@ -3990,6 +4153,8 @@ long bobId = dao.insertFullContact(bob); // <1>
 
 The performance of on-demand objects depends on the database and database connection pooling. For performance critical operations, it may be better to manage the handle manually and use attached objects.
 
+On-demand instances open and close the underlying link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] objects for every call to an extension method. They are incompatible with any object or operation that relies on an open statement to retrieve data from the database (e.g. link:{jdkdocs}/java/util/stream/Stream.html[Stream^] and link:{jdkdocs}/java/util/Iterator.html[Iterator^] for query operations or link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] for call operations). It is possible to use <<consumer-and-function-arguments, consumer or function arguments>> to process these values as the callback is executed while the statement is still open.
+
 
 ==== Interface default methods
 
@@ -4026,7 +4191,7 @@ public interface UserDao {
 <1> declares two positional parameters
 <2> provides two method parameters. `id` will be bound as the first, `name` as the second parameter.
 
-This matches the link:{jdkdocs}/java/sql/PreparedStatement.html[PreparedStatement^] way of binding arguments to a statement. Jdbi binds the arguments as the correct types and convert them if necessary.
+This matches the link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] way of binding arguments to a statement. Jdbi binds the arguments as the correct types and convert them if necessary.
 
 [#mapping-arguments]
 ==== Mapping arguments to named parameters
@@ -4053,7 +4218,7 @@ Any Java object that implements the Iterable interface can be bound using the li
 will iterate the elements in 'a,b,c,d,...' form.
 
 [NOTE]
-This annotation requires you to use a template placeholder (using the `<field>` notation when using the default template engine), similar to the link:{jdbidocs}/core/statement/SqlStatement.html#bindList(java.lang.String,java.lang.Iterable)[SqlStatement#bindList()^] method. Templates placeholders are incompatible with batch operations such as`PreparedBatch` as they are evaluated only once and the evaluated statement is cached. If subsequent batch executions use an iterable object with a different size, the number of placeholders and arguments will not match. If the database supports array types, it is strongly recommended to use `bindArray()` with a SQL array instead of the `bindList()` method.
+This annotation requires you to use a template placeholder (using the `<field>` notation when using the default template engine), similar to the link:{jdbidocs}/core/statement/SqlStatement.html#bindList(java.lang.String,java.lang.Iterable)[SqlStatement#bindList()^] method. Templates placeholders are incompatible with batch operations such as link:{jdbidocs}/core/statement/PreparedBatch.html[PreparedBatch^] as they are evaluated only once and the evaluated statement is cached. If subsequent batch executions use an iterable object with a different size, the number of placeholders and arguments will not match. If the database supports array types, it is strongly recommended to use `bindArray()` with a SQL array instead of the `bindList()` method.
 
 [source,java,indent=0]
 ----
@@ -4064,7 +4229,7 @@ List<String> getFromIds(@BindList("userIds") List<Long> userIds)
 
 ===== Bind map instances with @BindMap
 
-Entries from a link:{jdkdocs}/java/util/Map.html[Map^] can be bound using the link:{jdbidocs}/sqlobject/customizer/BindMap.html[@BindMap^] annotation. Each entry from the map is bound as a named parameter using the map key as the name and the map value as the value. Jdbi will bind the values as the correct types and convert them if necessary:
+Entries from a link:{jdkdocs}/java.base/java/util/Map.html[Map^] can be bound using the link:{jdbidocs}/sqlobject/customizer/BindMap.html[@BindMap^] annotation. Each entry from the map is bound as a named parameter using the map key as the name and the map value as the value. Jdbi will bind the values as the correct types and convert them if necessary:
 
 [source,java,indent=0]
 ----
@@ -4174,17 +4339,18 @@ void insert(long id, String name);
 ----
 
 
+[#consumer-and-function-arguments]
 ==== Consumer and Function arguments
 
 ===== Consumer arguments
 
-In addition to the regular method arguments for a SQL Object method, it is possible to use a single link:{jdkdocs}/java/util/function/Consumer.html[Consumer<T>^] or link:{jdkdocs}/java/util/function/Function.html[Function<T>^] argument in addition to other arguments.
+In addition to the regular method arguments for a SQL Object method, it is possible to use a single link:{jdkdocs}/java.base/java/util/function/Consumer.html[Consumer<T>^] or link:{jdkdocs}/java.base/java/util/function/Function.html[Function<T>^] argument in addition to other arguments.
 
 A consumer argument is a special return type for SQL operations. They can be used to consume the results from a SQL operation with a callback instead of returning a value from the method.
 
 Any SQL operation method that wants to use a consumer argument *must* return `void`. It can declare only a single consumer argument, but can have additional regular method arguments. The consumer argument can be in any position in the argument list. .
 
-Unless the type `T` is a link:{jdkdocs}/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java/util/Iterator.html[Iterator^] or link:{jdkdocs}/java/lang/Iterable.html[Iterable^], the consumer is executed once for each row in the result set. The static type of parameter `T` determines the row type.
+Unless the type `T` is a link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java.base/java/util/Iterator.html[Iterator^] or link:{jdkdocs}/java.base/java/lang/Iterable.html[Iterable^], the consumer is executed once for each row in the result set. The static type of parameter `T` determines the row type.
 
 [source,java,indent=0]
 ----
@@ -4195,7 +4361,7 @@ include::{exampledir}/BindMethodsTest.java[tags=consume-user-method]
 
 <2> This SQL operation may return multiple results. It will invoke the consumer argument once for every result.
 
-If the consumer implements link:{jdkdocs}/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java/util/Iterator.html[Iterator^] or link:{jdkdocs}/java/lang/Iterable.html[Iterable^], then the consumer is executed once with the corresponding object holding the results. The static type of parameter `T` determines the mapped row type here as well. If the result set is empty, the SQL Object framework may not call the consumer or may call it with an empty result object.
+If the consumer implements link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java.base/java/util/Iterator.html[Iterator^] or link:{jdkdocs}/java.base/java/lang/Iterable.html[Iterable^], then the consumer is executed once with the corresponding object holding the results. The static type of parameter `T` determines the mapped row type here as well. If the result set is empty, the SQL Object framework may not call the consumer or may call it with an empty result object.
 
 
 [source,java,indent=0]
@@ -4206,12 +4372,12 @@ include::{exampledir}/BindMethodsTest.java[tags=consume-iterable-user-method]
 <1> This consumer argument is called once if any number of results are present. It may be called with an empty iterable object or not at all if no results are present.
 
 [WARNING]
-When using link:{jdkdocs}/java/util/function/Consumer.html[Consumer<Iterable>^] as a consumer argument, the link:{jdkdocs}/java/lang/Iterable.html[Iterable^] object passed into the consumer is *NOT* a general-purpose Iterable as it supports only a single invocation of the link:{jdkdocs}/java/lang/Iterable.html#iterator--[Iterable#iterator()^] method. Invoking it the iterator method again to obtain a second or subsequent iterator may throw link:{jdkdocs}/java/lang/IllegalStateException.html[IllegalStateException^].
+When using link:{jdkdocs}/java.base/java/util/function/Consumer.html[Consumer<Iterable>^] as a consumer argument, the link:{jdkdocs}/java.base/java/lang/Iterable.html[Iterable^] object passed into the consumer is *NOT* a general-purpose Iterable as it supports only a single invocation of the link:{jdkdocs}/java.base/java/lang/Iterable.html#iterator--[Iterable#iterator()^] method. Invoking it the iterator method again to obtain a second or subsequent iterator may throw link:{jdkdocs}/java.base/java/lang/IllegalStateException.html[IllegalStateException^].
 
 
 ===== Function arguments
 
-A function argument can be used to collect or transform the result from a SQL operation. Similar to a consumer argument, it will receive the results of the query. A function argument only supports link:{jdkdocs}/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java/util/Iterator.html[Iterator^] or link:{jdkdocs}/java/lang/Iterable.html[Iterable^] as the function input type. The result type of the function must match the return type of the method itself.
+A function argument can be used to collect or transform the result from a SQL operation. Similar to a consumer argument, it will receive the results of the query. A function argument only supports link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream^], link:{jdkdocs}/java.base/java/util/Iterator.html[Iterator^] or link:{jdkdocs}/java.base/java/lang/Iterable.html[Iterable^] as the function input type. The result type of the function must match the return type of the method itself.
 
 [source,java,indent=0]
 ----
@@ -4228,8 +4394,8 @@ The link:{jdbidocs}/sqlobject/statement/SqlCall.html[@SqlCall^] annotation suppo
 A method that has been annotated with link:{jdbidocs}/sqlobject/statement/SqlCall.html[@SqlCall^] may have any number of regular method arguments and
 
 - declare `void` or link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] as its return type.
-- declare `void` as its return type and have a single link:{jdkdocs}/java/util/function/Consumer.html[Consumer<OutParameters>^] consumer argument
-- declare an arbitrary type `T` as return type and have a single link:{jdkdocs}/java/util/function/Function.html[Function<OutParameters, T>^] function argument
+- declare `void` as its return type and have a single link:{jdkdocs}/java.base/java/util/function/Consumer.html[Consumer<OutParameters>^] consumer argument
+- declare an arbitrary type `T` as return type and have a single link:{jdkdocs}/java.base/java/util/function/Function.html[Function<OutParameters, T>^] function argument
 
 When using a consumer or function argument, these are called to process the link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] value before the statement is closed.
 
@@ -4285,8 +4451,8 @@ public interface UserDao {
 
 <2> Returns a single result. If the query returns a result set with multiple rows, then only the first row is returned. If the row set is empty, `null` is returned.
 
-<3> Methods may return link:{jdkdocs}/java/util/Optional.html[Optional^] values. If the query returns no rows (or if the value in the row is `null`),
-link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] is returned instead of `null`.  SQL Object throws an exception if query returns more than one
+<3> Methods may return link:{jdkdocs}/java.base/java/util/Optional.html[Optional^] values. If the query returns no rows (or if the value in the row is `null`),
+link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] is returned instead of `null`.  SQL Object throws an exception if query returns more than one
 row.
 
 <4> When returning a complex type, Jdbi must have row and column mappers registered, otherwise it will throw an exception. These can be registered through the Jdbi
@@ -4309,7 +4475,7 @@ Jdbi plugins (e.g. the link:{jdbidocs}/guava/GuavaPlugin.html[GuavaPlugin^]) reg
 SQL Object method may return
 link:{jdbidocs}/core/result/ResultIterable.html[ResultIterable^],
 link:{jdbidocs}/core/result/ResultIterator.html[ResultIterator^] or
-link:{jdkdocs}/java/util/stream/Stream.html[Stream^] types. Each of these return values represents a cursor-type object that requires an active link:{jdbidocs}/core/Handle.html[Handle^] object with a database connection <<resources-with-streams-iterators, to support streaming results>>.
+link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream^] types. Each of these return values represents a cursor-type object that requires an active link:{jdbidocs}/core/Handle.html[Handle^] object with a database connection <<resources-with-streams-iterators, to support streaming results>>.
 
 All SQL object type methods are subject to the <<extension-handle-lifecycle,extension framework Handle lifecycle>>. When the link:{jdbidocs}/core/Handle.html[Handle^] object is closed, the database connection and the corresponding stream or iterator is closed as well.
 
@@ -4372,7 +4538,7 @@ include::{exampledir}/LiveObjectsTest.java[tag=extension]
 
 <1> The handle is closed when leaving the link:{jdbidocs}/core/Jdbi.html#withExtension-java.lang.Class-org.jdbi.v3.core.extension.ExtensionCallback-[Jdbi#withExtension()^] method.
 
-<2> Calling the link:{jdkdocs}/java/util/stream/Stream.html#collect-java.util.stream.Collector-[Stream#collect()^] method on the returned stream causes a link:{jdbidocs}/core/result/ResultSetException.html[ResultSetException^].
+<2> Calling the link:{jdkdocs}/java.base/java/util/stream/Stream.html#collect-java.util.stream.Collector-[Stream#collect()^] method on the returned stream causes a link:{jdbidocs}/core/result/ResultSetException.html[ResultSetException^].
 
 
 The link:{jdbidocs}/core/Jdbi.html#onDemand(java.lang.Class)[Jdbi#onDemand()^] method *can not be used either*:
@@ -4384,7 +4550,7 @@ include::{exampledir}/LiveObjectsTest.java[tag=on-demand]
 
 <1> The handle is closed when leaving the `getNamesAsStream` method.
 
-<2> Calling the link:{jdkdocs}/java/util/stream/Stream.html#collect-java.util.stream.Collector-[Stream#collect()^] method on the returned stream causes a link:{jdbidocs}/core/result/ResultSetException.html[ResultSetException^].
+<2> Calling the link:{jdkdocs}/java.base/java/util/stream/Stream.html#collect-java.util.stream.Collector-[Stream#collect()^] method on the returned stream causes a link:{jdbidocs}/core/result/ResultSetException.html[ResultSetException^].
 
 
 ===== Use interface default methods
@@ -4711,6 +4877,14 @@ the same type or method to register multiple constructor mappers.
 
 === Other SQL Object annotations
 
+==== @Definition
+
+Annotate a SqlObject type, or a method or field within, with `@Definition` to define an attribute
+for all SqlObject methods of the type. The key will default to the field or method name. The value
+will default to the result of calling the method or getting the field.
+
+An example use is to take a list of columns and join them using `,` in order to template in a column list.
+
 [#sqlupdate-getgeneratedkeys]
 ==== @GetGeneratedKeys
 
@@ -4872,7 +5046,7 @@ include::{exampledir}/LiveObjectsTest.java[tag=on-demand-nested]
 
 ==== @Timestamped
 
-You can annotate any statement with link:{jdbidocs}/sqlobject/customizer/Timestamped.html[@Timestamped^] to bind an link:{jdkdocs}/java/time/OffsetDateTime.html[OffsetDateTime^] object representing the current time as `now`:
+You can annotate any statement with link:{jdbidocs}/sqlobject/customizer/Timestamped.html[@Timestamped^] to bind an link:{jdkdocs}/java.base/java/time/OffsetDateTime.html[OffsetDateTime^] object representing the current time as `now`:
 
 [source,java,indent=0]
 ----
@@ -4903,11 +5077,11 @@ The link:{jdbidocs}/sqlobject/customizer/TimestampedConfig.html[TimestampedConfi
 ==== @SingleValue
 
 Sometimes, when using advanced SQL features like Arrays, a container type such as
-`int[]` or link:{jdkdocs}/java/util/List.html[List<Integer>^] can ambiguously mean either "a single SQL int[]" or
+`int[]` or link:{jdkdocs}/java.base/java/util/List.html[List<Integer>^] can ambiguously mean either "a single SQL int[]" or
 "a ResultSet of int".
 
 Since arrays are not commonly used in normalized schemas, SQL Object assumes by
-default that you are collecting a link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] into a container object. You can
+default that you are collecting a link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] into a container object. You can
 annotate a return type as link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] to override this.
 
 For example, suppose we want to select a `varchar[]` column from a single row:
@@ -4921,13 +5095,13 @@ public interface UserDao {
 }
 ----
 
-Normally, Jdbi would interpret link:{jdkdocs}/java/util/List.html[List<String>^] to mean that the mapped type is
+Normally, Jdbi would interpret link:{jdkdocs}/java.base/java/util/List.html[List<String>^] to mean that the mapped type is
 `String`, and to collect all result rows into a list. The link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^]
-annotation causes Jdbi to treat link:{jdkdocs}/java/util/List.html[List<String>^] as the mapped type instead.
+annotation causes Jdbi to treat link:{jdkdocs}/java.base/java/util/List.html[List<String>^] as the mapped type instead.
 
 [NOTE]
-It's tempting to use the link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] annotation on an link:{jdkdocs}/java/util/Optional.html[Optional<T>^] type , but usually this is not needed.
-link:{jdkdocs}/java/util/Optional.html[Optional<T>^] is implemented as a container of zero-or-one elements.  Adding link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] implies that the database itself has a column of a type like `optional<varchar>`.
+It's tempting to use the link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] annotation on an link:{jdkdocs}/java.base/java/util/Optional.html[Optional<T>^] type , but usually this is not needed.
+link:{jdkdocs}/java.base/java/util/Optional.html[Optional<T>^] is implemented as a container of zero-or-one elements.  Adding link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] implies that the database itself has a column of a type like `optional<varchar>`.
 
 
 The link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] annotation can also be used on an array, collection or iterable method parameter. This causes SQL Object to bind the whole iterable as the parameter value. This is especially useful for link:{jdbidocs}/sqlobject/statement/SqlBatch.html[@SqlBatch^] operations (often for a SQL Array parameter):
@@ -4949,7 +5123,7 @@ In this example, each new row would get the same `varchar[]` value in the `roles
 
 SQL Object methods may return `Map<K,V>` types (see <<mapentry-mapping, Map.Entry mapping>> in
 the Core API). In this scenario, each row is mapped to a `Map.Entry<K,V>`,
-and the entries for each row are collected into a single link:{jdkdocs}/java/util/Map.html[Map^] instance.
+and the entries for each row are collected into a single link:{jdkdocs}/java.base/java/util/Map.html[Map^] instance.
 
 NOTE: A mapper must be registered for both the key and value types.
 
@@ -4989,15 +5163,15 @@ type, which supports mapping multiple values per key.
 First, follow the instructions in the <<google-guava,Google Guava>> section to install the
 link:{jdbidocs}/guava/GuavaPlugin.html[GuavaPlugin^].
 
-Then, simply specify a `Multimap` return type instead of link:{jdkdocs}/java/util/Map.html[Map^]:
+Then, simply specify a `Multimap` return type instead of link:{jdkdocs}/java.base/java/util/Map.html[Map^]:
 
 [source,java,indent=0]
 ----
 include::{sqlobjectexampledir}/TestReturningMap.java[tags=joinRowMultimap]
 ----
 
-All the examples so far have been link:{jdkdocs}/java/util/Map.html[Map^] types where each row in the result set
-is a single `Map.Entry`. However, what if the link:{jdkdocs}/java/util/Map.html[Map^] we want to return is
+All the examples so far have been link:{jdkdocs}/java.base/java/util/Map.html[Map^] types where each row in the result set
+is a single `Map.Entry`. However, what if the link:{jdkdocs}/java.base/java/util/Map.html[Map^] we want to return is
 actually a single row or even a single column?
 
 Jdbi's link:{jdbidocs}/core/mapper/MapMapper.html[MapMapper^] maps each row to a
@@ -5007,7 +5181,7 @@ Jdbi's link:{jdbidocs}/core/mapper/MapMapper.html[MapMapper^] maps each row to a
 Jdbi's default setting is to convert column names to lowercase for Map keys. This behavior can be
 changed via the `MapMappers` config class.
 
-By default, SQL Object treats link:{jdkdocs}/java/util/Map.html[Map^] return types as a collection of `Map.Entry`
+By default, SQL Object treats link:{jdkdocs}/java.base/java/util/Map.html[Map^] return types as a collection of `Map.Entry`
 values. Use the link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] annotation to override this, so that the return
 type is treated as a single value instead of a collection:
 
@@ -5098,7 +5272,7 @@ public interface DocumentDao {
 
 ==== @RegisterCollector and @RegisterCollectorFactory
 
-Convenience annotations to register a link:{jdkdocs}/java/util/stream/Collector.html[Collector^] for a SqlObject method.
+Convenience annotations to register a link:{jdkdocs}/java.base/java/util/stream/Collector.html[Collector^] for a SqlObject method.
 
 link:{jdbidocs}/sqlobject/config/RegisterCollectorFactory.html[@RegisterCollectorFactory^] allows registration of a factory that returns a collector instance and link:{jdbidocs}/sqlobject/config/RegisterCollector.html[@RegisterCollector^] registers a collector implementation:
 
@@ -5170,7 +5344,7 @@ class StringConcatCollector implements Collector<Integer, List<Integer>, String>
 }
 ----
 
-The element and result types are inferred from the concrete link:{jdkdocs}/java/util/stream/Collector.html[Collector<Element, ?, Result>^] implementation's type parameters. See <<Collectors>> for more details.
+The element and result types are inferred from the concrete link:{jdkdocs}/java.base/java/util/stream/Collector.html[Collector<Element, ?, Result>^] implementation's type parameters. See <<Collectors>> for more details.
 
 
 
@@ -5324,8 +5498,8 @@ This is most useful for SQL object instances that get passed from other code, ha
 link:{jdbidocs}/core/Jdbi.html#onDemand(java.lang.Class)[Jdbi#onDemand()^] or use default methods. Any object that was created using the
 link:{jdbidocs}/core/Handle.html#attach(java.lang.Class)[Handle#attach()^] method will return the handle it was attached to.
 
-
-==== Using default Methods with the `SqlObject` mixin
+[#sqlobject-mixin]
+==== Getting access to the handle with the `SqlObject` mixin
 
 Occasionally a use case comes up where SQL Method annotations don't fit. In these situations, it is possible to "drop down" to the Core API using interface
 `default` methods and the link:{jdbidocs}/sqlobject/SqlObject.html[SqlObject^] mixin interface:
@@ -5340,7 +5514,66 @@ public interface SplineDao extends SqlObject {
 }
 ----
 
-Default methods can also be used to group multiple SQL operations into a single method call:
+The link:{jdbidocs}/core/Handle.html[Handle^] can be used for most operations available in the fluent API.
+
+A handle should only be obtained in this way for very specific reasons, and it is a good practice to restrain the use of the handle to code within a Dao class (e.g. a default method). If fluent code and declarative code needs to be mixed, moving from fluent to declarative should be preferred.
+
+[WARNING]
+A very notable exception is modifying the configuration of the handle. When a SQL object is created, every method on the SQL object gets its own, distinct configuration object. Calling any configuration modification method (any `set*` or `register*` method from the link:{jdbidocs}/core/config/Configurable.html[Configurable^] interface) will modify *only* the configuration object for the link:{jdbidocs}/sqlobject/SqlObject.html#getHandle()[getHandle()^] method but not for any other method.
+
+
+The following code example *DOES NOT WORK!*
+[source,java,indent=0]
+----
+@Test
+public void testSqlObjectHandleConfigDoesNotWork() {
+    List<Sulu> sulus = Arrays.asList(
+        new Sulu(1, "George", "Takei"),
+        new Sulu(2, "John", "Cho"));
+
+    db.useExtension(SuluDao.class, s -> {
+        Handle h = s.getHandle();
+        // THIS DOES NOT WORK! The argument factory is only
+        // registered for the getHandle() method, not
+        // for the insertSulus() method!
+        h.registerArgument(new SuluArgumentFactory());
+        // This call results in an exception that no argument
+        // factory for the Sulu data type could be found!
+        dao.insertSulus(sulus);
+    }
+}
+
+public interface SuluDao extends SqlObject {
+    @SqlBatch("insert into something (id, name) values (:bean.id, :sulu)")
+    void insertSulus(@Bind("sulu") @BindBean("bean") List<Sulu> sulus);
+}
+----
+
+The code above can be rewritten to move from fluent to declarative API:
+
+[source,java,indent=0]
+----
+public void testMixFluentAndSqlObject() {
+    List<Sulu> sulus = Arrays.asList(
+        new Sulu(1, "George", "Takei"),
+        new Sulu(2, "John", "Cho"));
+
+    db.withHandle(h -> {
+        // register the argument with the handle before attaching
+        // the dao to the handle
+        h.registerArgument(new SuluArgumentFactory());
+        SuluDao dao = h.attach(SuluDao.class);
+        // all methods on the dao have received the configuration with the
+        // argument factory
+        dao.insertSulus(sulus);
+        return null;
+    });
+}
+----
+
+==== Using default Methods
+
+Default methods can be used to group multiple SQL operations into a single method call:
 
 [source,java,indent=0]
 ----
@@ -5488,13 +5721,16 @@ public void createUsers(Jdbi jdbi) {
 }
 ----
 
+[NOTE]
+The link:{jdbidocs}/sqlobject/transaction/Transactional.html[Transactional^] interface  has the same constraints as the <<sqlobject-mixin, SQLObject>> mixin. Especially modifying the configuration by obtaining a handle using link:{jdbidocs}/sqlobject/SqlObject.html#getHandle()[getHandle()^] and then calling any `set*` or `register*` method from the link:{jdbidocs}/core/config/Configurable.html[Configurable^] interface is not supported and will modify only the configuration for the link:{jdbidocs}/sqlobject/SqlObject.html#getHandle()[getHandle()^] method.
+
 
 == Miscellaneous
 
 
 === Generated Keys
 
-An Update or PreparedBatch may automatically generate keys. These keys
+An Update or link:{jdbidocs}/core/statement/PreparedBatch.html[PreparedBatch^] may automatically generate keys. These keys
 are treated separately from normal results. Depending on your database and
 configuration, the entire inserted row may be available.
 
@@ -5589,7 +5825,7 @@ and setter parameters.
 - link:{jdbidocs}/sqlobject/customizer/BindMethods.html[@BindMethods^] and `bindMethods()` respect qualifiers on methods.
 - link:{jdbidocs}/sqlobject/customizer/BindFields.html[@BindFields^], link:{jdbidocs}/sqlobject/config/RegisterFieldMapper.html[@RegisterFieldMapper^], `FieldMapper` and `bindFields()` respect qualifiers on fields.
 - `SqlObject` respects qualifiers on methods (applies them to the return type) and parameters.
-* on parameters of type link:{jdkdocs}/java/util/function/Consumer.html[Consumer<T>^], qualifiers are applied to the `T`.
+* on parameters of type link:{jdkdocs}/java.base/java/util/function/Consumer.html[Consumer<T>^], qualifiers are applied to the `T`.
 - link:{jdbidocs}/sqlobject/statement/MapTo.html[@MapTo^]
 - link:{jdbidocs}/jpa/BindJpa.html[@BindJpa^] and `JpaMapper` respect qualifiers on getters and setters.
 - `@BindKotlin`, `bindKotlin()`, and `KotlinMapper` respect qualifiers on constructor parameters, getters, setters, and setter parameters.
@@ -5707,7 +5943,7 @@ Multiple comment styles are supported:
 
 Each piece of core or extension that wishes to participate in
 configuration defines a configuration class, for example the `SqlStatements`
-class stores SqlStatement related configuration.  Then, on any `Configurable` context
+class stores SqlStatement related configuration.  Then, on any link:{jdbidocs}/core/config/Configurable.html[Configurable^] context
 (like a link:{jdbidocs}/core/Jdbi.html[Jdbi^] or link:{jdbidocs}/core/Handle.html[Handle^]) you can change configuration in a type safe way:
 
 [source,java,indent=0]
@@ -5793,7 +6029,7 @@ It provides helpers for writing JUnit 4 tests integrated with a managed database
 <dependency>
     <groupId>com.h2database</groupId>
     <artifactId>h2</artifactId>
-    <version>2.1.212</version>
+    <version>2.1.224</version>
     <scope>test</scope>
 </dependency>
 ----
@@ -5805,7 +6041,7 @@ JUnit 4 supports the OTJ embedded postgres component, which needs to be included
 <dependency>
     <groupId>com.opentable.components</groupId>
     <artifactId>otj-pg-embedded</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <scope>test</scope>
 </dependency>
 ----
@@ -5934,61 +6170,89 @@ class TestWithContainers {
 }
 ----
 
+[TIP]
+The `dbContainer` object is registered as class level field for sharing between all the tests in the test class https://junit.org/junit5/docs/current/user-guide/#extensions-registration-programmatic-static-fields[as described in the JUnit 5 documentation^]. Some IDEs warn that this field should not be static. *This is a false positive/bug*. Changing `dbContainer` to an instance field will result in starting and stopping a new database per test which is a significant performance penalty.
+
+
 The link:{jdbidocs}/testing/junit5/tc/JdbiTestcontainersExtension.html[JdbiTestcontainersExtension^] has built-in support to isolate each test method in a test class. The container can be declared as a static class member which speeds up test execution significantly.
 
-There is built-in support for MySQL, MariaDB, TiDB, PostgreSQL, CockroachDB, YugabyteDB, ClickHouse, Oracle XE and Trino. It also supports the various compatible flavors (such as PostGIS for PostgreSQL).
+There is built-in support for MySQL, MariaDB, TiDB, PostgreSQL, CockroachDB, YugabyteDB, ClickHouseDB, Oracle XE, Oracle free, Trino, MS SQLServer and DB2. It also supports the various compatible flavors (such as PostGIS for PostgreSQL).
+
+By default, Jdbi tries to run every test with its own schema instance in a single schema. For database engines that do not support schemas, it will use separate catalogs. For database engines that do not support catalogs or schemas (e.g. MySQL), it will use separate databases.
+
+For each database, Jdbi can provide custom user, catalog and schema names and requires one or more SQL statements to initialize an isolated instance for testing.
+
+[%header, cols=5*]
+.Supported Testcontainer databases
+|=====
+| Database | Isolation type | Database User | Catalog/Database name | Schema name
+| MySQL, MariaDB, TiDB | Catalog | `root` | (random) |
+| PostgreSQL, CockroachDB, YugabyteDB | Schema | (default) | `test` | (random)
+| ClickhouseDB | Catalog | (default) | (random) |
+| Oracle XE, Oracle free | Schema | `system` | (default catalog) | (random)
+| Trino | Schema | (default) | `memory` | (random)
+| MS SQLServer | Catalog | `sa` | (random) |
+| DB2 | Schema | (default) | `test` | (random) |
+|=====
+
+- Database user _(default)_: Jdbi uses the default user as returned by the testcontainer class.
+- Isolation type _Catalog_: A new catalog (or database) is created for each test. The schema name is not used or the database does not support schemas.
+- Isolation type _Schema_:  A new schema is created in the specified catalog (or database).
+- Catalog or Schema name _(random)_: Jdbi will create a random name.
+
 
 ==== Providing custom database information
 
-The link:{jdbidocs}/testing/junit5/tc/JdbiTestcontainersExtension.html[JdbiTestcontainersExtension^] creates a new database or schema (depending on the database engine) for each test. This speeds up test execution. In some cases (e.g. when using a not yet supported database engine or when using a custom docker image), it may be necessary to provide a custom instance of the link:{jdbidocs}/testing/junit5/tc/TestcontainersDatabaseInformation.html[TestcontainersDatabaseInformation^] class that describes how to manage a specific database engine.
+While Jdbi makes an effort to support all databases provided by the Testcontainers project that support JDBC, there are some situation when it is necessary to provide additional information:
 
-Here are examples for MySQL and PostgreSQL:
+- Using a database that is supported by testcontainer but not yet by Jdbi.
+- Using a custom docker image that is incompatible with the default Jdbi testcontainer support.
+- Require specific behavior in tests that is different from the Jdbi testcontainer support.
 
-[source,java,indent=0]
-----
-// MySQL has only databases, no schemata. The Jdbi extension creates a new database
-// for each test method.
-private static final TestcontainersDatabaseInformation MYSQL = TestcontainersDatabaseInformation.of(
-        "root",  // Testcontainers provides the 'root' superuser for MySQL instances.
-        null,    // do not override the generated catalog name
-        null,    // do not override the generated schema name (which is not used by MySQL)
-        // create a new database from the catalog name
-        (catalogName, schemaName) -> format("CREATE DATABASE %s", catalogName)
-);
+The link:{jdbidocs}/testing/junit5/tc/TestcontainersDatabaseInformation.html#of(java.lang.String,java.lang.String,java.lang.String,java.util.function.BiFunction)[TestcontainersDatabaseInformation#of()^] method allows creation of custom database information instances which then can be passed into link:{jdbidocs}/testing/junit5/tc/JdbiTestcontainersExtension.html#instance(org.jdbi.v3.testing.junit5.tc.TestcontainersDatabaseInformation,org.testcontainers.containers.JdbcDatabaseContainer)[JdbiTestcontainersExtension#instance(TestcontainersDatabaseInformation, JdbcDatabaseContainer)^] to create extensions with custom behavior.
 
-// PostgreSQL knows about schemata but needs to use the predefined "test" database.
-// The Jdbi extension creates a new schema for each test method
-private static final TestcontainersDatabaseInformation POSTGRES = TestcontainersDatabaseInformation.of(
-        null,   // Use the default user that testcontainers provides
-        "test", // override the generated catalog name with 'test'
-        null,   // do not override the generated schema name
-        // create a new schema from the schema name
-        (catalogName, schemaName) -> format("CREATE SCHEMA %s", schemaName)
-);
-----
-
-See the Javadoc for the link:{jdbidocs}/testing/junit5/tc/TestcontainersDatabaseInformation.html[TestcontainersDatabaseInformation^] class for further details.
-
-The link:{jdbidocs}/testing/junit5/tc/JdbiTestcontainersExtension.html[JdbiTestcontainersExtension^] provides the link:{jdbidocs}/testing/junit5/tc/JdbiTestcontainersExtension.html#instance(org.jdbi.v3.testing.junit5.tc.TestcontainersDatabaseInformation,org.testcontainers.containers.JdbcDatabaseContainer)[instance(TestcontainersDatabaseInformation, JdbcDatabaseContainer)^] method which uses a custom database information object:
+This is an example that uses a custom user with a special database image:
 
 [source,java,indent=0]
 ----
 @Testcontainers
-class TestWithCustomContainer {
+class UseCustomMysqlContainer {
+private static final TestcontainersDatabaseInformation CUSTOM_MYSQL =
+    TestcontainersDatabaseInformation.of(
+            "custom_user",  // This user must have privileges to create databases
+            null,    // do not override the generated catalog name
+            null,    // mysql does not know anything about schemas, so this value is ignored
+            // create a new database from the catalog name
+            (catalogName, schemaName) -> format("CREATE DATABASE %s", catalogName)
+    );
+
     @Container
-    static JdbcDatabaseContainer<?> dbContainer = new PostgreSQLContainer<>(
-       DockerImageName.parse("custom-image").asCompatibleSubstituteFor("postgres"));
-
-
-    static final TestcontainersDatabaseInformation CUSTOM_DATABASE =
-       TestcontainersDatabaseInformation.of( ... custom setup ...);
+    static JdbcDatabaseContainer<?> dbContainer = new MySQLContainer<>(
+       DockerImageName.parse("custom/mysql-image").asCompatibleSubstituteFor("mysql"));
 
     @RegisterExtension
-    JdbiExtension extension = JdbiTestcontainersExtension.instance(CUSTOM_DATABASE, dbContainer);
+    JdbiExtension extension = JdbiTestcontainersExtension.instance(CUSTOM_MYSQL, dbContainer);
 
-    // ... test code using the custom engine
+    // ... test code using the custom mysql instance
 }
 ----
+
+
+The Javadoc for the link:{jdbidocs}/testing/junit5/tc/TestcontainersDatabaseInformation.html[TestcontainersDatabaseInformation^] class has additional details on how to create custom link:{jdbidocs}/testing/junit5/tc/JdbiTestcontainersExtension.html[JdbiTestcontainersExtension^] instances.
+
+==== Controlling the extension shutdown timeout
+
+Some testcontainer based database may take a long time to create a new schema so when tests run very fast, shutting down the link:{jdbidocs}/testing/junit5/tc/JdbiTestcontainersExtension.html[JdbiTestcontainersExtension^] at the end of a test may interrupt this process and log spurious messages in the logs. Those messages are benign and can be safely ignored. If it is necessary (e.g. because there is a "no messages" policy in place at your organization), the shutdown time can be extended by setting the wait time to a higher value than the default of 10 seconds:
+
+[source,java,indent=0]
+----
+@RegisterExtension
+JdbiExtension extension = JdbiTestcontainersExtension.instance(CUSTOM_MYSQL, dbContainer)
+    .setShutdownWaitTimeInSeconds(20); // set shutdown wait time to 20 seconds
+----
+
+[WARNING]
+Using a wait time of 0 seconds will wait until all of the internal state has been shutdown completely. This may result in infinite hangs of the tests when shutting down.
 
 
 == Third-Party Integration
@@ -5998,21 +6262,34 @@ class TestWithCustomContainer {
 
 This plugin adds support for the following types:
 
-* `Optional<T>` - registers an argument and mapper. Supports link:{jdkdocs}/java/util/Optional.html[Optional^] for any
+* `Optional<T>` - registers an argument and mapper. Supports link:{jdkdocs}/java.base/java/util/Optional.html[Optional^] for any
   wrapped type `T` for which a mapper / argument factory is registered.
 * Most Guava collection and map types - see
  link:{jdbidocs}/guava/GuavaCollectors.html[GuavaCollectors^] for a complete
   list of supported types.
 
-To use this plugin, add a Maven dependency:
+To use this plugin, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
     <groupId>org.jdbi</groupId>
     <artifactId>jdbi3-guava</artifactId>
+    <version>{project_version}</version>
 </dependency>
 ----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-guava:{project_version}")
+}
+----
+
 
 Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
 
@@ -6062,14 +6339,26 @@ and `varchar` columns in H2 and Sqlite.
 
 ==== Jackson 2
 
-This plugin provides JSON backing through Jackson 2.
+This plugin provides JSON backing through Jackson 2. To use it, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-jackson2</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-jackson2</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-jackson2:{project_version}")
+}
 ----
 
 [source,java,indent=0]
@@ -6085,14 +6374,26 @@ jdbi.getConfig(Jackson2Config.class).setView(ApiProperty.class);
 
 ==== Gson 2
 
-This plugin provides JSON backing through Gson 2.
+This plugin provides JSON backing through Gson 2. To use it, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-gson2</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-gson2</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-gson2:{project_version}")
+}
 ----
 
 [source,java,indent=0]
@@ -6105,14 +6406,26 @@ jdbi.getConfig(Gson2Config.class).setGson(myGson);
 
 ==== Moshi
 
-This plugin provides JSON backing through Moshi.
+This plugin provides JSON backing through Moshi. To use it, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
     <groupId>org.jdbi</groupId>
     <artifactId>jdbi3-moshi</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-moshi:{project_version}")
+}
 ----
 
 [source,java,indent=0]
@@ -6242,14 +6555,26 @@ include::{coreexampledir}/FreeBuildersTest.java[tags=example]
 
 This plugin adds support for using joda-time's `DateTime` type.
 
-To use this plugin, add a Maven dependency:
+To use this plugin, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
     <groupId>org.jdbi</groupId>
     <artifactId>jdbi3-jodatime2</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-jodatime2:{project_version}")
+}
 ----
 
 Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
@@ -6932,14 +7257,26 @@ This plugin adds mapping support for a small subset of JPA entity annotations:
 * MappedSuperclass
 * Column
 
-To use this plugin, add a Maven dependency:
+To use this plugin, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-jpa</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-jpa</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-jpa:{project_version}")
+}
 ----
 
 Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
@@ -6972,14 +7309,26 @@ will be set after the constructor call. The mapper supports nullable types. It
 also uses default parameter values in the constructor if the parameter type is
 not nullable and the value absent in the result set.
 
-To use this plugin, add a Maven dependency:
+To use this plugin, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-kotlin</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-kotlin</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-kotlin:{project_version}")
+}
 ----
 
 Ensure the Kotlin compiler's https://kotlinlang.org/docs/reference/using-maven.html#attributes-specific-for-jvm[JVM target version^] is set to at least 11:
@@ -6989,7 +7338,7 @@ Ensure the Kotlin compiler's https://kotlinlang.org/docs/reference/using-maven.h
 <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
 ----
 
-Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
+Then install the link:{kotlindocs}core.kotlin/-kotlin-plugin/[Kotlin Plugin^] into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
 
 [source,kotlin]
 ----
@@ -7039,18 +7388,125 @@ qryAll.mapTo<Thing>.useSequence {
 }
 ----
 
+==== Coroutine support
+
+[NOTE]
+Coroutine support is very much experimental and not yet proven. If you find a bug or see a problem, please file a https://github.com/jdbi/jdbi/issues[bug report].
+
+Kotlin offers a https://kotlinlang.org/docs/coroutines-overview.html[coroutine extension^] to support asynchronous programming on the Kotlin platform.
+
+Coroutines work similar to "green threads" where operations are mapped onto a thread pool and may be executed on multiple threads. This clashes with the internal model that Jdbi uses to manage Handles (which is by default local to each thread).
+
+The Kotlin module offers support for coroutines with Jdbi. It allows handles to move across thread boundaries and
+allows seamless use of handles in coroutines.
+
+Coroutine support is disabled by default and is activated by passing the `enableCoroutineSupport = true` property to the constructor of the link:{kotlindocs}core.kotlin/-kotlin-plugin/[Kotlin Plugin^].
+
+[source,kotlin]
+----
+val jdbi = Jdbi.create( ... )
+    .installPlugin(KotlinPlugin(enableCoroutineSupport = true))
+
+jdbi.inTransactionUnchecked { transactionHandle ->
+    runBlocking(jdbi.inCoroutineContext()) { <1>
+        withContext(Dispatchers.Default + jdbi.inCoroutineContext(transactionHandle)) { <2>
+            launch () {
+                jdbi.useHandleUnchecked { handle -> <3>
+                    ...
+                }
+            }
+        }
+
+        launch(Dispatchers.Default) { <4>
+            jdbi.useHandleUnchecked { handle -> <5>
+                ...
+            }
+        }
+    }
+}
+----
+
+<1> calling the link:{kotlindocs}core.kotlin/in-coroutine-context.html[Jdbi#inCoroutineContext()^] extension method without a parameter disconnects the coroutine scope from any existing thread local elements.
+<2> calling the link:{kotlindocs}core.kotlin/in-coroutine-context.html[Jdbi#inCoroutineContext()^] extension method with a handle object uses this handle for all coroutines in this scope.
+<3> calling Jdbi methods within the coroutine scope will use the handle that was provided above.
+<4> Launching a coroutine without an explicitly attached handle works as well, in this case, a new handle gets created
+<5> The handle here is a newly created handle that only exists within the jdbi callback.
+
+[WARNING]
+Coroutines that are executed in parallel by different threads at the same time will get the same handle as they share the same coroutine context. While the Handle object can be shared by multiple threads (if the underlying connection object supports it), they are designed
+to be used by "one thread at a time" so additional coordination is required in this case.
+
+Coroutines are also supported for extension objects such as the <<SQL Objects, SQL Object extension>>:
+
+[source,kotlin]
+----
+val jdbi = Jdbi.create( ... )
+    .installPlugin(KotlinPlugin(enableCoroutineSupport = true))
+    .installPlugin(SqlObjectPlugin())
+
+data class Something(
+    val id: Int,
+    val name: String
+)
+
+@RegisterKotlinMapper(Something::class)
+interface SomethingDao : SqlObject {
+    @SqlUpdate("insert into something (id, name) values (:id, :name)")
+    fun insert(@BindKotlin something: Something)
+
+    @SqlQuery("select id, name from something where id=:id")
+    fun findById(@Bind("id") id: Int): Something
+}
+
+jdbi.withExtensionUnchecked(SomethingDao::class) { dao ->
+    runBlocking(Dispatchers.IO + jdbi.inCoroutineContext()) {
+        coroutineScope {
+            insertSomething(dao)
+
+            val first = selectSomething(dao, 1)
+            delay(1000L)
+        }
+
+        val second = selectSomething(dao, 2)
+    }
+}
+
+private suspend fun insertSomething(dao: SomethingDao): Unit = coroutineScope {
+    dao.insert(Something(1, "first name"))
+    dao.insert(Something(2, "second name"))
+}
+
+private suspend fun selectSomething(dao: SomethingDao, id: Int): Something = coroutineScope {
+    dao.findById(id)
+}
+----
+
 
 ==== SqlObject
 
 The *jdbi3-kotlin-sqlobject* plugin adds automatic parameter binding by name
 for Kotlin methods in SqlObjects as well as support for Kotlin default methods.
 
-[source,xml,indent=0,subs="specialchars"]
+To use it, add a dependency:
+
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-kotlin-sqlobject</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-kotlin-sqlobject</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject:{project_version}")
+}
 ----
 
 Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
@@ -7147,17 +7603,29 @@ lombok.copyableAnnotations += org.jdbi.v3.json.Json
 
 This module adds support for Oracle `RETURNING` DML expressions.
 
-To use this feature, add a Maven dependency:
+To use this feature, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-oracle12</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-oracle12</artifactId>
+    <version>{project_version}</version>
 </dependency>
 ----
 
-Then, use the `OracleReturning` class with an link:{jdbidocs}/core/statement/Update.html[Update^] or `PreparedBatch`
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-oracle12:{project_version}")
+}
+----
+
+Then, use the https://jdbi.org/modules/jdbi3-oracle12/apidocs/org/jdbi/v3/oracle12/OracleReturning.html[OracleReturning^] class with an link:{jdbidocs}/core/statement/Update.html[Update^] or link:{jdbidocs}/core/statement/PreparedBatch.html[PreparedBatch^]
 to get the returned DML.
 
 // TODO: usage example
@@ -7168,14 +7636,26 @@ to get the returned DML.
 The *jdbi3-postgres* plugin provides enhanced integration with the
 https://jdbc.postgresql.org/[PostgreSQL JDBC Driver^].
 
-To use this feature, add a Maven dependency:
+To use this feature, add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-postgres</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-postgres</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-postgres:{project_version}")
+}
 ----
 
 Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance.
@@ -7186,8 +7666,8 @@ Jdbi jdbi = Jdbi.create("jdbc:postgresql://host:port/database")
                 .installPlugin(new PostgresPlugin());
 ----
 
-The plugin configures mappings for link:{jdkdocs}/java/time/package-summary.html[java.time^] types like
-link:{jdkdocs}/java/time/Instant.html[Instant^] or link:{jdkdocs}/java/time/Duration.html[Duration^], link:{jdkdocs}/java/net/InetAddress.html[InetAddress^], link:{jdkdocs}/java/util/UUID.html[UUID^], typed enums, and <<postgres-hstore,hstore>>.
+The plugin configures mappings for link:{jdkdocs}/java.base/java/time/package-summary.html[java.time^] types like
+link:{jdkdocs}/java.base/java/time/Instant.html[Instant^] or link:{jdkdocs}/java.base/java/time/Duration.html[Duration^], link:{jdkdocs}/java.base/java/net/InetAddress.html[InetAddress^], link:{jdkdocs}/java.base/java/util/UUID.html[UUID^], typed enums, and <<postgres-hstore,hstore>>.
 
 It also configures SQL array type support for `int`, `long`, `float`, `double`,
 `String`, and `UUID`.
@@ -7226,7 +7706,7 @@ Map<String, String> caps = handle.createUpdate("UPDATE account SET attributes = 
     .execute();
 ----
 
-By default, SQL Object treats link:{jdkdocs}/java/util/Map.html[Map^] return types as a collection of `Map.Entry`
+By default, SQL Object treats link:{jdkdocs}/java.base/java/util/Map.html[Map^] return types as a collection of `Map.Entry`
 values. Use the link:{jdbidocs}/sqlobject/SingleValue.html[@SingleValue^] annotation to override this, so that the return
 type is treated as a single value instead of a collection:
 
@@ -7240,7 +7720,7 @@ public interface AccountDao {
 ----
 
 [NOTE]
-The default variant to install the plugin adds unqualified mappings of raw link:{jdkdocs}/java/util/Map.html[Map^] types from and to the `hstore` Postgres data type. There are situations where this interferes with other mappings of maps. It is recommended to always use the variant with the `@HStore` qualified type.
+The default variant to install the plugin adds unqualified mappings of raw link:{jdkdocs}/java.base/java/util/Map.html[Map^] types from and to the `hstore` Postgres data type. There are situations where this interferes with other mappings of maps. It is recommended to always use the variant with the `@HStore` qualified type.
 
 To avoid binding the unqualified Argument and ColumnMapper bindings, install the plugin using the static factory method:
 
@@ -7318,20 +7798,39 @@ https://jdbc.postgresql.org/documentation/head/binary-data.html[Pg-JDBC docs^]
 for upstream driver documentation.
 
 
-=== Spring 5
+=== Spring
 
-This module provides `JdbiFactoryBean`, a factory bean which sets up a link:{jdbidocs}/core/Jdbi.html[Jdbi^]
-singleton in a Spring 5 (or Spring Boot) application context.
+This module integrates Jdbi and Spring / Spring Boot, including JTA support.
 
-To use this module, add a Maven dependency:
+The `spring5` module supports Spring 5 (Spring Boot 2) and newer.
+We currently test with Spring 5 and Spring 6.
 
-[source,xml,indent=0,subs="specialchars"]
+To use *jdbi-spring5*, add a dependency:
+
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
     <groupId>org.jdbi</groupId>
     <artifactId>jdbi3-spring5</artifactId>
+    <version>{project_version}</version>
 </dependency>
 ----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-spring5:{project_version}")
+}
+----
+
+
+==== XML-based configuration
+For XML-based configurations the class link:{jdbidocs}/spring5/JdbiFactoryBean.html[JdbiFactoryBean^] is made available to set up a
+link:{jdbidocs}/core/Jdbi.html[Jdbi^] singleton in a Spring 5 (or Spring Boot) application context.
 
 Then configure the Jdbi factory bean in your Spring container, e.g.:
 
@@ -7375,14 +7874,14 @@ Then configure the Jdbi factory bean in your Spring container, e.g.:
 <1> The SQL data source that Jdbi will connect to. In this example we use an H2
     database, but it can be any JDBC-compatible database.
 <2> Enable configuration of transactions via annotations.
-<3> Configure `JdbiFactoryBean` using the data source configured earlier.
+<3> Configure link:{jdbidocs}/spring5/JdbiFactoryBean.html[JdbiFactoryBean^] using the data source configured earlier.
 <4> Inject a link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance into a service class. Alternatively, use standard JSR-330 `@Inject` annotations on the target class instead of configuring it in your `beans.xml`.
 
 
-==== Installing Plugins
+===== Installing Plugins
 
 Plugins may be automatically installed by scanning the classpath for
-link:{jdkdocs}/java/util/ServiceLoader.html[ServiceLoader^] manifests.
+link:{jdkdocs}/java.base/java/util/ServiceLoader.html[ServiceLoader^] manifests.
 
 [source,xml,indent=0]
 ----
@@ -7424,7 +7923,7 @@ auto-install some plugins and manually install the rest:
 ----
 
 
-==== Global Attributes
+===== Global Attributes
 
 Global defined attributes may be configured on the factory bean:
 
@@ -7440,6 +7939,71 @@ Global defined attributes may be configured on the factory bean:
 </bean>
 ----
 
+==== Annotation-based configuration
+For annotation based configurations you can add the following method in a
+`@Configuration` class:
+
+[source,java,indent=0]
+----
+@Configuration
+public class JdbiConfiguration {
+    @Bean
+    public Jdbi jdbi(DataSource ds) {
+        ConnectionFactory cf = new SpringConnectionFactory(dataSource); // <1>
+        final Jdbi jdbi = Jdbi.create(cf);
+        /* additional configuration goes here */
+        return jdbi;
+    }
+}
+----
+<1> This connection factory will enable <<spring5-jta, JTA support>>.
+
+[#spring5-jta]
+==== Synchronization between Jdbi and JTA
+If you use Spring and databases, you will most likely also use the Java Transaction API (JTA)
+to manage the transactions. The `JdbiUtil` utility can be used to obtain link:{jdbidocs}/core/Handle.html[Handles^]
+synchronized with Spring's JTA, as can be seen in the following fragment:
+
+[source,java,indent=0]
+----
+Handle handle = JdbiUtil.getHandle(jdbi); // <1>
+try {
+    /* Use the handle */
+} finally {
+    JdbiUtil.closeIfNeeded(handle); // <2>
+}
+----
+<1> Creates or reuses a handle, optionally synchronizing it with the current transaction
+<2> Closes the handle if it is not bound to a Spring transaction.
+
+This utility will also make sure that the handle is released when it was bound to a Spring transaction
+and that transaction is closed.
+
+==== Jdbi Repositories
+When using <<sql-objects, SQL objects>> it might be preferable to have them available for injection.
+This can be realized using the `@EnableJdbiRepositories` annotation (generally placed on your main class).
+This annotation will enable the detection of SQL objects annotated with `@JdbiRepository` and create a Spring
+bean for each of them.
+Beans created like this will also synchronize with JTA.
+
+Example usage:
+
+[source,java,indent=0]
+----
+@JdbiRepository
+public interface UserDao {
+    /* SQL Object functionality goes here */
+}
+----
+
+[source,java,indent=0]
+----
+@Component
+public class UserService {
+    @Autowired
+    private UserDao userDao;
+}
+----
 
 === SQLite
 The *jdbi3-sqlite* plugin provides support for using the
@@ -7449,14 +8013,26 @@ with Jdbi.
 The plugin configures mapping for the Java *URL* type which is not
 supported by driver.
 
-To use this plugin, first add a Maven dependency:
+To use this plugin, first add a dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-sqlite</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-sqlite</artifactId>
+    <version>{project_version}</version>
 </dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-sqlite:{project_version}")
+}
 ----
 
 Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance.
@@ -7471,18 +8047,31 @@ Jdbi jdbi = Jdbi.create("jdbc:sqlite:database")
 [#stringtemplate4]
 === StringTemplate 4
 
-This module allows you to plug in the https://www.stringtemplate.org/[StringTemplate 4^] templating engine, in
-place of the standard Jdbi templating engine.
+This module allows you to plug in the https://www.stringtemplate.org/[StringTemplate 4^] templating engine, in  place of the standard Jdbi templating engine.
 
-To use module plugin, add a Maven dependency:
+String Template is a separate dependency:
 
-[source,xml,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-stringtemplate4</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-stringtemplate4</artifactId>
+    <version>{project_version}</version>
 </dependency>
 ----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-stringtemplate4:{project_version}")
+}
+----
+
+==== Using String template for parsing
 
 To use StringTemplate format in SQL statements, set the template engine to link:{jdbidocs}/stringtemplate4/StringTemplateEngine.html[StringTemplateEngine^].
 
@@ -7512,7 +8101,25 @@ you might need to escape some SQL:
 String datePredicateSql = "<if(datePredicate)> <dateColumn> \\< :dateFilter <endif>";
 ----
 
-Alternatively, SQL templates can be loaded from StringTemplate group files on  the classpath:
+When using SQL Objects, the link:{jdbidocs}/stringtemplate4/UseStringTemplateEngine.html[@UseStringTemplateEngine^] annotation activates parsing using StringTemplate:
+
+[source,java,indent=0]
+----
+package com.foo;
+
+public interface AccountDao {
+    @SqlQuery("SELECT id, name " +
+              "FROM account " +
+              "ORDER BY <if(sort)> <sortBy>, <endif> id")
+    @UseStringTemplateEngine
+    List<Account> selectAll(@Define boolean sort,
+                            @Define String sortBy);
+}
+----
+
+==== Locating Stringtemplate files on the class path
+
+SQL templates can be loaded from StringTemplate group files on the classpath by using the link:{jdbidocs}/stringtemplate4/StringTemplateSqlLocator.html[StringTemplateSqlLocator^]:
 
 [source,stringtemplate]
 .com/foo/AccountDao.sql.stg
@@ -7536,25 +8143,11 @@ String sql = template.add("sort", true)
                      .render();
 ----
 
-In SQL Objects, the `@UseStringTemplateEngine` annotation sets the
-statement locator, similar to first example above.
+In this example, since the fully qualified class name is `com.foo.AccountDao`,
+SQL will be loaded from the file `com/foo/AccountDao.sql.stg` on the
+classpath. In the String template group file, the `selectAll` group will be located and used for rendering.
 
-[source,java,indent=0]
-----
-package com.foo;
-
-public interface AccountDao {
-    @SqlQuery("SELECT id, name " +
-              "FROM account " +
-              "ORDER BY <if(sort)> <sortBy>, <endif> id")
-    @UseStringTemplateEngine
-    List<Account> selectAll(@Define boolean sort,
-                            @Define String sortBy);
-}
-----
-
-Alternatively, the `@UseStringTemplateSqlLocator` annotation sets the statement
-locator, and loads SQL from a StringTemplate group file on the classpath:
+In SQL objects, the link:{jdbidocs}/stringtemplate4/UseStringTemplateSqlLocator.html[@UseStringTemplateSqlLocator^] annotation supports loading templates from the classpath:
 
 [source,java,indent=0]
 ----
@@ -7568,12 +8161,10 @@ public interface AccountDao {
 }
 ----
 
-In this example, since the fully qualified class name is `com.foo.AccountDao`,
-SQL will be loaded from the file `com/foo/AccountDao.sql.stg` on the
-classpath.
+Here, since the fully qualified class name is `com.foo.AccountDao`,
+SQL will be rendered by loading the `selectAll` template from the `com/foo/AccountDao.sql.stg` String template group file on the  classpath.
 
-By default, the template in the group with the same name as the method will be
-used. This can be overridden on the `@Sql___` annotation:
+By default, the method name is used to locate a template in the template group file. This can be overridden by setting a name in the sql method annotation:
 
 [source,java,indent=0]
 ----
@@ -7587,13 +8178,147 @@ public interface AccountDao {
 }
 ----
 
-In this example, the SQL template will still be loaded from the file
+In this example, the SQL template will still be loaded from the template group file
 `com/foo/AccountDao.sql.stg` on the classpath, however the `listSorted`
 template will be used, regardless of the method name.
 
 There are some options for StringTemplateEngine on the
 link:{jdbidocs}/stringtemplate4/StringTemplates.html[StringTemplates^] configuration class,
 like whether missing attributes are considered an error or not.
+
+[NOTE]
+The link:{jdbidocs}/stringtemplate4/UseStringTemplateEngine.html[@UseStringTemplateEngine^] annotation activates parsing of the value of a SQL method annotation using the String Template engine while the link:{jdbidocs}/stringtemplate4/UseStringTemplateSqlLocator.html[@UseStringTemplateSqlLocator^] uses string template group files on the class path to load and parse templates. These annotations are mutually exclusive and the behavior, if these annotations are used simultaneously, is undefined.
+
+
+=== Apache Freemarker
+
+This module allows you to plug in the https://freemarker.apache.org/[Apache Freemarker^] templating engine, in  place of the standard Jdbi templating engine.
+
+Freemarker support is a separate module that needs to be added as a dependency:
+
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
+----
+<dependency>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-freemarker</artifactId>
+    <version>{project_version}</version>
+</dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-freemarker:{project_version}")
+}
+----
+
+==== Using Freemarker for parsing
+
+To use the Freemarker format in SQL statements, set the template engine to link:{jdbidocs}/freemarker/FreemarkerEngine.html[FreemarkerEngine^].
+
+Defined attributes are provided to the Freemarker template engine to render the SQL:
+
+[source,java,indent=0]
+----
+String sortColumn = "name";
+String sql = "SELECT id, name " +
+             "FROM account " +
+             "ORDER BY <#if sort> ${sortBy}, </#if> id";
+
+List<Account> accounts = handle
+    .createQuery(sql)
+    .setTemplateEngine(FreemarkerEngine.instance())
+    .define("sort", true)
+    .define("sortBy", sortColumn)
+    .mapTo(Account.class)
+    .list();
+----
+
+When using SQL Objects, the link:{jdbidocs}/freemarker/UseFreemarkerEngine.html[@UseFreemarkerEngine^] annotation activates parsing using Apache Freemarker.
+
+[source,java,indent=0]
+----
+package com.foo;
+
+public interface AccountDao {
+    @SqlQuery("SELECT id, name " +
+              "FROM account " +
+              "ORDER BY <#if sort> ${sortBy}, </#if> id")
+    @UseFreemarkerEngine
+    List<Account> selectAll(@Define boolean sort,
+                            @Define String sortBy);
+}
+----
+
+==== Locating Freemarker templates on the class path
+
+SQL templates can be loaded from files on the classpath by using the link:{jdbidocs}/freemarker/FreemarkerSqlLocator.html[FreemarkerSqlLocator^]:
+
+[source,injectedfreemarker]
+.com/foo/AccountDao/selectAll.sql.ftl
+----
+  SELECT id, name FROM account ORDER BY <#if sort> ${sortBy}, </#if> id
+----
+
+[source,java,indent=0]
+----
+FreemarkerSqlLocator locator = new FreemarkerSqlLocator(new FreemarkerConfig());
+Template template = locator.locate(AccountDao.class, "selectAll");
+
+Map<String, Object> attributes = Map.of(
+    "sort", true,
+    "sortBy", sortColumn);
+
+final String sql;
+try (StringWriter writer = new StringWriter()) {
+    template.process(attributes, writer);
+    sql = writer.toString();
+} catch (TemplateException | IOException e) {
+    throw new IllegalStateException("Failed to render template " + templateName, e);
+}
+----
+
+In SQL Objects, the link:{jdbidocs}/freemarker/UseFreemarkerSqlLocator.html[@UseFreemarkerSqlLocator^] annotation supports loading templates:
+
+[source,java,indent=0]
+----
+package com.foo;
+
+public interface AccountDao {
+    @SqlQuery
+    @UseFreemarkerSqlLocator
+    List<Account> selectAll(@Define boolean sort,
+                            @Define String sortBy);
+}
+----
+
+In this example, since the fully qualified class name is `com.foo.AccountDao`,
+SQL will be loaded from the file `com/foo/AccountDao/selectAll.sql.ftl` on the
+classpath. By default, every template must be a separate file on the class path.
+
+[source,java,indent=0]
+----
+package com.foo;
+
+public interface AccountDao {
+    @SqlQuery("listSorted")
+    @UseFreemarkerSqlLocator
+    List<Account> selectAll(@Define boolean sort,
+                            @Define String sortBy);
+}
+----
+
+Setting a value in the SQL operation affects the file loaded. In this example, changing the name to `listSorted` will load the file `com/foo/AccountDao/listSorted.sql.ftl` from the classpath.
+
+Freemarker has a wealth of configuration options, please see the https://freemarker.apache.org[Freemarker Website] for details.
+
+[NOTE]
+The link:{jdbidocs}/freemarker/UseFreemarkerEngine.html[@UseFreemarkerEngine^] annotation activates parsing of the value of a SQL method annotation using the Freemarker engine while the link:{jdbidocs}/freemarker/UseFreemarkerSqlLocator.html[@UseFreemarkerSqlLocator^] uses files on the class path to load and parse FreeMarker templates. These annotations are mutually exclusive and the behavior, if these annotations are used simultaneously, is undefined.
+
 
 === Vavr
 
@@ -7604,10 +8329,10 @@ The Vavr Plugin offers deep integration of Jdbi with the Vavr functional library
   Given that for the wrapped type `T` a Mapper is registered.
 * Return Vavr collection types from queries. Supported are `Seq<T>`, `Set<T>`,
   `Map<K, T>` and `Multimap<K, T>` as well as all subtypes thereof.
-  It is possible to collect into a `Traversable<T>`, in this case a link:{jdkdocs}/java/util/List.html[List<T>^]
+  It is possible to collect into a `Traversable<T>`, in this case a link:{jdkdocs}/java.base/java/util/List.html[List<T>^]
   will be returned.
   For all interface types a sensible default implementation will be used
-  (e.q. link:{jdkdocs}/java/util/List.html[List<T>^] for `Seq<T>`). Furthermore ``Multimap<K, T>``s are backed by a `Seq<T>`
+  (e.q. link:{jdkdocs}/java.base/java/util/List.html[List<T>^] for `Seq<T>`). Furthermore ``Multimap<K, T>``s are backed by a `Seq<T>`
   as default value container.
 * Columns can be mapped into Vavr's `Option<T>` type.
 * Tuple projections for Jdbi! Yey! Vavr offers Tuples up to a maximum arity of 8.
@@ -7615,15 +8340,28 @@ The Vavr Plugin offers deep integration of Jdbi with the Vavr functional library
   If you select more columns than the arity of the projection the columns
   up to that index will be used.
 
-To use the plugin, add a Maven dependency:
+To use the plugin, add a dependency:
 
-[source,xml,indent=0,indent=0,subs="specialchars"]
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
 ----
 <dependency>
-  <groupId>org.jdbi</groupId>
-  <artifactId>jdbi3-vavr</artifactId>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-vavr</artifactId>
+    <version>{project_version}</version>
 </dependency>
 ----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-vavr:{project_version}")
+}
+----
+
 
 [WARNING]
 Vavr introduced binary incompatibilities between 0.10.x and 1.0.0-alpha. The Jdbi plugin only supports 0.9.x and 0.10.x and requires recompilation for vavr 1.0.0.
@@ -7809,6 +8547,7 @@ The Extension framework is generic and supports any type of extension that can b
 Jdbi provides the <<sql-objects,SQLObject plugin>>, which offers a declarative API by placing annotations on interface methods.
 
 
+[#using-jdbi-extensions]
 === Using Jdbi extensions
 
 _Extension types are usually java interface classes._ Any interface can be an extension type.
@@ -7856,6 +8595,7 @@ include::{exampledir}/ExtensionFrameworkTest.java[tags=handle_attach]
 The link:{jdbidocs}/core/Jdbi.html#withExtension(java.lang.Class,org.jdbi.v3.core.extension.ExtensionCallback)[Jdbi#withExtension()^], link:{jdbidocs}/core/Jdbi.html#useExtension(java.lang.Class,org.jdbi.v3.core.extension.ExtensionConsumer)[Jdbi#useExtension()^] and link:{jdbidocs}/core/Handle.html#attach(java.lang.Class)[Handle#attach()^] methods are the most common way to use extension type implementations.
 
 
+[#on-demand-extension]
 ==== On-demand extensions
 
 An extension type implementation can be acquired by calling the link:{jdbidocs}/core/Jdbi.html#onDemand(java.lang.Class)[Jdbi#onDemand()^] method which returns
@@ -7871,7 +8611,7 @@ include::{exampledir}/OnDemandExtensionTest.java[tags=with]
 ----
 
 [NOTE]
-The link:{jdbidocs}/core/Jdbi.html#onDemand(java.lang.Class)[Jdbi#onDemand()^] uses a link:{jdkdocs}/java/lang/reflect/Proxy.html[Java proxy^] object to provide
+The link:{jdbidocs}/core/Jdbi.html#onDemand(java.lang.Class)[Jdbi#onDemand()^] uses a link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[Java proxy^] object to provide
 the on-demand handle object. Java proxies only support Java interface classes as extension types and may not be compatible with
 https://docs.oracle.com/en/graalvm/enterprise/21/docs/reference-manual/native-image/DynamicProxy/[GraalVM^] when creating native code.
 
@@ -7911,7 +8651,7 @@ method on the extension type:
 
 Extension metadata is created once for each extension type and then reused.
 
-Jdbi usually returns a link:{jdkdocs}/java/lang/reflect/Proxy.html[Java proxy^] object to user code. Calling a method on that proxy will invoke per-method extension handlers. For each extension handler, objects specific to the invocation
+Jdbi usually returns a link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[Java proxy^] object to user code. Calling a method on that proxy will invoke per-method extension handlers. For each extension handler, objects specific to the invocation
 (link:{jdbidocs}/core/Handle.html[Handle^], link:{jdbidocs}/core/config/ConfigRegistry.html[configuration^]) are managed separately .
 
 [ditaa, round-corners=true, transparent=false]
@@ -8030,15 +8770,15 @@ getters that a factory can implement.  By default, each returns an empty collect
 
 ===== Java Object methods
 
-When the extension framework returns an implementation of an extension type, it usually returns a link:{jdkdocs}/java/lang/reflect/Proxy.html[Java proxy^]
+When the extension framework returns an implementation of an extension type, it usually returns a link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[Java proxy^]
 object which will invoke an extension handler for every method on the extension type.
 
 In addition to the methods defined by the extension type, the following methods also invoke extension handlers:
 
-- link:{jdkdocs}/java/lang/Object.html#toString--[Object#toString()^] returns "Jdbi extension proxy for _<extension type>_"
-- link:{jdkdocs}/java/lang/Object.html#equals-java.lang.Object-[Object#equals()^] and link:{jdkdocs}/java/lang/Object.html#hashCode--[Object#hashCode()^]
+- link:{jdkdocs}/java.base/java/lang/Object.html#toString--[Object#toString()^] returns "Jdbi extension proxy for _<extension type>_"
+- link:{jdkdocs}/java.base/java/lang/Object.html#equals-java.lang.Object-[Object#equals()^] and link:{jdkdocs}/java.base/java/lang/Object.html#hashCode--[Object#hashCode()^]
   implementations that ensure that each instance is only equal to itself.
-- link:{jdkdocs}/java/lang/Object.html#finalize--[Object#finalize()^] has no effect.
+- link:{jdkdocs}/java.base/java/lang/Object.html#finalize--[Object#finalize()^] has no effect.
 
 All methods except `finalize()` can be overridden by the extension type (e.g. through an _interface default method_).
 
@@ -8046,7 +8786,7 @@ All methods except `finalize()` can be overridden by the extension type (e.g. th
 ===== Non-virtual factories
 
 Normally, a factory will use extension handlers to provide functionality when an extension type method is called and a
-link:{jdkdocs}/java/lang/reflect/Proxy.html[Java proxy^] object is returned as an implementation of the extension type. This is a _virtual_
+link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[Java proxy^] object is returned as an implementation of the extension type. This is a _virtual_
 factory (because there is no actual object implementing the interface). Extension factories are by default virtual factories.
 
 The <<sql-objects,SQL Object extension>> is an example of a virtual factory because it never provides an implementation for extension types but  dispatches any method calls to a specific handler to execute SQL operations.
@@ -8072,7 +8812,7 @@ in extension handlers and a proxy object is returned to the caller.
 
 ===== Extensions without Java proxy objects
 
-A drawback of the standard extension factories is that returning a link:{jdkdocs}/java/lang/reflect/Proxy.html[Java proxy^] object limits factory functionality
+A drawback of the standard extension factories is that returning a link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[Java proxy^] object limits factory functionality
 and is incompatible with some use cases (e.g. https://docs.oracle.com/en/graalvm/enterprise/21/docs/reference-manual/native-image/DynamicProxy/[using GraalVM
 for native compilation^]).
 
@@ -8142,8 +8882,8 @@ include::{exampledir}/ExtensionHandlerTest.java[tags=extension-type]
 
 The
 link:{jdbidocs}/core/extension/ExtensionHandlerFactory.html#createExtensionHandler(java.lang.Class,java.lang.reflect.Method)[ExtensionHandlerFactory#createExtensionHandler()^]
-method returns an link:{jdkdocs}/java/util/Optional.html[Optional<ExtensionHandler>^] object for backwards compatibility reasons. While it is legal for a
-factory to accept a method on an extension type and then return an link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] object, it is discouraged
+method returns an link:{jdkdocs}/java.base/java/util/Optional.html[Optional<ExtensionHandler>^] object for backwards compatibility reasons. While it is legal for a
+factory to accept a method on an extension type and then return an link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] object, it is discouraged
 in new code.
 
 [NOTE]
@@ -8245,7 +8985,7 @@ The link:{jdbidocs}/core/extension/annotation/UseExtensionHandler.html[@UseExten
 extension handler.
 
 These annotations must be placed on a method in an extension type, therefore annotations that are marked with the meta-annotation should use the
-link:{jdkdocs}/java/lang/annotation/Target.html[@Target({ElementType.METHOD})^] annotation to limit their scope.
+link:{jdkdocs}/java.base/java/lang/annotation/Target.html[@Target({ElementType.METHOD})^] annotation to limit their scope.
 
 The extension framework processes all annotations that use this meta-annotation. It will instantiate the extension handler by locating
 
@@ -8441,7 +9181,7 @@ link:{jdbidocs}/core/extension/ExtensionMetadata.ExtensionHandlerInvoker.html[Ex
 code. For most extensions, all metadata interactions are handled by the framework and don't require anything special.
 
 For every extension type that is processed by the framework, an link:{jdbidocs}/core/extension/ExtensionMetadata.html[ExtensionMetadata^] object is created. It
-collects all the information that is required to create the link:{jdkdocs}/java/lang/reflect/Proxy.html[java proxy^] object:
+collects all the information that is required to create the link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[java proxy^] object:
 
 - extension handlers for each extension type method including optional extension handler customizers.
 - instance config customizers which are applied to every method
@@ -8621,7 +9361,7 @@ List<Optional<String>> middleNames = handle
 ----
 
 The `GenericType.getType()` returns the raw
-link:{jdkdocs}/java/lang/reflect/Type.html[java.lang.reflect.Type^] object used
+link:{jdkdocs}/java.base/java/lang/reflect/Type.html[java.lang.reflect.Type^] object used
 to represent generics in Java.
 
 
@@ -8682,7 +9422,7 @@ GenericTypes.findGenericParameter(listOfInteger, Collection.class);
 // => Optional.of(Integer.class)
 ----
 
-Note that this method will return link:{jdkdocs}/java/util/Optional.html#empty--[Optional.empty()^] if the type parameter
+Note that this method will return link:{jdkdocs}/java.base/java/util/Optional.html#empty--[Optional.empty()^] if the type parameter
 cannot be resolved, or the types have nothing to do with each other:
 
 [source,java,indent=0]
@@ -8958,9 +9698,9 @@ implementation that logs all executed statements for debugging.
 
 === ResultProducer
 
-A *ResultProducer* takes a lazily supplied link:{jdkdocs}/java/sql/PreparedStatement.html[PreparedStatement^] and
+A *ResultProducer* takes a lazily supplied link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] and
 produces a result.  The most common producer path, *execute()*,
-retrieves the link:{jdkdocs}/java/sql/ResultSet.html[ResultSet^] over the query results and then uses a
+retrieves the link:{jdkdocs}/java.sql/java/sql/ResultSet.html[ResultSet^] over the query results and then uses a
 *ResultSetScanner* or higher level mapper to produce results.
 
 An example alternate use is to just return the number of rows modified,
@@ -8992,7 +9732,7 @@ Jdbi includes an experimental SqlObject code generator.  If you
 include the `jdbi3-generator` artifact as an annotation processor and
 annotate your SqlObject definitions with `@GenerateSqlObject`, the
 generator will produce an implementing class and avoids using
-link:{jdkdocs}/java/lang/reflect/Proxy.html[Java proxy^] instances.
+link:{jdkdocs}/java.base/java/lang/reflect/Proxy.html[Java proxy^] instances.
 This may be useful for `graal-native` compilation.
 
 
@@ -9053,6 +9793,29 @@ public class ExampleJdbiPlugin
 }
 ----
 
+==== Nesting Callbacks with managed Handles and Transactions
+
+Jdbi has a number of methods that provide a managed handle or use a managed handle, e.g. link:{jdbidocs}/core/Jdbi.html#withHandle(org.jdbi.v3.core.HandleCallback)[Jdbi#withHandle()^], link:{jdbidocs}/core/Jdbi.html#useHandle(org.jdbi.v3.core.HandleConsumer)[Jdbi#useHandle()^], link:{jdbidocs}/core/Jdbi.html#inTransaction(org.jdbi.v3.core.HandleCallback)[Jdbi#inTransaction()^], link:{jdbidocs}/core/Jdbi.html#useTransaction(org.jdbi.v3.core.HandleConsumer)[Jdbi#useTransaction()^], link:{jdbidocs}/core/Handle.html#inTransaction(org.jdbi.v3.core.HandleCallback)[Handle#inTransaction()^], link:{jdbidocs}/core/Handle.html#useTransaction(org.jdbi.v3.core.HandleConsumer)[HandleuseTransaction()^], link:{jdbidocs}/sqlobject/SqlObject.html#withHandle(org.jdbi.v3.core.HandleCallback)[SqlObject#withHandle()^], link:{jdbidocs}/sqlobject/SqlObject.html#useHandle(org.jdbi.v3.core.HandleConsumer)[SqlObject#useHandle()^] and methods that use the <<SQL Object Transactions>> annotations.
+
+All of these methods use the same underlying mechanism to reuse the handle object if one of these methods is called from another within a callback. In this case, there is *no new handle object or transaction created* but the same Handle object is passed into the nested callback:
+
+[source,java,indent=0]
+----
+jdbi.useHandle(outerHandle -> {
+    jdbi.useTransaction(nestedHandle -> {
+        jdbi.useHandle(innerHandle -> {
+            // all three variables (outerHandle, nestedHandle and innerHandle)
+            // refer to the same object
+            assertThat(innerHandle).isSame(nestedHandle);
+            assertThat(innerHandle).isSame(outerHandleHandle);
+        });
+    });
+}
+----
+
+[WARNING]
+Nesting callback methods is possible but should be avoided. Reusing the Handle object in nested calls is based on the thread identity, executing methods asynchronously (on another thread) may lead to surprising results, especially when using a thread pool that may execute code on the main thread (where the nested handle would be reused) or from another thread (where a new handle object would be created). The experimental Kotlin <<Coroutine support>> manages handle objects transparently between threads for co-routines.
+
 
 == Appendix
 
@@ -9112,7 +9875,7 @@ Core API:
 ** Instantiate with `Jdbi.create()` factory methods instead of constructors.
 * `DBIException` -> `JdbiException`
 * `Handle.select(String, ...)` now returns a link:{jdbidocs}/core/statement/Query.html[Query^] for further method
-  chaining, instead of a link:{jdkdocs}/java/util/List.html[List<Map<String, Object>>^]. Call
+  chaining, instead of a link:{jdkdocs}/java.base/java/util/List.html[List<Map<String, Object>>^]. Call
   `Handle.select(sql, ...).mapToMap().list()` for the same effect as v2.
 * `Handle.insert()` and `Handle.update()` have been coalesced into
   `Handle.execute()`.
@@ -9123,7 +9886,7 @@ Core API:
   `java.lang.reflect.Type` instead of `java.lang.Class`. This allows Jdbi to
   handle arguments and mappers for generic types.
 * Argument and mapper factories now have a single `build()` method that returns
-  an link:{jdkdocs}/java/util/Optional.html[Optional^], instead of separate `accepts()` and `build()` methods.
+  an link:{jdkdocs}/java.base/java/util/Optional.html[Optional^], instead of separate `accepts()` and `build()` methods.
 * `ResultSetMapper` -> link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^]. The row index parameter was also removed
   from `RowMapper`--the current row number can be retrieved directly from the
   `ResultSet`.
@@ -9132,7 +9895,7 @@ Core API:
 * `ResultColumnMapperFactory` -> link:{jdbidocs}/core/mapper/ColumnMapperFactory.html[ColumnMapperFactory^]
 * link:{jdbidocs}/core/statement/Query.html[Query^] no longer maps to `Map<String, Object>` by default. Call
   `Query.mapToMap()`, `.mapToBean(type)`, `.map(mapper)` or `.mapTo(type)`.
-* `ResultBearing<T>` was refactored into `ResultBearing` (no generic parameter)
+* `ResultBearing<T>` was refactored into link:{jdbidocs}/core/result/ResultBearing.html[ResultBearing^] (no generic parameter)
   and `ResultIterable<T>`. Call `.mapTo(type)` to get a `ResultIterable<T>`.
 * `TransactionConsumer` and `TransactionCallback` only take a link:{jdbidocs}/core/Handle.html[Handle^] now--the
   `TransactionStatus` argument is removed. Just rollback the handle now.
@@ -9202,7 +9965,7 @@ Annotations at the class and method level control the binding of arguments and
 mapping to results. For example, `@RegisterRowMapper` mirrors
 `Handle.registerRowMapper`.
 
-You produce results as single instances or container types like link:{jdkdocs}/java/util/Optional.html[Optional^] or
+You produce results as single instances or container types like link:{jdkdocs}/java.base/java/util/Optional.html[Optional^] or
 `List`, same as `Query.mapTo`.
 
 [source,java,indent=0]

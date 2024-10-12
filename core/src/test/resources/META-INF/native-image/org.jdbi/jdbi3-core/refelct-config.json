@@ -1,3 +1,3 @@
 [
-    {"name":"de.softwareforge.testing.maven.org.eclipse.aether.internal.impl.$DefaultRepositorySystem","methods":[{"name":"<init>"}]}
+    {"name":"de.softwareforge.testing.maven.org.eclipse.aether.internal.impl.$DefaultRepositorySystem","allDeclaredConstructors":true,"allPublicConstructors":true,"allDeclaredMethods":true,"allPublicMethods":true,"allDeclaredFields":true,"allPublicFields":true}
 ]

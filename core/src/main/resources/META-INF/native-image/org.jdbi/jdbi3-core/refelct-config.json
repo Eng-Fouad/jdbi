@@ -20,5 +20,5 @@
     {"name":"org.jdbi.v3.core.config.internal.ConfigCaches","methods":[{"name":"<init>"}]},
     {"name":"org.jdbi.v3.core.enums.Enums","methods":[{"name":"<init>"}]},
     {"name":"org.jdbi.v3.core.Handles","methods":[{"name":"<init>"}]},
-    {"name":"de.softwareforge.testing.maven.org.eclipse.aether.internal.impl.$DefaultRepositorySystem","methods":[{"name":"<init>"}]}
+    {"name":"de.softwareforge.testing.maven.org.eclipse.aether.internal.impl.$DefaultRepositorySystem","allDeclaredConstructors":true,"allPublicConstructors":true,"allDeclaredMethods":true,"allPublicMethods":true,"allDeclaredFields":true,"allPublicFields":true}
 ]

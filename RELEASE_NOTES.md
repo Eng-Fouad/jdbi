@@ -1,6 +1,21 @@
 # Unreleased
 
-- Move oracle12 module back into main build (#2664, thanks @stoyants!)
+- geantyref 2.0.0
+- sqlite: fix sqlite extension memory database usage to share between different connection (#2688)
+
+# 3.45.4
+
+- Avoid virtual thread deadlock on connection acquire (#2686, thanks @mhib !)
+
+# 3.45.3
+
+- Fix Connection.close() on JdbiPlugin customizeConnection (#2676)
+- Fix multiple commits on handle with autocommit disabled (#2685, thanks @mhib !)
+
+# 3.45.2
+
+- Move oracle12 module back into main build (#2664, thanks @stoyants !)
+- Raise UnableToCreateStatementException if a positional param is missing (#2675, thanks @angusholder !)
 
 # 3.45.1
 

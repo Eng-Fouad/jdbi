@@ -37,7 +37,6 @@ import org.jdbi.v3.core.argument.Arguments;
 import org.jdbi.v3.core.argument.NamedArgumentFinder;
 import org.jdbi.v3.core.argument.internal.NamedArgumentFinderFactory.PrepareKey;
 import org.jdbi.v3.core.argument.internal.TypedValue;
-import org.jdbi.v3.core.internal.JdbiOptionals;
 import org.jdbi.v3.core.internal.exceptions.CheckedConsumer;
 import org.jdbi.v3.core.internal.exceptions.Sneaky;
 import org.jdbi.v3.core.qualifier.QualifiedType;
@@ -71,19 +70,22 @@ class ArgumentBinder {
     }
 
     void bindPositional(Binding binding) {
-        boolean moreArgumentsProvidedThanDeclared = binding.positionals.size() != params.getParameterCount();
-        if (moreArgumentsProvidedThanDeclared && !ctx.getConfig(SqlStatements.class).isUnusedBindingAllowed()) {
-            throw new UnableToCreateStatementException("Superfluous positional param at (0 based) position " + params.getParameterCount(), ctx);
-        }
         for (int index = 0; index < params.getParameterCount(); index++) {
+            if (!binding.positionals.containsKey(index)) {
+                throw new UnableToCreateStatementException(format("Missing positional parameter %d in binding:%s", index, binding), ctx);
+            }
             QualifiedType<?> type = typeOf(binding.positionals.get(index));
             try {
                 argumentFactoryForType(type)
                     .apply(unwrap(binding.positionals.get(index)))
-                    .apply((int) index + 1, stmt, ctx);
+                    .apply(index + 1, stmt, ctx);
             } catch (SQLException e) {
                 throw new UnableToCreateStatementException("Exception while binding positional param at (0 based) position " + index, e, ctx);
             }
+        }
+        boolean moreArgumentsProvidedThanDeclared = binding.positionals.size() != params.getParameterCount();
+        if (moreArgumentsProvidedThanDeclared && !ctx.getConfig(SqlStatements.class).isUnusedBindingAllowed()) {
+            throw new UnableToCreateStatementException("Superfluous positional param at (0 based) position " + params.getParameterCount(), ctx);
         }
     }
 
@@ -227,9 +229,9 @@ class ArgumentBinder {
                         preparedBindingTemplate.prepareKeys.keySet().stream()
                             .map(pk -> new AbstractMap.SimpleImmutableEntry<>(pk, batch.preparedFinders.get(pk)))
                             .flatMap(e ->
-                                JdbiOptionals.stream(e.getValue()
+                                e.getValue()
                                     .apply(name)
-                                    .<Entry<PrepareKey, Function<Object, Argument>>>map(pf -> new AbstractMap.SimpleImmutableEntry<>(e.getKey(), pf))))
+                                    .<Entry<PrepareKey, Function<Object, Argument>>>map(pf -> new AbstractMap.SimpleImmutableEntry<>(e.getKey(), pf)).stream())
                             .findFirst();
                     if (preparation.isPresent()) {
                         Entry<PrepareKey, Function<Object, Argument>> p = preparation.get();
@@ -240,11 +242,11 @@ class ArgumentBinder {
                     } else {
                         innerBinders.add(wrapCheckedConsumer(name,
                             binding -> binding.namedArgumentFinder.stream()
-                                .flatMap(naf -> JdbiOptionals.stream(naf.find(name, ctx)))
+                                .flatMap(naf -> naf.find(name, ctx).stream())
                                 .findFirst()
                                 .orElseGet(() ->
                                     binding.realizedBackupArgumentFinders.get().stream()
-                                        .flatMap(naf -> JdbiOptionals.stream(naf.find(name, ctx)))
+                                        .flatMap(naf -> naf.find(name, ctx).stream())
                                         .findFirst()
                                         .orElseThrow(() -> missingNamedParameter(name, binding)))
                                 .apply(index + 1, stmt, ctx)));

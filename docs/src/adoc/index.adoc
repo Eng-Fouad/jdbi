@@ -64,6 +64,9 @@ This is the documentation for the current development state of Jdbi. All informa
 
 === Release documentation
 
+* https://jdbi.org/releases/3.45.3[Release 3.45.4 - 2024-08-16^]
+* https://jdbi.org/releases/3.45.3[Release 3.45.3 - 2024-07-31^]
+* https://jdbi.org/releases/3.45.2[Release 3.45.2 - 2024-06-28^]
 * https://jdbi.org/releases/3.45.1[Release 3.45.1 - 2024-03-14^] - Mmmmm pie
 * https://jdbi.org/releases/3.45.0[Release 3.45.0 - 2024-02-17^]
 * https://jdbi.org/releases/3.44.1[Release 3.44.1 - 2024-02-08^]
@@ -170,6 +173,11 @@ Jdbi runs on all Java versions 11 or later. All releases are built with the late
 [IMPORTANT]
 Jdbi ended support for Java 8 with version 3.39. There are occasional backports of security relevant things or major bugs but as of version 3.40.0, JDK 11+ is required.
 
+
+==== Virtual Threads
+
+Jdbi has experimental support for virtual threads. Basic use cases are verified to work, and we welcome reports of any issues.
+As virtual thread support is still evolving, please make sure to verify against the latest JDK before reporting any issues.
 
 === Getting started
 

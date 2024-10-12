@@ -100,7 +100,7 @@
         <dep.jetbrainsAnnotations.version>24.1.0</dep.jetbrainsAnnotations.version>
         <dep.joda-time.version>2.12.5</dep.joda-time.version>
         <dep.jts.version>1.19.0</dep.jts.version>
-        <dep.junit5.version>5.11.2</dep.junit5.version>
+        <dep.junit5.version>5.10.0</dep.junit5.version>
         <dep.kotlin.version>1.6.21</dep.kotlin.version>
         <dep.kotlinx-coroutines.version>1.6.4</dep.kotlinx-coroutines.version>
         <dep.lombok.version>1.18.30</dep.lombok.version>
@@ -1333,24 +1333,26 @@
                             <version>${dep.plugin.native.version}</version>
                             <extensions>true</extensions>
                             <configuration>
+                                <skip>false</skip>
+                                <fallback>false</fallback>
                                 <metadataRepository>
                                     <enabled>true</enabled>
                                 </metadataRepository>
                             </configuration>
                             <executions>
                                 <execution>
-                                    <id>build-native</id>
-                                    <goals>
-                                        <goal>compile-no-fork</goal>
-                                    </goals>
-                                    <phase>package</phase>
-                                </execution>
-                                <execution>
                                     <id>test-native</id>
                                     <goals>
                                         <goal>test</goal>
                                     </goals>
                                     <phase>test</phase>
+                                </execution>
+                                <execution>
+                                    <id>build-native</id>
+                                    <goals>
+                                        <goal>compile-no-fork</goal>
+                                    </goals>
+                                    <phase>package</phase>
                                 </execution>
                             </executions>
                         </plugin>

@@ -100,7 +100,7 @@
         <dep.jetbrainsAnnotations.version>24.1.0</dep.jetbrainsAnnotations.version>
         <dep.joda-time.version>2.12.5</dep.joda-time.version>
         <dep.jts.version>1.19.0</dep.jts.version>
-        <dep.junit5.version>5.10.1</dep.junit5.version>
+        <dep.junit5.version>5.10.0</dep.junit5.version>
         <dep.kotlin.version>1.6.21</dep.kotlin.version>
         <dep.kotlinx-coroutines.version>1.6.4</dep.kotlinx-coroutines.version>
         <dep.lombok.version>1.18.30</dep.lombok.version>
@@ -121,6 +121,7 @@
         <dep.plugin.kotlin.version>1.9.22</dep.plugin.kotlin.version>
         <dep.plugin.ktlint.version>2.0.0</dep.plugin.ktlint.version>
         <dep.plugin.pmd.version>3.24.0</dep.plugin.pmd.version>
+        <dep.plugin.native.version>0.10.3</dep.plugin.native.version>
         <dep.plugin.sortpom.version>3.3.0</dep.plugin.sortpom.version>
         <!-- https://github.com/basepom/basepom/issues/74 -->
         <dep.pmd.version>7.4.0</dep.pmd.version>
@@ -1313,7 +1314,59 @@
                 </plugins>
             </build>
         </profile>
-
+        <profile>
+            <id>native</id>
+            <activation>
+                <property>
+                    <name>jdbi.native</name>
+                </property>
+                <file>
+                    <missing>.skip-native</missing>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.graalvm.buildtools</groupId>
+                            <artifactId>native-maven-plugin</artifactId>
+                            <version>${dep.plugin.native.version}</version>
+                            <extensions>true</extensions>
+                            <configuration>
+                                <skip>false</skip>
+                                <fallback>false</fallback>
+                                <metadataRepository>
+                                    <enabled>true</enabled>
+                                </metadataRepository>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>test-native</id>
+                                    <goals>
+                                        <goal>test</goal>
+                                    </goals>
+                                    <phase>test</phase>
+                                </execution>
+                                <execution>
+                                    <id>build-native</id>
+                                    <goals>
+                                        <goal>compile-no-fork</goal>
+                                    </goals>
+                                    <phase>package</phase>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <!-- Profile to skip time-consuming steps. -->
             <id>fast</id>

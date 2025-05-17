@@ -10,19 +10,25 @@ on:
       - master
 
 jobs:
-  ci:
+  graal-ci:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          java-version: 17
+          java-version: 24
+          distribution: 'graalvm-community'
           cache: maven
 
       - name: build
         env:
-          MAVEN_CONFIG: "-Dbasepom.check.skip-enforcer=false -B -Djdbi.native=true"
+          #MAVEN_ARGS: "--batch-mode --fail-fast -Dbasepom.check.skip-enforcer=false -Djdbi.native=true -Djdbi.check.skip-japicmp=true"
+          MAVEN_ARGS: "--batch-mode --fail-fast -Dbasepom.check.skip-enforcer=false -Djdbi.check.skip-japicmp=true "
         run: |
-          make install
+          chmod +x ./mvnw
+          ./mvnw -Dagent=true test

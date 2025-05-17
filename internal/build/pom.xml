@@ -65,7 +65,7 @@
         <basepom.maven.version>3.9.0</basepom.maven.version>
         <basepom.nexus-staging.staging-url>https://oss.sonatype.org/</basepom.nexus-staging.staging-url>
         <basepom.release.preparation-goals>clean verify</basepom.release.preparation-goals>
-        <basepom.release.profiles>basepom.central-release,jdbi-release</basepom.release.profiles>
+        <basepom.release.profiles>basepom.deploy-release,jdbi-release</basepom.release.profiles>
         <basepom.release.tag-name-format>v@{project.version}</basepom.release.tag-name-format>
         <basepom.test.fork-count>4</basepom.test.fork-count>
         <basepom.test.timeout>240</basepom.test.timeout>
@@ -75,7 +75,7 @@
         <!-- leave at 3.x for now, 4.0.0 needs Java 17 -->
         <dep.assertj.version>3.27.3</dep.assertj.version>
         <dep.caffeine.version>3.2.0</dep.caffeine.version>
-        <dep.checkerframework.version>3.49.3</dep.checkerframework.version>
+        <dep.checkerframework.version>3.49.2</dep.checkerframework.version>
         <dep.commons-compress.version>1.27.1</dep.commons-compress.version>
         <dep.commons-lang.version>3.17.0</dep.commons-lang.version>
         <dep.commons-text.version>1.13.1</dep.commons-text.version>
@@ -100,7 +100,7 @@
         <dep.jakarta-annotation-api.version>3.0.0</dep.jakarta-annotation-api.version>
         <dep.jakarta-inject-api.version>2.0.1.MR</dep.jakarta-inject-api.version>
         <dep.javax-inject.version>1</dep.javax-inject.version>
-        <dep.jdbi-policy.version>3.49.5-SNAPSHOT</dep.jdbi-policy.version>
+        <dep.jdbi-policy.version>3.49.4-SNAPSHOT</dep.jdbi-policy.version>
         <dep.jetbrainsAnnotations.version>26.0.2</dep.jetbrainsAnnotations.version>
         <dep.jfrunit.version>1.0.0.Alpha2</dep.jfrunit.version>
         <dep.joda-time.version>2.14.0</dep.joda-time.version>
@@ -116,7 +116,7 @@
         <dep.opentelemetry.version>1.49.0</dep.opentelemetry.version>
         <dep.oracle-xe.version>23.7.0.25.01</dep.oracle-xe.version>
         <dep.otj-pg-embedded.version>1.1.0</dep.otj-pg-embedded.version>
-        <dep.pg-embedded.version>5.3.0</dep.pg-embedded.version>
+        <dep.pg-embedded.version>5.2.0</dep.pg-embedded.version>
         <dep.plugin.asciidoctor.version>3.2.0</dep.plugin.asciidoctor.version>
         <dep.plugin.cyclonedx.version>2.9.1</dep.plugin.cyclonedx.version>
         <dep.plugin.detekt.version>1.23.8</dep.plugin.detekt.version>
@@ -128,6 +128,7 @@
         <dep.plugin.japicmp.version>0.23.1</dep.plugin.japicmp.version>
         <dep.plugin.kotlin.version>${dep.kotlin.version}</dep.plugin.kotlin.version>
         <dep.plugin.ktlint.version>3.5.0</dep.plugin.ktlint.version>
+        <dep.plugin.native.version>0.10.6</dep.plugin.native.version>
         <dep.plugin.sortpom.version>4.0.0</dep.plugin.sortpom.version>
         <dep.postgresql.version>42.7.5</dep.postgresql.version>
         <dep.slf4j.version>2.0.17</dep.slf4j.version>
@@ -557,6 +558,15 @@
             </dependency>
 
             <dependency>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>${dep.jakarta-annotation-api.version}</version>
+                <!-- XXX https://github.com/graalvm/native-build-tools/issues/562 -->
+                <!-- <scope>provided</scope> -->
+                <optional>true</optional>
+            </dependency>
+
+            <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-annotations</artifactId>
                 <version>${dep.spotbugs.version}</version>
@@ -583,14 +593,6 @@
                 <groupId>com.google.errorprone</groupId>
                 <artifactId>error_prone_annotations</artifactId>
                 <version>${dep.errorprone.version}</version>
-                <scope>provided</scope>
-                <optional>true</optional>
-            </dependency>
-
-            <dependency>
-                <groupId>jakarta.annotation</groupId>
-                <artifactId>jakarta.annotation-api</artifactId>
-                <version>${dep.jakarta-annotation-api.version}</version>
                 <scope>provided</scope>
                 <optional>true</optional>
             </dependency>
@@ -625,6 +627,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
@@ -641,9 +650,9 @@
                 <updatePolicy>always</updatePolicy>
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots>
-            <id>central-snapshots</id>
-            <name>Central Repository, Snapshots</name>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <id>snapshots-repo</id>
+            <name>Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <layout>default</layout>
         </repository>
     </repositories>
@@ -657,9 +666,9 @@
                 <updatePolicy>always</updatePolicy>
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots>
-            <id>central-snapshots</id>
-            <name>Central Repository, Snapshots</name>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <id>snapshots-repo</id>
+            <name>Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <layout>default</layout>
         </pluginRepository>
     </pluginRepositories>
@@ -952,6 +961,33 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <configuration>
                         <arguments>-Dno-docker=${no-docker}</arguments>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>${dep.plugin.native.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <metadataRepository>
+                            <enabled>true</enabled>
+                        </metadataRepository>
+                        <agent>
+                            <enabled>true</enabled>
+                            <!-- XXX Temporary -->
+                            <options>
+                                <enableExperimentalPredefinedClasses>true</enableExperimentalPredefinedClasses>
+                            </options>
+                        </agent>
+                        <buildArgs>
+                            <buildArg>-Ob</buildArg>
+                            <buildArg>-march=native</buildArg>
+                            <buildArg>--initialize-at-build-time=org.junit.platform.launcher.core.HierarchicalOutputDirectoryProvider</buildArg>
+                            <buildArg>--initialize-at-build-time=org.junit.platform.launcher.core.LauncherDiscoveryResult$EngineResultInfo</buildArg>
+                            <buildArg>--initialize-at-build-time=org.junit.platform.launcher.core.DiscoveryIssueNotifier</buildArg>
+                            <buildArg>--initialize-at-build-time=org.junit.platform.engine.DefaultDiscoveryIssue</buildArg>
+                            <buildArg>--initialize-at-build-time=org.junit.platform.engine.DiscoveryIssue$Severity</buildArg>
+                        </buildArgs>
                     </configuration>
                 </plugin>
             </plugins>
@@ -1360,44 +1396,28 @@
                 </file>
             </activation>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.graalvm.buildtools</groupId>
-                            <artifactId>native-maven-plugin</artifactId>
-                            <version>${dep.plugin.native.version}</version>
-                            <extensions>true</extensions>
-                            <configuration>
-                                <skip>false</skip>
-                                <fallback>false</fallback>
-                                <metadataRepository>
-                                    <enabled>true</enabled>
-                                </metadataRepository>
-                            </configuration>
-                            <executions>
-                                <execution>
-                                    <id>test-native</id>
-                                    <goals>
-                                        <goal>test</goal>
-                                    </goals>
-                                    <phase>test</phase>
-                                </execution>
-                                <execution>
-                                    <id>build-native</id>
-                                    <goals>
-                                        <goal>compile-no-fork</goal>
-                                    </goals>
-                                    <phase>package</phase>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
                         <extensions>true</extensions>
+                        <configuration>
+                            <buildArgs>
+                                <buildArg>--exact-reachability-metadata</buildArg>
+                            </buildArgs>
+                            <agent>
+                                <enabled>true</enabled>
+                            </agent>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

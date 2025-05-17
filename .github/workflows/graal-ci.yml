@@ -1,0 +1,34 @@
+---
+name: CI Build in GraalVM native-image with tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  graal-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: 24
+          distribution: 'graalvm-community'
+          cache: maven
+
+      - name: build
+        env:
+          #MAVEN_ARGS: "--batch-mode --fail-fast -Dbasepom.check.skip-enforcer=false -Djdbi.native=true -Djdbi.check.skip-japicmp=true"
+          MAVEN_ARGS: "--batch-mode --fail-fast -Dbasepom.check.skip-enforcer=false -Djdbi.check.skip-japicmp=true "
+        run: |
+          chmod +x ./mvnw
+          ./mvnw -Dagent=true test

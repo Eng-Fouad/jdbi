@@ -18,6 +18,7 @@ import java.io.StringWriter;
 import java.util.Optional;
 import java.util.function.Function;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.jdbi.v3.core.config.ConfigRegistry;
@@ -33,7 +34,8 @@ public class FreemarkerEngine implements TemplateEngine.Parsing {
     /**
      * @deprecated use {@link #instance()} for a shared engine instead
      */
-    @Deprecated
+    @Deprecated(since = "3.39.0", forRemoval = true)
+    @SuppressFBWarnings("SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR")
     public FreemarkerEngine() {}
 
     public static FreemarkerEngine instance() {

@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("deprecation")
 public class TestBeanArguments {
     @Mock
     PreparedStatement stmt;
@@ -268,7 +269,7 @@ public class TestBeanArguments {
             .isEqualTo(new GenericType<List<String>>() {}.getType());
     }
 
-    public class GenericBean<T extends String> {
+    public static class GenericBean<T extends String> {
         public List<T> getProperty() {
             return Collections.emptyList();
         }

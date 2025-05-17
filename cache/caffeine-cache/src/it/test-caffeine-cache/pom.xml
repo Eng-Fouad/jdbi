@@ -80,8 +80,20 @@
         </dependency>
 
         <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-testlib</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -123,7 +135,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <dependenciesToScan>
-                        <dependency>org.jdbi:jdbi3-core:*:*:tests</dependency>
+                        <dependency>org.jdbi:jdbi3-core:*:tests</dependency>
                     </dependenciesToScan>
                     <systemProperties combine.children="append">
                         <jdbi.test.cache-plugin>org.jdbi.v3.cache.caffeine.CaffeineCachePlugin</jdbi.test.cache-plugin>

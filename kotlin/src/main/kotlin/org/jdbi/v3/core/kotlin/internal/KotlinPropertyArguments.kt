@@ -26,12 +26,8 @@ import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
-import kotlin.reflect.jvm.javaType
 
-class KotlinPropertyArguments(
-    obj: Any,
-    prefix: String = ""
-) : ObjectPropertyNamedArgumentFinder(prefix, obj) {
+class KotlinPropertyArguments(obj: Any, prefix: String = "") : ObjectPropertyNamedArgumentFinder(prefix, obj) {
 
     private val kClass: KClass<*> = obj.javaClass.kotlin
     private val properties = kClass.memberProperties
@@ -42,7 +38,7 @@ class KotlinPropertyArguments(
     override fun getValue(name: String, ctx: StatementContext): Optional<TypedValue> {
         val property: KProperty1<*, *> = properties[name] ?: return Optional.empty()
         val mutableProperty = property as? KMutableProperty1
-        val type = QualifiedType.of(property.returnType.javaType)
+        val type = QualifiedType.of(toJavaType(property.returnType))
             .withAnnotations(
                 getQualifiers(
                     kClass.primaryConstructor?.run { parameters.find { it.name == name } },
@@ -58,5 +54,5 @@ class KotlinPropertyArguments(
 
     override fun getNestedArgumentFinder(obj: TypedValue): NamedArgumentFinder = KotlinPropertyArguments(obj.value)
 
-    override fun toString() = obj.toString()
+    override fun toString() = "KotlinPropertyArguments(obj=${kClass.qualifiedName}, prefix=$prefix)"
 }

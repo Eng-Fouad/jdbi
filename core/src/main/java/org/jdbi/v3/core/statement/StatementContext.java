@@ -53,6 +53,8 @@ import org.jdbi.v3.core.mapper.Mappers;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.mapper.RowMappers;
 import org.jdbi.v3.core.qualifier.QualifiedType;
+import org.jdbi.v3.meta.Alpha;
+import org.jdbi.v3.meta.Beta;
 
 import static java.util.Objects.requireNonNull;
 
@@ -69,6 +71,7 @@ public class StatementContext implements Closeable {
 
     private final ConfigRegistry config;
     private final ExtensionMethod extensionMethod;
+    private final Type jdbiStatementType;
 
     private final Set<Cleanable> cleanables = new LinkedHashSet<>();
 
@@ -79,23 +82,47 @@ public class StatementContext implements Closeable {
     private Connection connection;
     private Binding binding = new Binding(this);
 
-    private boolean returningGeneratedKeys = false;
+    private volatile boolean returningGeneratedKeys = false;
     private String[] generatedKeysColumnNames = new String[0];
-    private boolean concurrentUpdatable = false;
+    private volatile boolean concurrentUpdatable = false;
 
     private Instant executionMoment;
     private Instant completionMoment;
     private Instant exceptionMoment;
+    private volatile long mappedRows;
+    private String traceId;
 
-    static StatementContext create(ConfigRegistry config, ExtensionMethod extensionMethod) {
-        final StatementContext context = new StatementContext(config, extensionMethod);
+    static StatementContext create(final ConfigRegistry config, final ExtensionMethod extensionMethod, final Type jdbiStatementType) {
+        final StatementContext context = new StatementContext(config, extensionMethod, jdbiStatementType);
         context.notifyContextCreated();
         return context;
     }
 
-    private StatementContext(ConfigRegistry config, ExtensionMethod extensionMethod) {
+    private StatementContext(final ConfigRegistry config, final ExtensionMethod extensionMethod, final Type jdbiStatementType) {
         this.config = requireNonNull(config);
         this.extensionMethod = extensionMethod;
+        this.jdbiStatementType = jdbiStatementType;
+    }
+
+    /**
+     * Inspect the type of the statement that owns this statement context.
+     */
+    @Beta
+    public Type getJdbiStatementType() {
+        return jdbiStatementType;
+    }
+
+    /**
+     * Returns the type of the statement that owns this statement context as a descriptive string.
+     *
+     * @return the type of the statement that owns this statement context as a descriptive string
+     */
+    @Beta
+    public String describeJdbiStatementType() {
+        if (jdbiStatementType instanceof Class<?>) {
+            return ((Class<?>) jdbiStatementType).getSimpleName();
+        }
+        return jdbiStatementType.getTypeName();
     }
 
     /**
@@ -420,14 +447,13 @@ public class StatementContext implements Closeable {
 
     /**
      * Sets whether the current statement returns generated keys.
-     * @param b return generated keys?
+     * @param returningGeneratedKeys return generated keys?
      */
-    public void setReturningGeneratedKeys(boolean b) {
-        if (isConcurrentUpdatable() && b) {
-            throw new IllegalArgumentException("Cannot create a result set that is concurrent "
-                    + "updatable and is returning generated keys.");
+    public void setReturningGeneratedKeys(boolean returningGeneratedKeys) {
+        if (isConcurrentUpdatable() && returningGeneratedKeys) {
+            throw new IllegalArgumentException("Cannot create a result set that is concurrent updatable and is returning generated keys.");
         }
-        this.returningGeneratedKeys = b;
+        this.returningGeneratedKeys = returningGeneratedKeys;
     }
 
     /**
@@ -547,6 +573,38 @@ public class StatementContext implements Closeable {
     }
 
     /**
+     * Retrieve the number of mapped rows. Only intended for internal instrumentation to call.
+     */
+    @Alpha
+    public long getMappedRows() {
+        return mappedRows;
+    }
+
+    /**
+     * Instrument the number of mapped rows. Only intended for internal instrumentation to call.
+     */
+    @Alpha
+    public void setMappedRows(final long mappedRows) {
+        this.mappedRows = mappedRows;
+    }
+
+    /**
+     * Instrument the telemetry trace id. Only intended for internal instrumentation to call.
+     */
+    @Alpha
+    public void setTraceId(String traceId) {
+        this.traceId = traceId;
+    }
+
+    /**
+     * Instrument the telemetry trace id. Only intended for internal instrumentation to call.
+     */
+    @Alpha
+    public String getTraceId() {
+        return traceId;
+    }
+
+    /**
      * Convenience method to measure elapsed time between start of query execution and completion or exception as appropriate. Do not call with a null argument or before a query has executed/exploded.
      * @param unit the time unit to convert to
      * @return the elapsed time in the given unit
@@ -636,15 +694,5 @@ public class StatementContext implements Closeable {
     private void notifyCleanableAdded(Cleanable cleanable) {
         Collection<StatementContextListener> listeners = getListeners();
         listeners.forEach(customizer -> customizer.cleanableAdded(this, cleanable));
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        return this == o;
-    }
-
-    @Override
-    public final int hashCode() {
-        return super.hashCode() * 11;
     }
 }

@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.jdbi.internal</groupId>
         <artifactId>jdbi3-parent</artifactId>
-        <version>3.45.5-SNAPSHOT</version>
+        <version>3.49.5-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jdbi</groupId>
@@ -32,15 +32,14 @@
         <basepom.check.skip-dependency>true</basepom.check.skip-dependency>
         <basepom.check.skip-license>true</basepom.check.skip-license>
 
-        <!-- workaround because spring5 needs an exclusion. -->
+        <!-- workaround because spring needs an exclusion. -->
         <basepom.dependency-management.allow-exclusions>true</basepom.dependency-management.allow-exclusions>
         <basepom.deploy.skip>true</basepom.deploy.skip>
         <basepom.site.scm.branch>master</basepom.site.scm.branch>
         <basepom.site.scm.checkout-directory>${java.io.tmpdir}/gh-pages-publish/jdbi-docs</basepom.site.scm.checkout-directory>
-        <basepom.site.scm.id>github</basepom.site.scm.id>
         <basepom.site.scm.site-path>/</basepom.site.scm.site-path>
         <basepom.site.scm.skip-deploy>false</basepom.site.scm.skip-deploy>
-        <basepom.site.scm.url>scm:git:https://github.com/jdbi/jdbi.github.io</basepom.site.scm.url>
+        <basepom.site.scm.url>scm:git:git@github.com:jdbi/jdbi.github.io.git</basepom.site.scm.url>
         <jdbi.check.skip-japicmp>true</jdbi.check.skip-japicmp>
         <moduleName>org.jdbi.v3.docs</moduleName>
     </properties>
@@ -122,11 +121,30 @@
         </dependency>
         <dependency>
             <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-opentelemetry</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-oracle12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-postgis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-postgres</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-spring</artifactId>
+            <!--- it is always spring. always. -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-jcl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.jdbi</groupId>
@@ -175,6 +193,11 @@
         </dependency>
 
         <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
@@ -215,6 +238,33 @@
         </dependency>
 
         <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>oracle-xe</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <scope>provided</scope>
@@ -238,6 +288,12 @@
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-postgres</artifactId>
             <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -353,7 +409,7 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
-                                    <reportOutputDirectory>${project.build.directory}/generated-docs/apidocs</reportOutputDirectory>
+                                    <outputDirectory>${project.build.directory}/generated-docs</outputDirectory>
                                     <includeDependencySources>true</includeDependencySources>
                                     <dependencySourceIncludes>
                                         <dependencySourceInclude>org.jdbi:*</dependencySourceInclude>

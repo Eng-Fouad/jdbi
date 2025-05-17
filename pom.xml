@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.jdbi</groupId>
         <artifactId>jdbi3-build-parent</artifactId>
-        <version>3.45.5-SNAPSHOT</version>
+        <version>3.49.5-SNAPSHOT</version>
         <relativePath>internal/build</relativePath>
     </parent>
 
@@ -53,9 +53,10 @@
         <module>jodatime2</module>
         <module>jpa</module>
         <module>json</module>
-        <module>kotlin-sqlobject</module>
         <module>kotlin</module>
+        <module>kotlin-sqlobject</module>
         <module>moshi</module>
+        <module>opentelemetry</module>
         <module>oracle12</module>
         <module>postgis</module>
         <module>postgres</module>
@@ -102,6 +103,16 @@
     </dependencyManagement>
 
     <profiles>
+        <!-- skip spring when testing with java 11, spring 6+ only supports 17+ -->
+        <profile>
+            <id>java17</id>
+            <activation>
+                <jdk>[17,)</jdk>
+            </activation>
+            <modules>
+                <module>spring</module>
+            </modules>
+        </profile>
         <profile>
             <id>java21</id>
             <activation>

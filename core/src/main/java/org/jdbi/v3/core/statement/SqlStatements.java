@@ -52,13 +52,17 @@ public final class SqlStatements implements JdbiConfig<SqlStatements> {
     private SqlParser sqlParser;
     private SqlLogger sqlLogger;
     private Integer queryTimeout;
-    private boolean allowUnusedBindings;
-    private boolean attachAllStatementsForCleanup;
-    private boolean attachCallbackStatementsForCleanup = true;
-    private boolean scriptStatementsNeedSemicolon = true;
+    private volatile boolean allowUnusedBindings;
+    private volatile boolean attachAllStatementsForCleanup;
+    private volatile boolean attachCallbackStatementsForCleanup = true;
+    private volatile boolean scriptStatementsNeedSemicolon = true;
     private final Collection<StatementCustomizer> customizers;
 
     private final Collection<StatementContextListener> contextListeners;
+
+    // Don't emit unlimited amounts of data via telemetry
+    private volatile int jfrSqlMaxLength = 512;
+    private volatile int jfrParamMaxLength = 512;
 
     public SqlStatements() {
         attributes = Collections.synchronizedMap(new HashMap<>());
@@ -84,6 +88,8 @@ public final class SqlStatements implements JdbiConfig<SqlStatements> {
         this.customizers = new CopyOnWriteArrayList<>(that.customizers);
         this.contextListeners = new CopyOnWriteArraySet<>(that.contextListeners);
         this.templateCache = that.templateCache;
+        this.jfrSqlMaxLength = that.jfrSqlMaxLength;
+        this.jfrParamMaxLength = that.jfrParamMaxLength;
     }
 
     /**
@@ -205,7 +211,7 @@ public final class SqlStatements implements JdbiConfig<SqlStatements> {
      * @return the timing collector
      * @deprecated use {@link #getSqlLogger} instead
      */
-    @Deprecated
+    @Deprecated(since = "3.2.0", forRemoval = true)
     public TimingCollector getTimingCollector() {
         return (elapsed, ctx) -> sqlLogger.logAfterExecution(ctx);
     }
@@ -218,7 +224,7 @@ public final class SqlStatements implements JdbiConfig<SqlStatements> {
      * @return this
      * @deprecated use {@link #setSqlLogger} instead
      */
-    @Deprecated
+    @Deprecated(since = "3.2.0", forRemoval = true)
     public SqlStatements setTimingCollector(TimingCollector timingCollector) {
         this.sqlLogger = timingCollector == null ? SqlLogger.NOP_SQL_LOGGER : new SqlLogger() {
             @Override
@@ -368,8 +374,44 @@ public final class SqlStatements implements JdbiConfig<SqlStatements> {
     }
 
     /**
+     * When recording JFR events, the maximum length of rendered SQL to store in the event record.
+     */
+    @Beta
+    public SqlStatements setJfrSqlMaxLength(final int jfrSqlMaxLength) {
+        this.jfrSqlMaxLength = jfrSqlMaxLength;
+        return this;
+    }
+
+    /**
+     * When recording JFR events, the maximum length of rendered SQL to store in the event record.
+     */
+    @Beta
+    public int getJfrSqlMaxLength() {
+        return jfrSqlMaxLength;
+    }
+
+    /**
+     * When recording JFR events, the maximum length of rendered parameters to store in the event record.
+     */
+    @Beta
+    public SqlStatements setJfrParamMaxLength(final int jfrParamMaxLength) {
+        this.jfrParamMaxLength = jfrParamMaxLength;
+        return this;
+    }
+
+    /**
+     * When recording JFR events, the maximum length of rendered parameters to store in the event record.
+     */
+    @Beta
+    public int getJfrParamMaxLength() {
+        return jfrParamMaxLength;
+    }
+
+    /**
      * Returns cache statistics for the internal template cache. This returns a cache specific object,
      * so the user needs to know what caching library is in use.
+     *
+     * @param <T> the type of the cache statistics object
      */
     @Beta
     public <T> T cacheStats() {

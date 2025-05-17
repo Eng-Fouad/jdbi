@@ -49,6 +49,7 @@ public interface ArgumentFactory {
      * ArgumentFactory extension interface that allows preparing arguments for efficient batch binding.
      */
     @Beta
+    @SuppressWarnings("PMD.ImplicitFunctionalInterface")
     interface Preparable extends ArgumentFactory {
         @Override
         default Optional<Argument> build(Type type, Object value, ConfigRegistry config) {
@@ -60,7 +61,7 @@ public interface ArgumentFactory {
         /**
          * @deprecated no longer used
          */
-        @Deprecated
+        @Deprecated(since = "3.15.0", forRemoval = true)
         default Collection<? extends Type> prePreparedTypes() {
             return Collections.emptyList();
         }

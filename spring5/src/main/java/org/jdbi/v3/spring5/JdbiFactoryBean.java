@@ -29,7 +29,10 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 /**
  * Utility class which constructs an {@link Jdbi} instance which can conveniently
  * participate in Spring's transaction management system.
+ *
+ * @deprecated Use the {@link org.jdbi.v3.spring} module with Spring 6.x or newer.
  */
+@Deprecated(forRemoval = true, since = "3.47.0")
 public class JdbiFactoryBean extends AbstractFactoryBean<Jdbi> {
     private DataSource dataSource;
     private final Map<String, Object> globalDefines = new HashMap<>();

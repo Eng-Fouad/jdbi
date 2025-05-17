@@ -89,8 +89,13 @@ public final class BeanMapper<T> extends PojoMapper<T> {
         return (PojoProperties<T>) BeanPropertiesFactory.propertiesFor(type, config);
     }
 
-    @Override
+    @Deprecated(since = "3.49.0") // preserved for binary compatibility
     protected BeanMapper<?> createNestedMapper(StatementContext ctx, PojoProperty<T> property, String nestedPrefix) {
         return new BeanMapper<>(GenericTypes.getErasedType(property.getQualifiedType().getType()), nestedPrefix);
+    }
+
+    @Override
+    protected PojoMapper<?> createNestedMapper(StatementContext ctx, Class<?> rawType, String nestedPrefix) {
+        return new BeanMapper<>(rawType, nestedPrefix);
     }
 }

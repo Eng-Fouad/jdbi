@@ -17,8 +17,10 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Deque;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -220,7 +222,7 @@ public final class JdbiClassUtils {
     }
 
     private static MethodHandle findCtorMethodHandleForParameters(Class<?> type, Class<?>... types) {
-        var suppressedThrowables = new LinkedList<Throwable>();
+        Deque<Throwable> suppressedThrowables = new ArrayDeque<>();
 
         var constructors = type.getConstructors();
 
@@ -228,7 +230,7 @@ public final class JdbiClassUtils {
             tryNextConstructor:
             for (var constructor : constructors) {
                 if (constructor.getParameterCount() != argCount) {
-                    continue; // tryNextConstructor;
+                    continue;
                 }
 
                 for (int i = 0; i < argCount; i++) {
@@ -272,5 +274,43 @@ public final class JdbiClassUtils {
     @FunctionalInterface
     public interface MethodHandleInvoker {
         Object createInstance(MethodHandle handle) throws Throwable;
+    }
+
+    public static final class MethodKey {
+        public final String name;
+        public final MethodType type;
+
+        public MethodKey(String name, MethodType type) {
+            this.name = name;
+            this.type = type;
+        }
+
+        public static MethodKey methodKey(Method method) {
+            return new MethodKey(
+                    method.getName(),
+                    MethodType.methodType(
+                            method.getReturnType(),
+                            method.getParameterTypes()));
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name, type);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof MethodKey)) {
+                return false;
+            }
+            MethodKey castObj = (MethodKey) obj;
+            return name.equals(castObj.name) && type.equals(castObj.type);
+        }
+
+        @Override
+        public String toString() {
+            return "MethodKey[" + name + "(" + type.parameterList().stream()
+                    .map(Class::toString).collect(Collectors.joining(",")) + ")]";
+        }
     }
 }

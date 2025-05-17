@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class TestBatch {
 
     @RegisterExtension
-    public H2DatabaseExtension h2Extension = H2DatabaseExtension.withSomething();
+    public H2DatabaseExtension h2Extension = H2DatabaseExtension.instance().withInitializer(H2DatabaseExtension.SOMETHING_INITIALIZER);
 
     @Test
     public void testBasics() {
@@ -58,7 +58,7 @@ public class TestBatch {
     }
 
     @Test
-    public void testPreparedBatch() throws Exception {
+    public void testPreparedBatch() {
         int batchCount = 50;
         try (Handle h = h2Extension.getSharedHandle()) {
             PreparedBatch batch = h.prepareBatch("INSERT INTO something (id, name) VALUES(:id, :name)");
@@ -77,7 +77,7 @@ public class TestBatch {
     }
 
     @Test
-    public void testPreparedBatchWithNull() throws Exception {
+    public void testPreparedBatchWithNull() {
         int batchCount = 5;
         try (Handle h = h2Extension.getSharedHandle()) {
             PreparedBatch batch = h.prepareBatch("INSERT INTO something (id, name) VALUES(:id, :name)");

@@ -22,6 +22,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
 
+/**
+ * @deprecated Use the {@link org.jdbi.v3.spring} module with Spring 6.x or newer.
+ */
+@Deprecated(forRemoval = true, since = "3.47.0")
 public class JdbiRepositoryFactoryBean implements FactoryBean<Object>, ApplicationContextAware, BeanFactoryAware, InitializingBean {
 
     private Class<?> objectType;
@@ -29,7 +33,9 @@ public class JdbiRepositoryFactoryBean implements FactoryBean<Object>, Applicati
     private BeanFactory beanFactory;
 
     /**
-     * @return The jdbi instance to attach this repository to.
+     * Returns the {@link Jdbi} instance to attach this repository to.
+     *
+     * @return The {@link Jdbi} instance to attach this repository to.
      */
     protected Jdbi getJdbi() {
         if (jdbiQualifier != null) {
@@ -52,6 +58,7 @@ public class JdbiRepositoryFactoryBean implements FactoryBean<Object>, Applicati
     /**
      * The object type of the repository.
      */
+    @SuppressWarnings("unused")
     public void setObjectType(Class<?> objectType) {
         this.objectType = objectType;
     }
@@ -61,6 +68,7 @@ public class JdbiRepositoryFactoryBean implements FactoryBean<Object>, Applicati
      * @param jdbiQualifier The name of the jdbi bean to bind the repository to.
      *                      if <code>null</code> then no name will be specified during resolution.
      */
+    @SuppressWarnings("unused")
     public void setJdbiQualifier(@Nullable String jdbiQualifier) {
         this.jdbiQualifier = jdbiQualifier;
     }

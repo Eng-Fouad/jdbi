@@ -44,7 +44,7 @@ public class TestOptional {
         + "order by id";
 
     @RegisterExtension
-    public H2DatabaseExtension h2Extension = H2DatabaseExtension.withSomething();
+    public H2DatabaseExtension h2Extension = H2DatabaseExtension.instance().withInitializer(H2DatabaseExtension.SOMETHING_INITIALIZER);
 
     Handle handle;
 
@@ -277,7 +277,7 @@ public class TestOptional {
             .hasValue(123.45);
     }
 
-    class Name {
+    static class Name {
 
         final String value;
 
@@ -300,7 +300,7 @@ public class TestOptional {
         }
     }
 
-    class NameArgumentFactory implements ArgumentFactory {
+    static class NameArgumentFactory implements ArgumentFactory {
 
         @Override
         public Optional<Argument> build(Type expectedType, Object value, ConfigRegistry config) {

@@ -30,7 +30,7 @@ public final class JdbiFlywayMigration implements JdbiExtensionInitializer {
 
     private final List<String> schemas = new ArrayList<>();
     private final List<String> paths = new ArrayList<>();
-    private boolean cleanAfter = true;
+    private volatile boolean cleanAfter = true;
 
     private volatile Flyway flyway;
 
@@ -117,7 +117,7 @@ public final class JdbiFlywayMigration implements JdbiExtensionInitializer {
      * @return The instance itself for chaining method calls.
      * @deprecated The default changed to <tt>true</tt> so this call actually does nothing.
      */
-    @Deprecated
+    @Deprecated(since = "3.35.0", forRemoval = true)
     public JdbiFlywayMigration cleanAfter() {
         this.cleanAfter = true;
         return this;

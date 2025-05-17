@@ -18,21 +18,24 @@
     xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
     xsi:noNamespaceSchemaLocation="https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
+    <!-- PMD 7.12.0 - 4/2/2025 -->
+
     <description>custom rules for jdbi</description>
 
     <exclude-pattern>.*/org/jdbi/v3/core/internal/lexer/.+Lexer.*</exclude-pattern>
 
-    <!-- https://pmd.github.io/pmd-6.0.1/pmd_rules_java.html -->
+    <!-- https://pmd.github.io/pmd/pmd_rules_java.html -->
     <rule ref="category/java/bestpractices.xml">
         <exclude name="AccessorClassGeneration"/>
         <exclude name="AccessorMethodGeneration"/>
         <exclude name="AvoidStringBufferField"/>
         <exclude name="GuardLogStatement"/>
-        <exclude name="JUnit4TestShouldUseTestAnnotation"/>
+        <exclude name="UnitTestShouldUseTestAnnotation"/>
         <exclude name="LooseCoupling"/>
         <exclude name="UnusedFormalParameter"/>
         <exclude name="UseVarargs"/>
         <exclude name="LiteralsFirstInComparisons"/>
+        <exclude name="ImplicitFunctionalInterface"/>
     </rule>
 
     <rule ref="category/java/codestyle.xml">
@@ -109,6 +112,7 @@
     </rule>
 
     <rule ref="category/java/multithreading.xml">
+        <exclude name="AvoidSynchronizedStatement"/>
         <exclude name="AvoidUsingVolatile"/>
         <exclude name="DoNotUseThreads"/>
         <exclude name="UseConcurrentHashMap"/>
@@ -118,5 +122,9 @@
         <exclude name="AvoidInstantiatingObjectsInLoops"/>
         <exclude name="InsufficientStringBufferDeclaration"/>
         <exclude name="RedundantFieldInitializer"/>
+    </rule>
+
+    <rule ref="category/java/bestpractices.xml/ImplicitFunctionalInterface">
+        <priority>5</priority>
     </rule>
 </ruleset>

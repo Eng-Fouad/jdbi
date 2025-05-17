@@ -45,6 +45,7 @@ import static org.jdbi.v3.core.generic.GenericTypes.resolveType;
 class VavrTupleRowMapperFactory implements RowMapperFactory {
 
     @Override
+    @SuppressWarnings("unchecked")
     public Optional<RowMapper<?>> build(Type type, ConfigRegistry config) {
         Class<?> erasedType = getErasedType(type);
 
@@ -171,6 +172,7 @@ class VavrTupleRowMapperFactory implements RowMapperFactory {
                 .getColumn(tupleIndex));
     }
 
+    @FunctionalInterface
     private interface MapperValueResolver extends CheckedFunction1<Integer, Object> {
         /**
          * @param tupleIndex the 1-based tuple index

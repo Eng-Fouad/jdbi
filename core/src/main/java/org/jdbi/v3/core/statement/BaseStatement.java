@@ -34,7 +34,7 @@ abstract class BaseStatement<This> implements Closeable, Configurable<This> {
     BaseStatement(Handle handle) {
         this.handle = handle;
         final ConfigRegistry config = handle.getConfig().createCopy();
-        this.ctx = StatementContext.create(config, handle.getExtensionMethod());
+        this.ctx = StatementContext.create(config, handle.getExtensionMethod(), getClass());
 
         if (config.get(SqlStatements.class).isAttachAllStatementsForCleanup()) {
             attachToHandleForCleanup(this.handle, this.ctx);
@@ -114,16 +114,6 @@ abstract class BaseStatement<This> implements Closeable, Configurable<This> {
     @Override
     public void close() {
         getContext().close();
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        return this == o;
-    }
-
-    @Override
-    public final int hashCode() {
-        return super.hashCode() * 11;
     }
 
     @FunctionalInterface

@@ -14,6 +14,7 @@
 package org.jdbi.v3.core.kotlin
 
 import org.jdbi.v3.core.annotation.internal.JdbiAnnotations
+import org.jdbi.v3.core.kotlin.internal.toJavaType
 import org.jdbi.v3.core.mapper.Nested
 import org.jdbi.v3.core.mapper.PropagateNull
 import org.jdbi.v3.core.mapper.RowMapper
@@ -164,10 +165,7 @@ class KotlinMapper(val kClass: KClass<*>, private val prefix: String = "") : Row
         }
     }
 
-    private fun locatePropagateNullColumnIndex(
-        columnNames: List<String>,
-        columnNameMatchers: List<ColumnNameMatcher>
-    ): OptionalInt {
+    private fun locatePropagateNullColumnIndex(columnNames: List<String>, columnNameMatchers: List<ColumnNameMatcher>): OptionalInt {
         val propagateNullColumn =
             Optional.ofNullable(kClass.findAnnotation<PropagateNull>())
                 .map(PropagateNull::value)
@@ -195,7 +193,7 @@ class KotlinMapper(val kClass: KClass<*>, private val prefix: String = "") : Row
             val parameterName = addPropertyNamePrefix(prefix, parameter.paramName())
             val columnIndex = findColumnIndex(parameterName, columnNames, columnNameMatchers) { parameter.name }
             if (columnIndex.isPresent) {
-                val type = QualifiedType.of(parameter.type.javaType)
+                val type = QualifiedType.of(toJavaType(parameter.type))
                     .withAnnotations(getQualifiers(parameter))
 
                 return ctx.findColumnMapperFor(type)
@@ -311,13 +309,9 @@ class KotlinMapper(val kClass: KClass<*>, private val prefix: String = "") : Row
         return propagateNullValue.isPresent
     }
 
-    private data class ParamData(
-        val type: ParamResolution,
-        val mapper: RowMapper<*>?,
-        val propagateNull: Boolean
-    )
+    private data class ParamData(val type: ParamResolution, val mapper: RowMapper<*>?, val propagateNull: Boolean)
 
-    override fun toString() = "KotlinMapper(kClass=$kClass, prefix='$prefix')"
+    override fun toString() = "KotlinMapper(kClass=${kClass.qualifiedName}, prefix=$prefix)"
 
     private inner class BoundKotlinMapper(
         private val resolvedConstructorParameters: Map<KParameter, ParamData>,
@@ -361,6 +355,8 @@ class KotlinMapper(val kClass: KClass<*>, private val prefix: String = "") : Row
                 }
             }
         }
+
+        override fun toString() = "BoundKotlinMapper(kClass=${kClass.qualifiedName}, prefix=$prefix)"
     }
 }
 

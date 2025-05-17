@@ -20,6 +20,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jdbi.v3.core.async.JdbiExecutor;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
@@ -71,7 +72,7 @@ public class AsyncTest {
 
         assertThat(futureResult)
             .succeedsWithin(Duration.ofSeconds(10))
-            .asList()
+            .asInstanceOf(InstanceOfAssertFactories.LIST)
             .contains("Alice");
         // end::withHandle[]
     }
@@ -117,7 +118,7 @@ public class AsyncTest {
         // wait for stage to complete (don't do this in production code!)
         Iterator<String> result = futureResult.toCompletableFuture().join();
         // result.hasNext() fails because the handle is already closed at this point
-        assertThatException().isThrownBy(() -> result.hasNext());
+        assertThatException().isThrownBy(result::hasNext);
         // end::failReturningIterator[]
     }
 }

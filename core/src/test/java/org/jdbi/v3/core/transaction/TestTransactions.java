@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class TestTransactions {
 
     @RegisterExtension
-    public H2DatabaseExtension h2Extension = H2DatabaseExtension.withSomething();
+    public H2DatabaseExtension h2Extension = H2DatabaseExtension.instance().withInitializer(H2DatabaseExtension.SOMETHING_INITIALIZER);
 
     int begin, commit, rollback;
 
@@ -112,10 +112,10 @@ public class TestTransactions {
             return connection;
         });
 
-        jdbi.useTransaction(h -> {
-            assertThat(h.getConnection().getAutoCommit()).isFalse();
-            h.execute("INSERT INTO something (id, name ) VALUES (1, 'foo')");
-            h.commit();
+        jdbi.useTransaction(handle -> {
+            assertThat(handle.getConnection().getAutoCommit()).isFalse();
+            handle.execute("INSERT INTO something (id, name ) VALUES (1, 'foo')");
+            handle.commit();
         });
 
         int result = h.createQuery("SELECT count(1) from something")

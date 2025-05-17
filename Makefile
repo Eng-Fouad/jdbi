@@ -18,7 +18,8 @@ SHELL = /bin/sh
 
 MAVEN = ./mvnw
 
-export MAVEN_OPTS MAVEN_CONFIG
+export MAVEN_OPTS
+export MAVEN_ARGS
 
 # must be the first target
 default:: help
@@ -31,46 +32,46 @@ clean::
 install::
 	${MAVEN} clean install
 
-tests: install-fast run-tests
+tests: install-notests run-tests
 
-install-notests:: MAVEN_CONFIG += -Dbasepom.test.skip=true
+install-notests:: MAVEN_ARGS += -Dbasepom.test.skip=true
 install-notests:: install
 
-install-nodocker:: MAVEN_CONFIG += -Dno-docker=true
+install-nodocker:: MAVEN_ARGS += -Dno-docker=true
 install-nodocker:: install
 
-install-fast:: MAVEN_CONFIG += -Pfast
+install-fast:: MAVEN_ARGS += -Pfast
 install-fast:: install
 
-compare-reproducible:: MAVEN_CONFIG += -Dbasepom.test.skip=true -Djdbi.check.skip-japicmp=true
+compare-reproducible:: MAVEN_ARGS += -Dbasepom.test.skip=true -Djdbi.check.skip-japicmp=true
 compare-reproducible::
 	${MAVEN} clean verify artifact:compare
 
-docs: MAVEN_CONFIG += -Ppublish-docs -Pfast -Dbasepom.javadoc.skip=false
-docs: install
+docs:: MAVEN_ARGS += -Ppublish-docs -Dbasepom.javadoc.skip=false
+docs:: install-fast
 
-run-tests:: MAVEN_CONFIG += -Dbasepom.it.skip=false
+run-tests:: MAVEN_ARGS += -Dbasepom.it.skip=false
 run-tests::
 	${MAVEN} surefire:test invoker:install invoker:integration-test invoker:verify
 
-run-slow-tests:: MAVEN_CONFIG += -Pslow-tests
+run-slow-tests:: MAVEN_ARGS += -Pslow-tests
 run-slow-tests:: run-tests
 
-run-tests-nodocker:: MAVEN_CONFIG += -Dno-docker=true
+run-tests-nodocker:: MAVEN_ARGS += -Dno-docker=true
 run-tests-nodocker:: run-tests
 
-publish-docs:: MAVEN_CONFIG += -Pfast -Dbasepom.javadoc.skip=false
-publish-docs:: install
+publish-docs:: MAVEN_ARGS += -Dbasepom.javadoc.skip=false
+publish-docs:: install-fast
 	${MAVEN} -Ppublish-docs -pl :jdbi3-docs clean deploy
 
-deploy:: MAVEN_CONFIG += -Dbasepom.it.skip=false
+deploy:: MAVEN_ARGS += -Dbasepom.it.skip=false
 deploy::
 	${MAVEN} clean deploy
 
 release::
 	${MAVEN} clean release:clean release:prepare release:perform
 
-release-docs:: MAVEN_CONFIG += -Pjdbi-release
+release-docs:: MAVEN_ARGS += -Pjdbi-release
 release-docs:: publish-docs
 
 help::

@@ -88,7 +88,7 @@ public abstract class AbstractArgumentFactory<T> implements ArgumentFactory.Prep
      * @deprecated no longer used
      */
     @Override
-    @Deprecated
+    @Deprecated(since = "3.39.0", forRemoval = true)
     public Collection<Type> prePreparedTypes() {
         return Collections.singletonList(argumentType);
     }
@@ -125,6 +125,7 @@ public abstract class AbstractArgumentFactory<T> implements ArgumentFactory.Prep
      */
     protected abstract Argument build(T value, ConfigRegistry config);
 
+    @FunctionalInterface
     private interface ArgumentPredicate {
         boolean test(Type type, Object value);
     }

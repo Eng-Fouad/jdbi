@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class TestStatements {
 
     @RegisterExtension
-    public H2DatabaseExtension h2Extension = H2DatabaseExtension.withSomething();
+    public H2DatabaseExtension h2Extension = H2DatabaseExtension.instance().withInitializer(H2DatabaseExtension.SOMETHING_INITIALIZER);
 
     @Test
     public void testStatement() {
@@ -67,6 +67,15 @@ public class TestStatements {
         h.execute("update something set name = 'cire' where id = 1");
         Something eric = h.createQuery("select * from something where id = 1").mapToBean(Something.class).list().get(0);
         assertThat(eric.getName()).isEqualTo("cire");
+    }
+
+    @Test
+    public void testLargeResult() {
+        Handle h = h2Extension.getSharedHandle();
+
+        assertThat(h.createUpdate("insert into something (id, name) values (1, 'eric')")
+                .executeLarge())
+            .isOne();
     }
 
     @Test

@@ -57,11 +57,18 @@ public class CodecFactory implements QualifiedColumnMapperFactory, QualifiedArgu
 
     /**
      * Returns a builder for fluent API.
+     * @return A {@link CodecFactory.Builder} instance.
      */
     public static Builder builder() {
         return new Builder(CodecFactory::new);
     }
 
+    /**
+     * Creates a {@link CodecFactory} for a single type.
+     * @param type The type for which the factory is created.
+     * @param codec The {@link Codec} to use.
+     * @return A new {@link CodecFactory} that will be used if the given type is requested.
+     */
     public static CodecFactory forSingleCodec(QualifiedType<?> type, Codec<?> codec) {
         return new CodecFactory(Collections.singletonMap(type, codec));
     }
@@ -75,6 +82,7 @@ public class CodecFactory implements QualifiedColumnMapperFactory, QualifiedArgu
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public final Optional<Function<Object, Argument>> prepare(final QualifiedType<?> type, final ConfigRegistry config) {
         return Optional.of(type).map(this::resolveType).map(key -> (Function<Object, Argument>) key.getArgumentFunction(config));
     }
@@ -82,7 +90,7 @@ public class CodecFactory implements QualifiedColumnMapperFactory, QualifiedArgu
     /**
      * @deprecated no longer used
      */
-    @Deprecated
+    @Deprecated(since = "3.39.0", forRemoval = true)
     @Override
     public final Collection<QualifiedType<?>> prePreparedTypes() {
         return codecMap.keySet();

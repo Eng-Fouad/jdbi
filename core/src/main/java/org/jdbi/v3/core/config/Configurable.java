@@ -53,6 +53,7 @@ import org.jdbi.v3.meta.Beta;
  *
  * @param <This> The subtype that implements this interface.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface Configurable<This> {
 
     /**
@@ -114,7 +115,7 @@ public interface Configurable<This> {
      * @return this
      * @deprecated use {@link #setSqlLogger} instead
      */
-    @Deprecated
+    @Deprecated(since = "3.2.0", forRemoval = true)
     default This setTimingCollector(TimingCollector collector) {
         return configure(SqlStatements.class, c -> c.setTimingCollector(collector));
     }

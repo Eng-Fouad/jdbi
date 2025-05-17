@@ -33,10 +33,9 @@ import static org.jdbi.v3.core.generic.GenericTypes.getErasedType;
  * @see EnumMapper#byOrdinal(Class)
  * @deprecated Use {@link Enums#setEnumStrategy(EnumStrategy) getConfig(Enums.class).setEnumStrategy(BY_ORDINAL)} instead.
  */
-@Deprecated
-// TODO jdbi4: delete
+@Deprecated(since = "3.7.0") // TODO jdbi4: delete
 public class EnumByOrdinalMapperFactory implements ColumnMapperFactory {
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public Optional<ColumnMapper<?>> build(Type type, ConfigRegistry config) {
         Class<?> clazz = getErasedType(type);

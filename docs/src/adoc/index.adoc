@@ -64,6 +64,14 @@ This is the documentation for the current development state of Jdbi. All informa
 
 === Release documentation
 
+* https://jdbi.org/releases/3.49.4[Release 3.49.4 - 2025-05-16^]
+* https://jdbi.org/releases/3.49.3[Release 3.49.3 - 2025-05-01^]
+* https://jdbi.org/releases/3.49.2[Release 3.49.2 - 2025-04-27^]
+* https://jdbi.org/releases/3.49.1[Release 3.49.1 - 2025-04-22^]
+* https://jdbi.org/releases/3.49.0[Release 3.49.0 - 2025-03-26^]
+* https://jdbi.org/releases/3.48.0[Release 3.48.0 - 2025-02-12^]
+* https://jdbi.org/releases/3.47.0[Release 3.47.0 - 2024-10-25^]
+* https://jdbi.org/releases/3.46.0[Release 3.46.0 - 2024-10-15^]
 * https://jdbi.org/releases/3.45.3[Release 3.45.4 - 2024-08-16^]
 * https://jdbi.org/releases/3.45.3[Release 3.45.3 - 2024-07-31^]
 * https://jdbi.org/releases/3.45.2[Release 3.45.2 - 2024-06-28^]
@@ -118,13 +126,13 @@ endif::[]
 
 ifndef::release[]
 * https://jdbi.org/apidocs/[Jdbi Javadoc (API Docs)^]
-* https://github.com/jdbi/jdbi/blob/master/examples/README.md[Jdbi sample code^]
+* https://github.com/jdbi/jdbi/blob/master/examples[Jdbi sample code^]
 endif::[]
 ifdef::release[]
 * https://jdbi.org/releases/{revnumber}[Jdbi {revnumber} documentation]
 * https://jdbi.org/releases/{revnumber}/apidocs[Jdbi {revnumber} Javadoc (API Docs)^]
 * https://github.com/jdbi/jdbi/tree/v{revnumber}[Jdbi {revnumber} source code^]
-* https://github.com/jdbi/jdbi/tree/v{revnumber}/examples/README.md[Jdbi sample code^]
+* https://github.com/jdbi/jdbi/tree/v{revnumber}/examples[Jdbi sample code^]
 endif::[]
 * https://github.com/jdbi/jdbi[GitHub Jdbi repository^]
 
@@ -214,10 +222,15 @@ jdbi3-testing::
 jdbi3-testcontainers::
     Support for arbitrary databases running in https://testcontainers.org/[Testcontainers^]. Currently, only supports JUnit 5.
 
+===== Telemetry support
+
+[glossary]
+jdbi3-opentelemetry::
+    OpenTelemetry tracing support
 
 ===== External data types and libraries
 
-The core module contains support for the https://immutables.github.io/[Immutables^] and https://github.com/inferred/FreeBuilder[Freebuilder^] libraries.
+The core module contains support for the https://immutables.github.io/[Immutables^] library.
 
 [glossary]
 jdbi3-guava::
@@ -246,8 +259,10 @@ jdbi3-moshi::
 [glossary]
 jdbi3-guice::
     Support dependency injection and modules with https://github.com/google/guice[Google Guice^].
+jdbi3-spring::
+    Provides support for all https://spring.io/[Spring Framework^] versions that are under OSS support.
 jdbi3-spring5::
-    Provides a https://spring.io/[Spring Framework^] factory bean to set up Jdbi singleton.
+    Provides a https://spring.io/[Spring Framework^] version 5 compatible factory bean to set up Jdbi singleton. _This module is deprecated, please migrate to the `spring` module._
 jdbi3-jpa::
     Some support for https://www.oracle.com/java/technologies/persistence-jsp.html[JPA^] annotations.
 
@@ -587,7 +602,7 @@ Any database operation within Jdbi uses a statement. Multiple types of statement
 * link:{jdbidocs}/core/statement/Batch.html[Batch^] - a set of operations that are executed as a batch. See link:{jdbidocs}/core/Handle.html#createBatch()[createBatch^]
 * link:{jdbidocs}/core/statement/Call.html[Call^] - execute a stored procedure. See link:{jdbidocs}/core/Handle.html#createCall(java.lang.CharSequence)[createCall^]
 * link:{jdbidocs}/core/statement/Script.html[Script^] - a SQL script containing multiple statements separated by `;` that is executed as a batch. See also link:{jdbidocs}/core/Handle.html#createScript(java.lang.CharSequence)[createScript^]
-* link:{jdbidocs}/core/statement/Metadata.html[Metadata^] - SQL Metadata access.
+* link:{jdbidocs}/core/statement/MetaData.html[MetaData^] - SQL Metadata access.
 
 
 ==== Queries
@@ -777,6 +792,12 @@ A link:{jdbidocs}/core/statement/PreparedBatch.html[PreparedBatch^] sends one st
 The statement is executed repeatedly, once for each batch of arguments that is *add*-ed to it.
 
 The result is again a `int[]` of modified row count.
+
+Please note that the first set of arguments is used to determine the data types of all subsequent batches.
+In particular, if an argument in the first batch is `null` then Jdbi may guess an "unknown" type which
+is not appropriate for a future non-`null` argument. Consider using
+link:{jdbidocs}/core/statement/SqlStatement.html#bindByType(int,java.lang.Object,java.lang.reflect.Type)[SqlStatement.bindByType()^]
+to ensure Jdbi knows the types of your arguments, even if they may be `null`.
 
 [source,java,indent=0]
 ----
@@ -1262,7 +1283,7 @@ Optional<User> user = stream.findFirst(); <3>
 <2> leaving the callback closes the handle and releases all resources including the result set
 <3> throws an exception because the result set has already been closed
 
-This can be avoided by using one of the callback methods that ResultIterable offers: link:{jdbidocs}/core/result/ResultIterable.html#withIterator(org.jdbi.v3.core.result.IteratorCallback)[withIterator()^], link:{jdbidocs}/core/result/ResultIterable.html#useIterator(org.jdbi.v3.core.result.IteratorConsumer)[useIterator()^], link:{jdbidocs}/core/result/ResultIterable.html#withStream(org.jdbi.v3.core.result.StreamCallback)[withStream()^], link:{jdbidocs}/core/result/ResultIterable.htmll#useStream(org.jdbi.v3.core.result.StreamConsumer)[useStream()^]. Each of these methods manages the iterator / stream through Jdbi and allow consumption of its contents within a callback:
+This can be avoided by using one of the callback methods that ResultIterable offers: link:{jdbidocs}/core/result/ResultIterable.html#withIterator(org.jdbi.v3.core.result.IteratorCallback)[withIterator()^], link:{jdbidocs}/core/result/ResultIterable.html#useIterator(org.jdbi.v3.core.result.IteratorConsumer)[useIterator()^], link:{jdbidocs}/core/result/ResultIterable.html#withStream(org.jdbi.v3.core.result.StreamCallback)[withStream()^], link:{jdbidocs}/core/result/ResultIterable.html#useStream(org.jdbi.v3.core.result.StreamConsumer)[useStream()^]. Each of these methods manages the iterator / stream through Jdbi and allow consumption of its contents within a callback:
 
 [source,java,indent=0]
 ----
@@ -2250,11 +2271,6 @@ This may be disabled by configuring
 `Immutables` value objects may be mapped, see the <<Immutables>> section for details.
 
 
-=== Freebuilder Mapping
-
-`Freebuilder` value objects may be mapped, see the <<Freebuilder>> section for details.
-
-
 === Reflection Mappers for Beans and POJOs
 
 Jdbi provides a number of reflection-based mappers out of the box which treat column
@@ -2293,6 +2309,11 @@ This used to be called `@Unmappable`.
 [NOTE]
 The link:{jdbidocs}/core/mapper/reflect/ColumnName.html[@ColumnName^] annotation only applies while mapping SQL data into Java objects.
 When binding object properties (e.g. with `bindBean()`), bind the property name (`:id`) rather than the column name (`:user_id`).
+
+[NOTE]
+link:{jdbidocs}/core/mapper/Nested.html[@Nested^] also can be used in combination with link:{jdkdocs}/java.base/java/util/Optional.html[Optional^].
+When mapping a value `@Nested Optional<MyBean>` then it will wrapped inside an optional, and will be `Optional.empty()`
+when `MyBean` itself would be null (e.g. because `@PropagateNull` annotation is used on a `MyBean` field that was null).
 
 ===== Using `@Nullable` annotations
 
@@ -2842,7 +2863,8 @@ include::{exampledir}/CodecSqlObjectTest.java[tags=dao;register;load;store]
 
 === Resolving Types
 
-By using the `TypeResolvingCodecFactory` from the link:{jdbidocs}/guava/package-summary.html[guava^] module, it is possible to use codecs that are registered for subclasses or interface types for concrete classes. This is necessary to e.g. map https://github.com/google/auto/blob/master/value/userguide/index.md[Auto Value^] generated classes to database columns.
+By using the `TypeResolvingCodecFactory` from the link:{jdbidocs}/guava/package-summary.html[guava^] module, it is possible to use codecs that are registered for subclasses or interface types for concrete classes. This is necessary to e.g. map https://github.com/google/auto/blob/main/value/userguide/index.md[Auto Value^] generated classes to database columns.
+
 
 In the following example, there is only a codec for `Value<String>` registered, but the code uses beans and classes that are concrete implementations (`StringBean` contains a `StringValue` and `StringValue` implements the `Value<String>` interface). The `TypeResolvingCodecFactory` will inspect the types to find a codec for an interface or superclass if no perfect match can be found.
 
@@ -2982,7 +3004,7 @@ any.
 
 The link:{jdbidocs}/core/result/ResultIterable.html#stream()[stream()^] method returns a link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream<T>^]. This is not a terminal operation and the stream must be closed to release any database resources held. See <<Resources with Streams and Iterators>> for more details.
 
-The link:{jdbidocs}/core/result/ResultIterable.html#withStream(org.jdbi.v3.core.result.StreamCallback)[withStream()^] and link:{jdbidocs}/core/result/ResultIterable.htmll#useStream(org.jdbi.v3.core.result.StreamConsumer)[useStream()^] methods pass the Stream into a callback.
+The link:{jdbidocs}/core/result/ResultIterable.html#withStream(org.jdbi.v3.core.result.StreamCallback)[withStream()^] and link:{jdbidocs}/core/result/ResultIterable.html#useStream(org.jdbi.v3.core.result.StreamConsumer)[useStream()^] methods pass the Stream into a callback.
 
 [source,java,indent=0]
 ----
@@ -2997,7 +3019,7 @@ handle.createQuery("SELECT id, name FROM user ORDER BY id ASC")
     });
 ----
 
-These methods handle closing the stream for the caller. The link:{jdbidocs}/core/result/ResultIterable.html#withStream(org.jdbi.v3.core.result.StreamCallback)[withStream()^] method allows passing a result back to the caller, link:{jdbidocs}/core/result/ResultIterable.htmll#useStream(org.jdbi.v3.core.result.StreamConsumer)[useStream()^] only executed the code in the callback.
+These methods handle closing the stream for the caller. The link:{jdbidocs}/core/result/ResultIterable.html#withStream(org.jdbi.v3.core.result.StreamCallback)[withStream()^] method allows passing a result back to the caller, link:{jdbidocs}/core/result/ResultIterable.html#useStream(org.jdbi.v3.core.result.StreamConsumer)[useStream()^] only executed the code in the callback.
 
 
 ==== List
@@ -3560,7 +3582,7 @@ If this setting is `true`, then statements are attached by default.
 
 | scriptStatementsNeedSemicolon
 ^| boolean ^| `true`
-<| Controls whether the statements parsed in a link:{jdbidocs}/core/statements/Script.html[Script^] object have trailing semicolons or not. This fixes some issues with specific JDBC drivers (e.g. MySQL when using `rewriteBatchedStatements=true`).
+<| Controls whether the statements parsed in a link:{jdbidocs}/core/statement/Script.html[Script^] object have trailing semicolons or not. This fixes some issues with specific JDBC drivers (e.g. MySQL when using `rewriteBatchedStatements=true`).
 
 
 <| sqlParser
@@ -3581,7 +3603,7 @@ Custom implementations must implement link:{jdbidocs}/core/statement/SqlParser.h
 ^| link:{jdbidocs}/core/statement/SqlLogger.html[SqlLogger^] ^| <unset>
 <| Controls logging around statement execution. A SqlLogger instance receives the statement context before and after query execution and the context and an exception in case of an execution problem.
 
-Jdbi provides link:{jdbidocs}/core/statement/Slf4jSqlLogger.html[Slf4jSqlLogger^] for the popular https://slf4j.org/[slf4j^] logging framework.
+Jdbi provides link:{jdbidocs}/core/statement/Slf4JSqlLogger.html[Slf4JSqlLogger^] for the popular https://slf4j.org/[slf4j^] logging framework.
 
 | templateEngine
 ^| link:{jdbidocs}/core/statement/TemplateEngine.html[TemplateEngine^] ^| link:{jdbidocs}/core/statement/DefinedAttributeTemplateEngine.html[DefineAttributeTemplateEngine^]
@@ -3631,20 +3653,20 @@ Controls how error messages from a Statement are displayed (e.g. for logging).
 | Object | Property | Type | Default | Description
 
 | link:{jdbidocs}/sqlobject/SqlObjects.html[SqlObjects^] | sqlLocator
-     | link:{jdbidocs}/sqlobject/SqlLocator.html[SqlLocator^] | link:{jdbidocs}/sqlobject/AnnotationSqlLocator.html[AnnotationSqlLocator^]
+     | link:{jdbidocs}/sqlobject/locator/SqlLocator.html[SqlLocator^] | link:{jdbidocs}/sqlobject/locator/AnnotationSqlLocator.html[AnnotationSqlLocator^]
      | Sets the locator for finding SQL statements. Default is to look for SQL operation annotations.
 
 Jdbi provides two implementations of the `SqlLocator` interface:
 
 [cols="1,3"]
 !===
-! link:{jdbidocs}/sqlobject/AnnotationSqlLocator.html[AnnotationSqlLocator^] ! Use annotations (
+! link:{jdbidocs}/sqlobject/locator/AnnotationSqlLocator.html[AnnotationSqlLocator^] ! Use annotations (
 link:{jdbidocs}/sqlobject/statement/SqlBatch.html[@SqlBatch^],
 link:{jdbidocs}/sqlobject/statement/SqlCall.html[@SqlCall^],
 link:{jdbidocs}/sqlobject/statement/SqlQuery.html[@SqlQuery^],
 link:{jdbidocs}/sqlobject/statement/SqlUpdate.html[@SqlUpdate^] and
 link:{jdbidocs}/sqlobject/statement/SqlScript.html[@SqlScript^]) to locate SQL statements
-! link:{jdbidocs}/sqlobject/SqlObjectClasspathSqlLocator.html[SqlObjectClasspathSqlLocator^] ! Associates a class or interface with a file located on the classpath (`com.foo.Bar#query()` becomes `com/foo/Bar/query.sql`) and loads the SQL from that file. The file may contain comments which are stripped.
+! link:{jdbidocs}/sqlobject/locator/SqlObjectClasspathSqlLocator.html[SqlObjectClasspathSqlLocator^] ! Associates a class or interface with a file located on the classpath (`com.foo.Bar#query()` becomes `com/foo/Bar/query.sql`) and loads the SQL from that file. The file may contain comments which are stripped.
 !===
 
 | link:{jdbidocs}/sqlobject/customizer/TimestampedConfig.html[TimestampedConfig^] | timezone
@@ -4161,7 +4183,7 @@ long bobId = dao.insertFullContact(bob); // <1>
 
 The performance of on-demand objects depends on the database and database connection pooling. For performance critical operations, it may be better to manage the handle manually and use attached objects.
 
-On-demand instances open and close the underlying link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] objects for every call to an extension method. They are incompatible with any object or operation that relies on an open statement to retrieve data from the database (e.g. link:{jdkdocs}/java/util/stream/Stream.html[Stream^] and link:{jdkdocs}/java/util/Iterator.html[Iterator^] for query operations or link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] for call operations). It is possible to use <<consumer-and-function-arguments, consumer or function arguments>> to process these values as the callback is executed while the statement is still open.
+On-demand instances open and close the underlying link:{jdkdocs}/java.sql/java/sql/PreparedStatement.html[PreparedStatement^] objects for every call to an extension method. They are incompatible with any object or operation that relies on an open statement to retrieve data from the database (e.g. link:{jdkdocs}/java.base/java/util/stream/Stream.html[Stream^] and link:{jdkdocs}/java.base/java/util/Iterator.html[Iterator^] for query operations or link:{jdbidocs}/core/statement/OutParameters.html[OutParameters^] for call operations). It is possible to use <<consumer-and-function-arguments, consumer or function arguments>> to process these values as the callback is executed while the statement is still open.
 
 
 ==== Interface default methods
@@ -4592,7 +4614,7 @@ include::{exampledir}/LiveObjectsTest.java[tag=extension-default]
 
 Using the method return value either directly or through an _interface default method_ has the drawback that the user code to process the cursor-type object must be written within the SQL Object type as it must be executed before closing the link:{jdbidocs}/core/Handle.html[Handle^] object.
 
-An elegant way to sidestep this problem is using a <<Consumer arguments, consumer argument>> or a <<Function, function argument>> to provide a callback:
+An elegant way to sidestep this problem is using a <<Consumer arguments, consumer argument>> or a <<Function arguments, function argument>> to provide a callback:
 
 [source,java,indent=0]
 ----
@@ -6016,7 +6038,7 @@ When setting the caches explicitly, no cache plugin needs to be installed.
 
 
 [TIP]
-If the underlying cache library exposes per-cache statistics, these can be accessed through the link:{jdbidocs}//core/statement/SqlStatements.html#cacheStats()[SqlStatements#cacheStats()^] and https://{jdbidocs}/core/statement/CachingSqlParser.html#cacheStats()[CachingSqlParser#cacheStats()^] methods.
+If the underlying cache library exposes per-cache statistics, these can be accessed through the link:{jdbidocs}//core/statement/SqlStatements.html#cacheStats()[SqlStatements#cacheStats()^] and link:{jdbidocs}/core/statement/CachingSqlParser.html#cacheStats()[CachingSqlParser#cacheStats()^] methods.
 
 
 == Testing
@@ -6192,7 +6214,7 @@ For each database, Jdbi can provide custom user, catalog and schema names and re
 
 [%header, cols=5*]
 .Supported Testcontainer databases
-|=====
+|===
 | Database | Isolation type | Database User | Catalog/Database name | Schema name
 | MySQL, MariaDB, TiDB | Catalog | `root` | (random) |
 | PostgreSQL, CockroachDB, YugabyteDB | Schema | (default) | `test` | (random)
@@ -6200,8 +6222,8 @@ For each database, Jdbi can provide custom user, catalog and schema names and re
 | Oracle XE, Oracle free | Schema | `system` | (default catalog) | (random)
 | Trino | Schema | (default) | `memory` | (random)
 | MS SQLServer | Catalog | `sa` | (random) |
-| DB2 | Schema | (default) | `test` | (random) |
-|=====
+| DB2 | Schema | (default) | `test` | (random)
+|===
 
 - Database user _(default)_: Jdbi uses the default user as returned by the testcontainer class.
 - Isolation type _Catalog_: A new catalog (or database) is created for each test. The schema name is not used or the database does not support schemas.
@@ -6262,6 +6284,24 @@ JdbiExtension extension = JdbiTestcontainersExtension.instance(CUSTOM_MYSQL, dbC
 [WARNING]
 Using a wait time of 0 seconds will wait until all of the internal state has been shutdown completely. This may result in infinite hangs of the tests when shutting down.
 
+== Telemetry
+
+Jdbi provides support for collecting telemetry about executed database statements.
+
+=== JDK Flight Recorder
+
+The link:https://en.wikipedia.org/wiki/JDK_Flight_Recorder[JDK Flight Recorder^] provides a lightweight event recorder mechanism suitable to enable in production.
+When active, Jdbi will record a `jdbi.statement` event for every statement executed, indicating the timestamp,
+duration, executed sql, and parameters.
+
+Configuration to limit large amounts of data recorded is available on the `SqlStatements` configuration class.
+
+=== OpenTelemetry Tracing
+
+The link:https://opentelemetry.io/[OpenTelemetry^] project provides a SDK to implement distributed tracing.
+Installing the link:{jdbidocs}/opentelemetry/JdbiOpenTelemetryPlugin.html[JdbiOpenTelemetryPlugin^]
+from the `jdbi3-opentelemetry` artifact will cause Jdbi statements to emit trace spans recording data
+similarly as JFR events above. Additionally, it will add the trace id to JFR events.
 
 == Third-Party Integration
 
@@ -6534,31 +6574,6 @@ include::{coreexampledir}/ImmutablesTest.java[tags=example]
 ----
 
 
-=== Freebuilder
-https://freebuilder.inferred.org/[Freebuilder^] is an annotation
-processor that generates value types based on simple interface or abstract
-class descriptions. Jdbi supports Freebuilder in much the same way that it
-supports Immutables.
-
-[WARNING]
-Freebuilder support is still experimental and may not support all Freebuilder
-implemented features. We do support both JavaBean style getters and setters as
-well as unprefixed getters and setters.
-
-Just tell us about your Freebuilder types by installing the plugin and
-configuring your `Freebuilder` type:
-
-`jdbi.getConfig(JdbiFreebuilder.class).registerFreebuilder(MyFreeBuilderType.class)`
-
-The configuration will both register appropriate link:{jdbidocs}/core/mapper/RowMapper.html[RowMapper^]s as well as
-configure the new `bindPojo` (or `@BindPojo`) binders:
-
-[source,java,indent=0]
-----
-include::{coreexampledir}/FreeBuildersTest.java[tags=example]
-----
-
-
 === JodaTime
 
 This plugin adds support for using joda-time's `DateTime` type.
@@ -6673,7 +6688,7 @@ When implementing the link:{jdbidocs}/guice/AbstractJdbiDefinitionModule.html#jd
 
 [%header, cols=3*]
 .Supported bindings
-|=====
+|===
 | Method | Type of binding | Jdbi function
 
 | link:{jdbidocs}/guice/JdbiBinder.html#bindRowMapper()[bindRowMapper()^]
@@ -6704,7 +6719,7 @@ When implementing the link:{jdbidocs}/guice/AbstractJdbiDefinitionModule.html#jd
 | link:{jdbidocs}/guice/JdbiBinder.html#bindCustomizer()[bindCustomizer()^]
 | link:{jdbidocs}/guice/GuiceJdbiCustomizer.html[GuiceJdbiCustomizer^]
 | <<Jdbi customization using Guice>>
-|=====
+|===
 
 Each Jdbi definition module is completely independent and all definitions within the module only apply to the specific link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance.
 
@@ -7396,6 +7411,108 @@ qryAll.mapTo<Thing>.useSequence {
 }
 ----
 
+
+==== Kotlin Value classes
+
+Jdbi supports Kotlin value classes as long as an appropriate mapper for the underlying data type has been registered. For value types that wrap standard data types such as `int`, `String` or `UUID`, this is normally the case.
+
+[source,kotlin]
+----
+@JvmInline
+value class MagicType(val first: String)
+
+val valueType = MagicType("does this work?")
+
+// bind a value type as an argument
+handle.createUpdate("INSERT INTO something(id, first) VALUES(:id, :first)")
+    .bind("id", 1)
+    .bind("first", valueType)
+    .execute()
+
+// retrieve a column value as a value type
+val result = handle.createQuery("SELECT first FROM something")
+    .mapTo<MagicType>()
+    .single()
+----
+
+Jdbi will find the appropriate Column mapper and unwrap/wrap the value into the Kotlin value type.
+
+This also works with data classes:
+
+[source, kotlin]
+----
+@JvmInline
+value class PlanetType(val value: String)
+
+@JvmInline
+value class MoonType(val value: String)
+
+data class MoonOrbit(val id: Int, val planet: PlanetType, val moon: MoonType)
+
+value orbit = MoonOrbit(1, PlanetType("Saturn"), MoonType("Titan"))
+
+// create a new moon orbiting a planet
+handle.createUpdate("INSERT INTO orbits(id, planet, moon) VALUES(:id, :planet, :moon)")
+    .bindKotlin(orbit)
+    .execute()
+
+// retrieve all moon orbits as a List<MoonOrbit>
+val result = handle.createQuery("SELECT id, planet, moon FROM orbits")
+    .mapTo<MoonOrbit>()
+    .list()
+----
+
+
+==== SqlObject
+
+The *jdbi3-kotlin-sqlobject* plugin adds automatic parameter binding by name
+for Kotlin methods in SqlObjects as well as support for Kotlin default methods.
+
+To use it, add a dependency:
+
+For Apache Maven:
+
+[source,xml,indent=0,subs="attributes,specialchars"]
+----
+<dependency>
+    <groupId>org.jdbi</groupId>
+    <artifactId>jdbi3-kotlin-sqlobject</artifactId>
+    <version>{project_version}</version>
+</dependency>
+----
+
+For Gradle:
+
+[source,groovy,subs="attributes,specialchars"]
+----
+dependencies {
+    implementation("org.jdbi:jdbi3-kotlin-sqlobject:{project_version}")
+}
+----
+
+Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
+
+[source,kotlin]
+----
+jdbi.installPlugin(KotlinSqlObjectPlugin());
+----
+
+Parameter binding supports individual primitive types as well as Kotlin or
+JavaBean style objects as a parameter (referenced in binding as
+`:paramName.propertyName`). No annotations are needed.
+
+If you load all Jdbi plugins via `Jdbi.installPlugins()` this plugin will be
+discovered and registered automatically. Otherwise, you can attach the plugin
+via: `Jdbi.installPlugin(KotlinSqlObjectPlugin())`.
+
+An example from the test class:
+
+[source,kotlin,indent=0]
+----
+include::{kotlinexampledir}/KotlinPluginTest.kt[tags=sqlObject;setUp;testDao]
+----
+
+
 ==== Coroutine support
 
 [NOTE]
@@ -7487,56 +7604,6 @@ private suspend fun insertSomething(dao: SomethingDao): Unit = coroutineScope {
 private suspend fun selectSomething(dao: SomethingDao, id: Int): Something = coroutineScope {
     dao.findById(id)
 }
-----
-
-
-==== SqlObject
-
-The *jdbi3-kotlin-sqlobject* plugin adds automatic parameter binding by name
-for Kotlin methods in SqlObjects as well as support for Kotlin default methods.
-
-To use it, add a dependency:
-
-For Apache Maven:
-
-[source,xml,indent=0,subs="attributes,specialchars"]
-----
-<dependency>
-    <groupId>org.jdbi</groupId>
-    <artifactId>jdbi3-kotlin-sqlobject</artifactId>
-    <version>{project_version}</version>
-</dependency>
-----
-
-For Gradle:
-
-[source,groovy,subs="attributes,specialchars"]
-----
-dependencies {
-    implementation("org.jdbi:jdbi3-kotlin-sqlobject:{project_version}")
-}
-----
-
-Then install the plugin into the link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance:
-
-[source,kotlin]
-----
-jdbi.installPlugin(KotlinSqlObjectPlugin());
-----
-
-Parameter binding supports individual primitive types as well as Kotlin or
-JavaBean style objects as a parameter (referenced in binding as
-`:paramName.propertyName`). No annotations are needed.
-
-If you load all Jdbi plugins via `Jdbi.installPlugins()` this plugin will be
-discovered and registered automatically. Otherwise, you can attach the plugin
-via: `Jdbi.installPlugin(KotlinSqlObjectPlugin())`.
-
-An example from the test class:
-
-[source,kotlin,indent=0]
-----
-include::{kotlinexampledir}/KotlinPluginTest.kt[tags=sqlObject;setUp;testDao]
 ----
 
 
@@ -7802,18 +7869,15 @@ public interface Lobject {
 ----
 
 Please refer to
-https://jdbc.postgresql.org/documentation/head/binary-data.html[Pg-JDBC docs^]
+https://jdbc.postgresql.org/documentation/binary-data/[Pg-JDBC docs^]
 for upstream driver documentation.
 
 
-=== Spring
+=== Spring framework
 
-This module integrates Jdbi and Spring / Spring Boot, including JTA support.
+Jdbi supports https://spring.io[Spring Framework] with the `spring` module. It integrates Jdbi and Spring / Spring Boot, including JTA support.
 
-The `spring5` module supports Spring 5 (Spring Boot 2) and newer.
-We currently test with Spring 5 and Spring 6.
-
-To use *jdbi-spring5*, add a dependency:
+To use *jdbi-spring*, add a dependency:
 
 For Apache Maven:
 
@@ -7821,7 +7885,7 @@ For Apache Maven:
 ----
 <dependency>
     <groupId>org.jdbi</groupId>
-    <artifactId>jdbi3-spring5</artifactId>
+    <artifactId>jdbi3-spring</artifactId>
     <version>{project_version}</version>
 </dependency>
 ----
@@ -7831,9 +7895,19 @@ For Gradle:
 [source,groovy,subs="attributes,specialchars"]
 ----
 dependencies {
-    implementation("org.jdbi:jdbi3-spring5:{project_version}")
+    implementation("org.jdbi:jdbi3-spring:{project_version}")
 }
 ----
+
+==== Supported versions
+
+The `spring` module supports Spring 6.1 (Spring Boot 3.2.x) and newer. All versions of Spring framework that are under OSS support are supported. Other versions may work but are not tested and bug reports for older versions will not be addressed.
+
+The deprecated `spring5` module supports Spring Framework version 5.x and 6.0. These versions are no longer under OSS support and updates
+are no longer publicly available.
+
+[NOTE]
+The spring5 module will be removed in a future version of Jdbi! Please migrate to the `spring` module.
 
 
 ==== XML-based configuration
@@ -7867,7 +7941,7 @@ Then configure the Jdbi factory bean in your Spring container, e.g.:
 
   <!--3-->
   <bean id="jdbi"
-    class="org.jdbi.v3.spring5.JdbiFactoryBean">
+    class="org.jdbi.v3.spring.JdbiFactoryBean">
     <property name="dataSource" ref="db"/>
   </bean>
 
@@ -7879,10 +7953,9 @@ Then configure the Jdbi factory bean in your Spring container, e.g.:
 </beans>
 ----
 
-<1> The SQL data source that Jdbi will connect to. In this example we use an H2
-    database, but it can be any JDBC-compatible database.
+<1> The SQL data source that Jdbi will connect to. In this example we use an H2 database, but it can be any JDBC-compatible database.
 <2> Enable configuration of transactions via annotations.
-<3> Configure link:{jdbidocs}/spring5/JdbiFactoryBean.html[JdbiFactoryBean^] using the data source configured earlier.
+<3> Configure link:{jdbidocs}/spring/JdbiFactoryBean.html[JdbiFactoryBean^] using the data source configured earlier.
 <4> Inject a link:{jdbidocs}/core/Jdbi.html[Jdbi^] instance into a service class. Alternatively, use standard JSR-330 `@Inject` annotations on the target class instead of configuring it in your `beans.xml`.
 
 
@@ -7893,7 +7966,7 @@ link:{jdkdocs}/java.base/java/util/ServiceLoader.html[ServiceLoader^] manifests.
 
 [source,xml,indent=0]
 ----
-<bean id="jdbi" class="org.jdbi.v3.spring5.JdbiFactoryBean">
+<bean id="jdbi" class="org.jdbi.v3.spring.JdbiFactoryBean">
   ...
   <property name="autoInstallPlugins" value="true"/>
 </bean>
@@ -7903,7 +7976,7 @@ Plugins may also be installed explicitly:
 
 [source,xml,indent=0]
 ----
-<bean id="jdbi" class="org.jdbi.v3.spring5.JdbiFactoryBean">
+<bean id="jdbi" class="org.jdbi.v3.spring.JdbiFactoryBean">
   ...
   <property name="plugins">
     <list>
@@ -7919,7 +7992,7 @@ auto-install some plugins and manually install the rest:
 
 [source,xml,indent=0]
 ----
-<bean id="jdbi" class="org.jdbi.v3.spring5.JdbiFactoryBean">
+<bean id="jdbi" class="org.jdbi.v3.spring.JdbiFactoryBean">
   ...
   <property name="autoInstallPlugins" value="true"/>
   <property name="plugins">
@@ -7937,7 +8010,7 @@ Global defined attributes may be configured on the factory bean:
 
 [source,xml,indent=0]
 ----
-<bean id="jdbi" class="org.jdbi.v3.spring5.JdbiFactoryBean">
+<bean id="jdbi" class="org.jdbi.v3.spring.JdbiFactoryBean">
   <property name="dataSource" ref="db"/>
   <property name="globalDefines">
     <map>
@@ -7964,9 +8037,9 @@ public class JdbiConfiguration {
     }
 }
 ----
-<1> This connection factory will enable <<spring5-jta, JTA support>>.
+<1> This connection factory will enable <<spring-jta, JTA support>>.
 
-[#spring5-jta]
+[#spring-jta]
 ==== Synchronization between Jdbi and JTA
 If you use Spring and databases, you will most likely also use the Java Transaction API (JTA)
 to manage the transactions. The `JdbiUtil` utility can be used to obtain link:{jdbidocs}/core/Handle.html[Handles^]
@@ -8655,7 +8728,7 @@ method on the extension type:
 
 - Which link:{jdbidocs}/core/extension/ExtensionHandler.html[ExtensionHandler^] to invoke for each method
 - All link:{jdbidocs}/core/extension/ExtensionHandlerCustomizer.html[ExtensionHandlerCustomizer^] instances that change the behavior of the extension handler
-- Per extension type and per extension type method specific link:{jdbidocs}/core/extension/ConfigCustomizer.html[ConfigCustomizer^] instances to apply when an extension handler is invoked
+- Per extension type and per extension type method specific link:{jdbidocs}/core/config/ConfigCustomizer.html[ConfigCustomizer^] instances to apply when an extension handler is invoked
 
 Extension metadata is created once for each extension type and then reused.
 
@@ -8702,14 +8775,14 @@ User code --> [registers ExtensionFactory with Jdbi] --> | Extensions Config obj
 
 link:{jdbidocs}/core/extension/ExtensionHandler.html[ExtensionHandler^],
 link:{jdbidocs}/core/extension/ExtensionHandlerCustomizer.html[ExtensionHandlerCustomizer^] and
-link:{jdbidocs}/core/extension/ConfigCustomizer.html[ConfigCustomizer^] are the three main extension framework objects to implement:
+link:{jdbidocs}/core/config/ConfigCustomizer.html[ConfigCustomizer^] are the three main extension framework objects to implement:
 
 - An link:{jdbidocs}/core/extension/ExtensionHandler.html[ExtensionHandler^] object is created by an
   link:{jdbidocs}/core/extension/ExtensionHandlerFactory.html[ExtensionHandlerFactory^], which can be registered either globally (with the
   link:{jdbidocs}/core/extension/Extensions.html[Extensions configuration^]) and then applied to all extensions types, or directly with an extension factory. It is also possible to specify extension handlers through annotations.
 - link:{jdbidocs}/core/extension/ExtensionHandlerCustomizer.html[ExtensionHandlerCustomizer^] objects can modify the behavior of an extension handler. They are
   registered globally or provided by an extension factory. They can also be specified through annotations.
-- link:{jdbidocs}/core/extension/ConfigCustomizer.html[ConfigCustomizer^] objects are created by a
+- link:{jdbidocs}/core/config/ConfigCustomizer.html[ConfigCustomizer^] objects are created by a
   link:{jdbidocs}/core/extension/ConfigCustomizerFactory.html[ConfigCustomizerFactory^] and modify the configuration that is used when an extension handler is
   executed. Factory instances are registered globally or with an extension factory. Config customization
   can also be specified through annotations.
@@ -8849,7 +8922,7 @@ immediately.
 if needed. Unlike a non-virtual factory, this instance is returned _as-is_ to the caller. Neither proxy object nor extension handlers are created.
 
 Jdbi provides link:{jdbidocs}/generator/GenerateSqlObjectProcessor.html[an annotation processor^] that creates java implementations of extension types. In addition, it
-provides link:{jdbidocs}/sqlobject/GeneratorSqlObjectFactory.html[an extension factory^] which does not use proxy objects and returns these as extension type implementations. Calling a method on the extension type will invoke the methods on the generated classes directly.
+provides an extension factory which does not use proxy objects and returns these as extension type implementations. Calling a method on the extension type will invoke the methods on the generated classes directly.
 
 
 ==== Extension handlers and their factories
@@ -8948,7 +9021,7 @@ method.
 
 ==== Config customizers and their factories
 
-link:{jdbidocs}/core/extension/ConfigCustomizer.html[ConfigCustomizer^] instances modify the link:{jdbidocs}/core/config/ConfigRegistry.html[configuration
+link:{jdbidocs}/core/config/ConfigCustomizer.html[ConfigCustomizer^] instances modify the link:{jdbidocs}/core/config/ConfigRegistry.html[configuration
 registry^] object which is used when an extension type method is invoked. This configuration object is passed to all extension handler customizers and the
 extension handler itself.
 
@@ -8982,7 +9055,7 @@ functionality directly as annotation related objects without having to provide e
 The extension framework offers _meta-annotations_ to configure link:{jdbidocs}/core/extension/ExtensionHandler.html[ExtensionHandler^] and
 link:{jdbidocs}/core/extension/ExtensionHandlerCustomizer.html[ExtensionHandlerCustomizer^] instances directly and another _meta-annotation_ to define
 link:{jdbidocs}/core/extension/ExtensionConfigurer.html[ExtensionConfigurer^] instances which allows configuration modification similar to
-link:{jdbidocs}/core/extension/ConfigCustomizer.html[ConfigCustomizer^]).
+link:{jdbidocs}/core/config/ConfigCustomizer.html[ConfigCustomizer^]).
 
 Meta-annotations are used to annotate other annotation classes for processing by the extension framework.
 

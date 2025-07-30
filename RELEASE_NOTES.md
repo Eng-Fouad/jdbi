@@ -1,6 +1,9 @@
 # Unreleased
 
+# 3.49.5
+
 - Fix SerializableTransactionRunner retry with failures wrapped in batch exceptions
+- Add Oracle-Free tests
 
 # 3.49.4
 
